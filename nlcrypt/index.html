@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>NLCrypt: Semantic Cryptography</title>
+</head>
+<body>
+<h1>NLCrypt: Semantic Cryptography</h1>
+
+<h2>Introduction</h2>
+<p>
+NLCrypt is an attempt to create a cryptography system that doesn't
+look like a cryptography. It disguises a secret message as a
+grammatical (but nonsensical) text by changing its meanings. It can be
+used for a casual use to slip a secret message into web forums or
+emails. NLCrypt currently supports English text only.
+<p>
+<strong>Warning:</strong>
+This is just a proof-of-concept implementation. The encryption algorithm is not
+analyzed therefore there's no guarantee on its security or reliability.
+Do not use this for serious purposes.
+
+<h2>How It Works</h2>
+<p>
+NLCrypt is basically a combination of a dictionary cipher and a Caesar
+method.  It takes each word in a message (except stop words) and
+shifts it in a dictionary.
+<p>
+Here's an example:
+<p>
+In a message "<code>He likes coffee.</code>", 
+the words "<code>likes</code>" and "<code>coffee</code>" are
+tagged as <code>VBZ+NNS</code> and <code>NN</code> respectively.
+These are part of speech tags, meaning that 
+"<code>likes</code>" can be either a present tense verb 
+(<code>VBZ</code>) or a plural noun (<code>NNS</code>), while "<code>coffee</code>" 
+always takes a singular form (<code>NN</code>) because it is a mass noun.
+<p>
+Now, there are several other words that are tagged as <code>VBZ+NNS</code>.
+Such words include: <code>adds</code>, <code>backs</code>, 
+<code>calls</code>, <code>changes</code>, ... etc.
+"<code>likes</code>" is the 22nd word in this group.  This is replaced
+with another word in the group such as "<code><em>forms</em></code>".
+Note that changing "<code>likes</code>" to
+"<code><em>forms</em></code>" doesn't change the sentence's
+grammatical structure, because both can take a present tense verb or a
+plural noun (<code>VBZ+NNS</code>).
+<p>
+Similarly, "<code>coffee</code>" is replaced with another word in
+the <code>NN</code> group, such as "<code><em>heart</em></code>".
+This way, the entire message is translated to
+"<code><em>He forms heart.</em></code>", which is grammatically
+equivalent to the original sentence but has a rather different meaning.
+Using a certain cipher algorithm and a given key, 
+the translation can be different which is hard to predict 
+for outsiders.
+<p>
+<img src="fig1.png">
+
+<h3>Grouping with Word Frequency</h3>
+
+<p>
+Actual words are grouped not only by its part of speech, but also its
+frequency. This serves two purposes.  First, this prevents a popular word
+from suddenly getting replaced with a rather uncommon word, because
+it would look unnatural. The transition of a word is 
+limited to the similarly popular words. Secondly,
+this prevents the frequency analysis because the rarity of each word
+doesn't give a hint to attackers.
+<p>
+In the actual implementation, a group of words is named
+using both its parts of speech and the frequency,
+such as <code>VBZ+NNS:8</code>, which means
+a word that can take either <code>VBZ</code> or <code>NNS</code> 
+and has a frequency level 8. A frequency level is defined as 
+the logarithm of the word occurrences.
+
+<h2>Implementation</h2>
+<p>
+The basic idea is to create a pseudo-random sequence from a shared
+secret.  In the following example, the cipher takes the shared secret
+and the group ID of each word and generate a number. The number is
+either added or subtracted from the word number depending on the type
+of processing (encryption or decryption).
+<p>
+<img src="fig2.png">
+
+<h3>CBC Mode</h3>
+<p>
+Furthermore, we can use HMAC instead of a constant seed.
+The HMAC is updated for each word using its output.
+This allows the input of the cipher to be different for every word,
+making the output more unpredictable (similar to 
+cipher block chaining in standard cryptography).
+<p>
+<img src="fig3.png">
+
+<p>
+In this implementation, we use HMAC-MD5 and RC4 for 
+the HMAC and the cipher function, respectively.
+
+<h3>Dictionary</h3>
+<p>
+We use WordNet version 3.0.
+It contains about 85,000 base words. The dictionary is expanded
+by an additional program (<code>mkdict.py</code>) to include
+different tenses and numbers. The total number of expanded 
+words is 191,606 in 468 groups.
+<p>
+A separate list of stop words is used to exclude
+function words such as pronouns or conjunctions.
+
+<h2>Weaknesses</h2>
+<p>
+The algorithm is vulnerable to words which are not in a dictionary,
+such as rare words, foreign words, proper nouns, numbers and URLs.  In
+such cases a letter-to-letter encryption is used, which can be vulnerable
+to a known plaintext attack.
+<p>
+There are about 700 words that belongs to one of 239 groups that has 
+less than 10 words. These words are easier to guess the original.
+For example, the group <code>VB+VBP+RB:0</code> has
+only one word: "<code>dingdong</code>"
+
+<hr>
+<address>Yusuke Shinyama</address>
