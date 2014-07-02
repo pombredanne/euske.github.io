@@ -1,17 +1,22 @@
 <html>
-<head><title>Javascript Test</title></head>
+<head><title>VGAPlayer Javascript Test</title></head>
 <body>
 <script language="JavaScript">
+function VGAPlayerOnMenuChoose(value) {
+  //alert("VGAPlayerOnMenuChoose: "+value);
+  flashObject.VGAPlayerConnect(value);
+}
 function VGAPlayerOnLoad() {
-//alert("VGAPlayerOnLoad: "+flashObject);
-flashObject.VGAPlayerAddMenuItem("Foo", "Bar");
+  //alert("VGAPlayerOnLoad: "+flashObject);
+  flashObject.VGAPlayerAddMenuItem("Live", "rtmp://tv.webport.tv/promo2/m6");
+  flashObject.VGAPlayerAddMenuItem("Static", "http://tabesugi.net/video/flv/yusuke100.flv");
 }
 </script>
-  <embed src="vgaplayer.swf"
+  <embed src="../bin/vgaplayer.swf"
 	 id="flashObject" width="100%" height="99%" 
 	 allowScriptAccess="sameDomain"
 	 allowFullScreen="true"
 	 type="application/x-shockwave-flash"
-	 FlashVars="url=rtmp://tv.webport.tv/promo2/m6&amp;debug=1&amp;menu=1"
+	 FlashVars="debug=1&amp;menu=1"
 	 pluginspage="http://www.adobe.com/go/getflashplayer" />
 </body></html>
