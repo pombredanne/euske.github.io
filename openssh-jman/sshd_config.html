@@ -1,0 +1,511 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSHD_CONFIG (5)</title>
+</head><body>
+<h1>SSHD_CONFIG (5)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">sshd_config</div>
+<blockquote>OpenSSH SSH デーモン 設定ファイル</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">/etc/ssh/sshd_config</span></code>
+<hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+は<span class="file"><code>/etc/ssh/sshd_config</code></span>(あるいはコマンドラインから<code><span class="flag">-f</span></code> オプションで指定したファイル) から設定を読み込みます。このファイルの各行は"キーワード 引数"の形式になっており、空行あるいは <kbd>#</kbd> で始まる行はコメントとみなされます。空白を含む引数はダブルクォート<div>
+</div>
+で囲んで表現することもできます。
+<p>
+使用できるキーワードとその説明は以下の通りです(キーワードでは大文字小文字は区別されませんが、引数では区別されることに注意してください):<dl>
+<p><dt>
+<span class="config"><code>AcceptEnv (受け付ける環境変数)</code></span><dd>
+クライアントから送られた環境変数のうち、どれをそのセッションの<span class="xr">environ (7)</span>
+にコピーするかを指定します。クライアント側をどのように設定するかについては<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>SendEnv</code></span>項目を参照してください。環境変数の受け渡しはプロトコル バージョン 2 でのみサポートされています。環境変数は名前で指定します。名前にはワイルドカード文字 <kbd>*</kbd> または <kbd>?</kbd> を含むことができます。複数の環境変数を指定する場合は空白文字で区切るか、あるいは複数の<span class="config"><code>AcceptEnv</code></span>項目を指定します。警告: いくつかの環境変数は、制限つきの環境 (restricted environment) を迂回するのに使われることがあります。このため、この設定項目を利用する場合は細心の注意を払ってください。デフォルトでは、いかなる環境変数も受け渡しできないようになっています。<p><dt>
+<span class="config"><code>AddressFamily (アドレスファミリ)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が、どのアドレスファミリを使うべきかを指定します。とりうる値は"any"(すべて)、"inet"(IPv4 のみ) あるいは"inet6"(IPv6 のみ) です。デフォルトでは、"any"になっています。<p><dt>
+<span class="config"><code>AllowAgentForwarding (エージェント転送を許可する)</code></span><dd>
+<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>
+によるエージェント転送を許可するかどうかを指定します。デフォルトは"yes"です。エージェント転送を禁止しても、ユーザのシェルへのアクセスを禁止しない限りセキュリティは向上しないことに注意してください。なぜなら、彼らはつねに自分で転送プログラムを起動することができるからです。<p><dt>
+<span class="config"><code>AllowGroups (許可するグループ)</code></span><dd>
+このキーワードにはいくつかのグループ名パターンをスペースで区切って指定します。これが指定されると、ユーザの基本グループがそのパターンのどれかにマッチするグループであるようなユーザだけがログインを許可されます。有効なのはグループの「名前」だけで、数字で表されたグループ ID は認識されません。デフォルトでは、ログインはすべてのグループに許可されています。allow/deny 関連の項目は以下の順に処理されます:<span class="config"><code>DenyUsers 、</code></span><span class="config"><code>AllowUsers 、</code></span><span class="config"><code>DenyGroups 、</code></span>そして最後に<span class="config"><code>AllowGroups 。</code></span>
+<p>
+パターンに関する詳細は<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の「パターン」の項を参照してください。<p><dt>
+<span class="config"><code>AllowTcpForwarding (TCP 転送の許可)</code></span><dd>
+TCP 転送を許可するかどうか指定します。とりうる値として、TCP 転送を許可する場合は"yes"または"all"を指定し、TCP転送を禁止する場合は"no"を指定します。ローカルな (<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+にとって) 転送のみを許可する場合は、"local"を、リモートの転送のみを許可する場合は、"remote"を指定します。デフォルトは"yes"です。TCP 転送を禁止しても、ユーザにシェルのアクセスを禁止しないかぎりセキュリティの向上にはならないことに注意してください。なぜならユーザはいつでも自前の転送プログラムをインストールして使うことができるからです。<p><dt>
+<span class="config"><code>AllowStreamLocalForwarding (Unixドメインソケットの転送を許可する)</code></span><dd>
+StreamLocal (Unixドメインソケット) 転送を許可するかどうかを指定します。とりうる値は、すべての StreamLocal 転送を許可する場合"yes"または"all"、すべての StreamLocal 転送を禁止する場合"no"、ローカルな転送 (<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+の定義による) のみを許可する場合は"local"、リモートの転送のみを許可する場合は"remote"を指定します。デフォルトでは"yes"になっています。StreamLocal 転送を禁止しても、ユーザにシェルのアクセスを禁止しないかぎりセキュリティの向上にはならないことに注意してください。なぜならユーザはいつでも自前の転送プログラムをインストールして使うことができるからです。<p><dt>
+<span class="config"><code>AllowUsers (許可するユーザ)</code></span><dd>
+このキーワードにはいくつかのユーザ名パターンをスペースで区切って指定します。これが指定されると、そのパターンのどれかにマッチするユーザだけがログインを許可されます。有効なのはユーザの「名前」だけで、数字で表されたユーザ ID は認識されません。デフォルトでは、ログインはすべてのユーザに許可されています。もしこのパターンが USER@HOST という形をとっている時は、ユーザ名 USER と ホスト名 HOST を別々にチェックでき、特定のホストからの特定のユーザのログインを制限することができます。allow/deny 関連の項目は以下の順に処理されます:<span class="config"><code>DenyUsers 、</code></span><span class="config"><code>AllowUsers 、</code></span><span class="config"><code>DenyGroups 、</code></span>そして最後に<span class="config"><code>AllowGroups 。</code></span>
+<p>
+パターンに関する詳細は<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の「パターン」の項を参照してください。<p><dt>
+<span class="config"><code>AuthenticationMethods (認証方式)</code></span><dd>
+ユーザがアクセスの許可を得るために完了しなければならない認証方式を指定します。このオプションはひとつ以上の認証方式名をカンマで区切ったものの一覧として与えられます。認証を成功させるためには、ユーザはこのリスト中に含まれているいずれかの項目に対して、指定されているすべての方式を完了する必要があります。
+<p>
+たとえば、"publickey,password publickey,keyboard-interactive"という指定は、ユーザが公開鍵認証 (publickey) のあとにパスワード認証 (password) あるいはキーボード対話的認証 (keyboard-interactive) を完了させる必要があることを示しています。各段階で指定されている認証方式で成功しなければ次へは進めません。したがって上の例では、公開鍵認証を終えるまではパスワードあるいはキーボード対話的認証を試みることはできません。
+<p>
+キーボード対話的認証の場合は、コロンのあとにデバイス識別子を指定することで、認証をおこなうデバイスを制限することもできます。これらは、サーバの設定にもよりますが"bsdauth ,""pam ,"または"skey"のいずれかが使えます。たとえば"keyboard-interactive:bsdauth"は、キーボード対話的認証を"bsdauth"デバイスからのみに制限します。
+<p>
+このオプションは SSH プロトコル バージョン 2 でのみ有効です。同時に SSH 1 も許可されている場合に使用すると致命的なエラーが発生します。また、ここで使う各認証方式は設定ファイル中でそれぞれ許可されている必要があります。デフォルトでは、複数の認証方式は使用しません。単一の認証方式で成功すれば、認証は成功したとみなされます。<p><dt>
+<span class="config"><code>AuthorizedKeysCommand (認証鍵コマンド)</code></span><dd>
+ユーザの特定の公開鍵を検索するのに使うコマンドを指定します。このコマンドは root が所有しており、他のグループやユーザによって書き込み可能であってはいけません。このコマンドは認証されるユーザ名を単一の引数として受けとり、authorized_keys 形式の鍵を各行ごとに標準出力に表示する必要があります(詳しくはの「AUTHORIZED_KEYS ファイルの形式」セクションを参照してください)。ユーザが AuthorizedKeysCommand から供給された鍵で認証できなかった場合、そのユーザは通常の<span class="config"><code>AuthorizedKeysFile</code></span>による指定を使って認証が行われます。デフォルトでは、 AuthorizedKeysCommand は使われません。<p><dt>
+<span class="config"><code>AuthorizedKeysCommandUser (認証鍵コマンドのユーザ)</code></span><dd>
+AuthorizedKeysCommand コマンドを実行するユーザ名を指定します。ここでは認証鍵コマンドを走らせる専用のユーザを作成して使うことが推奨されます。<p><dt>
+<span class="config"><code>AuthorizedKeysFile (authorized_keys ファイル)</code></span><dd>
+ユーザ認証の際に使われる公開鍵を格納しているファイル名を指定します。ファイル形式については、<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+の「AUTHORIZED_KEYS ファイルの形式」セクションで説明しています。<span class="config"><code>AuthorizedKeysFile</code></span>のファイル名中に %T が含まれている場合、その部分は接続の間別のものに置換されます。%% は「%」1文字に置換されます。%h は認証しようとしているユーザのホームディレクトリに置換され、%u はそのユーザのユーザ名に置換されます。この後、その絶対パスあるいはユーザのホームディレクトリからの相対パスが<span class="config"><code>AuthorizedKeysFile</code></span>に渡されます。複数のファイルは空白で区切ることにより指定できます。デフォルトの値は".ssh/authorized_keys .ssh/authorized_keys2"となっています。<p><dt>
+<span class="config"><code>AuthorizedPrincipalsFile (許可されるprincipalファイル)</code></span><dd>
+証明書による認証で許可されるprincipal名の一覧を記したファイルを指定します。<span class="config"><code>TrustedUserCAKeys</code></span>で指定されている鍵によって署名された証明書を使う場合、このファイルには名前の一覧が入ります。これらの名前は証明書の中で認証を許可されていなければなりません。名前は各行にひとつずつ書き、そのあとに鍵のオプション(<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+の「AUTHORIZED_KEYS ファイルの形式」で説明されているもの) を書きます。空行、あるいは <kbd>#</kbd> で始まる行は無視されます。
+<p>
+<span class="config"><code>AuthorizedPrincipalsFile</code></span>のファイル名中に %T が含まれている場合、その部分は接続の間別のものに置換されます。%% は「%」1文字に置換されます。%h は認証しようとしているユーザのホームディレクトリに置換され、%u はそのユーザのユーザ名に置換されます。この後、<span class="config"><code>AuthorizedPrincipalsFile</code></span>の値は、絶対パスあるいはユーザのホームディレクトリからの相対パスとして解釈されます。
+<p>
+デフォルトでは、この値は"none"になっています。nこの場合、認証が受け入れられるには、そのユーザ名が証明書の principal 一覧に記されている必要があります。注意:<span class="config"><code>AuthorizedPrincipalsFile</code></span>が使われるのは、<span class="config"><code>TrustedUserCAKeys</code></span>に記されている CA を使って認証を進めるときだけです。<span class="file"><code>~/.ssh/authorized_keys</code></span>で信用されている CA は使われません。しかし、鍵のオプションである<span class="config"><code>principals=</code></span>を使えば、同様の効果を得ることはできます (詳しくは<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+を参照してください)。<p><dt>
+<span class="config"><code>Banner (バナー)</code></span><dd>
+ここで指定されたファイルの内容は、認証が許可される前にリモートユーザに提示されます。引数に"none"を指定した場合、バナーは表示されません。この設定項目は プロトコル バージョン 2 でのみサポートされています。デフォルトでは、バナーは表示されません。<p><dt>
+<span class="config"><code>ChallengeResponseAuthentication (チャレンジ・レスポンス認証)</code></span><dd>
+チャレンジ・レスポンス認証を許可するかどうか指定します。<span class="xr">login.conf (5)</span>
+に記されているすべての認証形式が使えます。デフォルトは"yes"です。<p><dt>
+<span class="config"><code>ChrootDirectory (chrootディレクトリ)</code></span><dd>
+認証の後に、<span class="xr">chroot (2)</span>
+をおこなうディレクトリのパス名を指定します。ここに到達するまでの上位のディレクトリはすべてroot が所有していなければならず、他のどのユーザやグループも書き込みできるようになっていてはいけません。chroot したあとに、<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+はワーキングディレクトリをそのユーザのホームディレクトリに変更します。
+<p>
+このパス名には、以下のトークンを含むことができます。これらは接続してきたユーザが認証を完了したあと、ランタイムで内容が展開されます: %% は '%' 1文字になり、%h は認証したユーザのホームディレクトリに展開されます。また、%u は認証したユーザの名前に展開されます。
+<p>
+<span class="config"><code>ChrootDirectory</code></span>以下の場所には、そのユーザのセッションをサポートするための必要なファイルおよびディレクトリが入っている必要があります。対話的セッションの場合、これは少なくともひとつのシェル、通常は<span class="xr">sh (1)</span>
+および、以下の基本的な<span class="file"><code>/dev</code></span>ノード、<span class="xr">null (4)</span>,
+<span class="xr">zero (4)</span>,
+<span class="xr">stdin (4)</span>,
+<span class="xr">stdout (4)</span>,
+<span class="xr">stderr (4)</span>,
+<span class="xr">arandom (4)</span>
+および<span class="xr">tty (4)</span>
+デバイスが含まれます。"sftp"を使ったファイル転送をおこなうセッションでは、内蔵の sftp サーバを使うとサポート環境のための設定は必要ありませんが、オペレーティングシステムによってはchroot されたディレクトリ内に、ログ出力のための<span class="file"><code>/dev/log</code></span>を必要とする場合があります (詳しくは<a href="sftp-server.html"><span class="xr">sftp-server (8)</span></a>
+を参照してください)。
+<p>
+デフォルトでは、<span class="xr">chroot (2)</span>
+をおこなわない設定になっています。<p><dt>
+<span class="config"><code>Ciphers (SSH2の暗号方式)</code></span><dd>
+プロトコル バージョン 2 で許可される暗号方式を指定します。複数の暗号方式を指定する場合は、カンマで区切ってください。現在サポートされている暗号方式は以下のとおりです:
+<p>
+<blockquote>
+<p><dt>
+<dd>
+3des-cbc<p><dt>
+<dd>
+aes128-cbc<p><dt>
+<dd>
+aes192-cbc<p><dt>
+<dd>
+aes256-cbc<p><dt>
+<dd>
+aes128-ctr<p><dt>
+<dd>
+aes192-ctr<p><dt>
+<dd>
+aes256-ctr<p><dt>
+<dd>
+aes128-gcm@openssh.com<p><dt>
+<dd>
+aes256-gcm@openssh.com<p><dt>
+<dd>
+arcfour<p><dt>
+<dd>
+arcfour128<p><dt>
+<dd>
+arcfour256<p><dt>
+<dd>
+blowfish-cbc<p><dt>
+<dd>
+cast128-cbc<p><dt>
+<dd>
+chacha20-poly1305@openssh.com</blockquote>
+
+<p>
+デフォルトは、<blockquote><pre>aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com</pre></blockquote>
+です。
+<p>
+使用可能な暗号方式の一覧は、<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に対して<code><span class="flag">-Q</span></code> オプションを使用しても見ることができます。<p><dt>
+<span class="config"><code>ClientAliveCountMax (クライアントの生存チェック最大カウント数)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が無反応のクライアントに対してclient alive message (下記参照) を送ってみる最大数を指定します。client alive message に対する応答が連続してこの回数だけなかった場合、sshd は接続を切り、セッションを終了します。client alive message は、<span class="config"><code>TCPKeepAlive</code></span>(下記) とはまったく違うことに注意してください。client alive message は暗号化された経路を介して送られるので、偽造されることはありません。<span class="config"><code>TCPKeepAlive</code></span>によって設定される TCP の keepalive オプションは偽造される可能性があります。client alive のメカニズムはクライアントあるいはサーバが、いつ接続が切れたのかを知りたいときに役立ちます。
+<p>
+デフォルトの値は 3 です。もし<span class="config"><code>ClientAliveInterval</code></span>(下記) が 15 に設定され、<span class="config"><code>ClientAliveCountMax</code></span>がデフォルトのままである場合、これに反応できない SSH クライアントはおよそ 45 秒後に接続が切られます。この設定項目は プロトコル バージョン 2 でのみサポートされています。<p><dt>
+<span class="config"><code>ClientAliveInterval (クライアントの生存チェック間隔)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+は一定時間ごとに、暗号化された通信路を経由してクライアントに応答を要求するメッセージ(client alive message) を送ります。その際、何もデータが送られてこなかったらタイムアウトする時間を秒数で指定します。デフォルトの値は 0 で、これはメッセージを送らないことを意味します。この設定項目は プロトコル バージョン 2 でのみサポートされています。<p><dt>
+<span class="config"><code>Compression (圧縮)</code></span><dd>
+圧縮を許可するかどうか、あるいは遅延圧縮 (そのユーザが認証されてから初めて圧縮を許可する) をおこなうかどうかを指定します。この引数がとりうる値は"yes ,""delayed"または"no"です。デフォルトでは"delayed (ユーザが認証されてから圧縮を許可する)"になっています。<p><dt>
+<span class="config"><code>DenyGroups (拒否するグループ)</code></span><dd>
+このキーワードにはいくつかのグループ名パターンをスペースで区切って指定します。ユーザの基本グループがこのパターンのどれかにマッチするユーザはログインを禁止されます。有効なのはグループの「名前」だけで、数字で表されたグループ ID は認識されません。デフォルトでは、ログインはすべてのグループに許可されています。allow/deny 関連の項目は以下の順に処理されます:<span class="config"><code>DenyUsers 、</code></span><span class="config"><code>AllowUsers 、</code></span><span class="config"><code>DenyGroups 、</code></span>そして最後に<span class="config"><code>AllowGroups 。</code></span>
+<p>
+パターンに関する詳細は<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の「パターン」の項を参照してください。<p><dt>
+<span class="config"><code>DenyUsers (拒否するユーザ)</code></span><dd>
+このキーワードにはいくつかのユーザ名パターンをスペースで区切って指定します。これが指定されると、このパターンのどれかにマッチするユーザはログインを禁止されます。有効なのはグループの「名前」だけで、数字で表されたグループ ID は認識されません。デフォルトでは、ログインはすべてのユーザに許可されています。もしこのパターンが USER@HOST という形をとっている時は、ユーザ名 USER と ホスト名 HOST を別々にチェックでき、特定のホストからの特定のユーザのログインを制限することができます。allow/deny 関連の項目は以下の順に処理されます:<span class="config"><code>DenyUsers 、</code></span><span class="config"><code>AllowUsers 、</code></span><span class="config"><code>DenyGroups 、</code></span>そして最後に<span class="config"><code>AllowGroups 。</code></span>
+<p>
+パターンに関する詳細は<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の「パターン」の項を参照してください。<p><dt>
+<span class="config"><code>ForceCommand (強制コマンド実行)</code></span><dd>
+クライアントが指定したコマンドを無視し、<span class="config"><code>ForceCommand</code></span>によって指定されたコマンドと、存在する場合は<span class="file"><code>~/.ssh/rc</code></span>を強制的に実行します。このコマンドはそのユーザのログインシェルの -c オプションを使って実行されます。この項目はシェル、コマンド実行、あるいはサブシステムの実行に適用されます。この設定項目は<span class="config"><code>Match</code></span>ブロックと組み合わせるともっとも有用です。クライアントが本来指定したコマンドラインは<span class="env">SSH_ORIGINAL_COMMAND</span> 環境変数に格納されます。コマンドとして"internal-sftp"を指定すると、強制的に内蔵の sftp サーバを使います。これは<span class="config"><code>ChrootDirectory</code></span>が指定されているときに、外部のファイルなしで動作できます。<p><dt>
+<span class="config"><code>GatewayPorts (ポート中継の許可)</code></span><dd>
+リモートホストがクライアント側に転送されたポートに接続することを許可するかどうか指定します。デフォルトでは、<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+はリモート転送ポートをループバックアドレスに bind します。これは他のリモートホストが、転送されたポートに接続してしまうのを防いでいます。<span class="config"><code>GatewayPorts</code></span>は sshd にリモート転送ポートをループバックインターフェイス以外のアドレスに bind させるときに使います。これによって他のホストが転送されたポートに接続できるようになります。引数の値として、転送されたポートをローカルからのみ利用可能にしたい場合は"no"、いかなるアドレスからも利用可能にしたい場合は"yes"、あるいはクライアント側に bind すべきアドレスを指定させたい場合は"clientspecified"を指定します。デフォルトは"no"になっています。<p><dt>
+<span class="config"><code>GSSAPIAuthentication (GSSAPI 認証)</code></span><dd>
+GSSAPI ベースのユーザ認証を使用するかどうかを指定します。これはデフォルトでは"no"になっています。注意: この設定項目はプロトコル バージョン 2 のみに適用されます。<p><dt>
+<span class="config"><code>GSSAPICleanupCredentials (GSSAPI 証明書の消去)</code></span><dd>
+ユーザがログアウトするときに、その証明書 (credential) キャッシュを自動的に消去するかどうかを指定します。デフォルトでは"yes"です。注意: この設定項目はプロトコル バージョン 2 のみに適用されます。<p><dt>
+<span class="config"><code>HostbasedAuthentication (ホストベースド認証の許可)</code></span><dd>
+公開鍵ホスト認証が成功したときに、rhosts あるいは /etc/hosts.equiv 認証を許可するかどうか指定します (ホストベースド認証)。この設定項目は<span class="config"><code>RhostsRSAAuthentication (RhostsRSA 認証の許可)</code></span>に似ており、プロトコル バージョン 2 のみに作用します。デフォルトの値は"no"になっています。<p><dt>
+<span class="config"><code>HostbasedUsesNameFromPacketOnly (ホストベースド認証におけるホスト名の使用方法)</code></span><dd>
+ホストベースド認証 (<span class="config"><code>HostbasedAuthentication</code></span>) を行うときに、<span class="file"><code>~/.shosts ,</code></span><span class="file"><code>~/.rhosts ,</code></span>および<span class="file"><code>/etc/hosts.equiv</code></span>ファイルにクライアントのホスト名が書かれていた場合、サーバがホスト名の逆引きを行うかどうかを指定します。この項目に"yes"を指定すると、<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+はその TCP 接続から名前を引くことはせずに、クライアントが提示してきた名前を使用します。デフォルトでは"no"になっています。<p><dt>
+<span class="config"><code>HostCertificate (ホスト証明書)</code></span><dd>
+公開されているホスト証明書を格納したファイルを指定します。証明書の公開鍵は、あらかじめ<span class="config"><code>HostKey</code></span>で指定されたホスト秘密鍵と対応するものである必要があります。デフォルトでは<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+は証明書を読み込みません。<p><dt>
+<span class="config"><code>HostKey (ホスト鍵)</code></span><dd>
+SSH で使われる、ホスト秘密鍵が格納されているファイルを指定します。デフォルトでは、プロトコル バージョン 1 用の鍵が<span class="file"><code>/etc/ssh/ssh_host_key</code></span>であり、プロトコル バージョン 2 用の鍵が<span class="file"><code>/etc/ssh/ssh_host_dsa_key ,</code></span><span class="file"><code>/etc/ssh/ssh_host_ecdsa_key ,</code></span><span class="file"><code>/etc/ssh/ssh_host_ed25519_key</code></span>および<span class="file"><code>/etc/ssh/ssh_host_rsa_key</code></span>です。このファイルがグループあるいは他人からアクセス可能になっていると、<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+はその使用を拒絶するので注意してください。複数のホスト鍵を使うことも可能です。"rsa1"鍵はバージョン 1 に使われ、"dsa ,""ecdsa ,""ed25519"または"rsa"はバージョン 2 の SSH プロトコルに使われます。ここではホスト公開鍵を指定することも可能です。その場合、秘密鍵のかかわる操作は<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>
+によって代行されます。<p><dt>
+<span class="config"><code>HostKeyAgent (ホスト鍵エージェント)</code></span><dd>
+ホスト秘密鍵にアクセスできる認証エージェントと通信するさいのUNIXドメインソケットを指定します。"SSH_AUTH_SOCK"が指定されている場合、ソケットの位置は<span class="env">SSH_AUTH_SOCK</span> 環境変数で指定されます。<p><dt>
+<span class="config"><code>IgnoreRhosts (rhosts の無視)</code></span><dd>
+<span class="config"><code>RhostsRSAAuthentication</code></span>または<span class="config"><code>HostbasedAuthentication</code></span>の各認証で、<span class="file"><code>.rhosts</code></span>および<span class="file"><code>.shosts</code></span>ファイルを使わないようにします。
+<p>
+この状態でも、<span class="file"><code>/etc/hosts.equiv</code></span>および<span class="file"><code>/etc/shosts.equiv</code></span>は依然として有効です。デフォルトでは"yes"になっています。<p><dt>
+<span class="config"><code>IgnoreUserKnownHosts (ユーザ用 known_hosts の無視)</code></span><dd>
+<span class="config"><code>RhostsRSAAuthentication</code></span>または<span class="config"><code>HostbasedAuthentication</code></span>の各認証で、ユーザの<span class="file"><code>~/.ssh/known_hosts</code></span>ファイルを使わないようにします。デフォルトは"no"です。<p><dt>
+<span class="config"><code>IPQoS (QoS指定)</code></span><dd>
+接続における IPv4 type-of-service または DSCP クラスを指定します。可能な値は"af11 ,""af12 ,""af13 ,""af21 ,""af22 ,""af23 ,""af31 ,""af32 ,""af33 ,""af41 ,""af42 ,""af43 ,""cs0 ,""cs1 ,""cs2 ,""cs3 ,""cs4 ,""cs5 ,""cs6 ,""cs7 ,""ef ,""lowdelay ,""throughput ,""reliability ,"または数値のいずれかです。このオプションには 1つあるいは2つの引数を空白で区切って与えることができます。引数が 1つ指定された場合、これはパケットクラスを無条件に指定します。引数が 2つ指定された場合、最初の引数は対話的セッションで使われ、2番目の引数は非対話的セッションで使われます。デフォルト値は、対話的セッションのときは"lowdelay"であり、非対話的セッションのときは"throughput"となっています。<p><dt>
+<span class="config"><code>KbdInteractiveAuthentication (キーボード対話的認証)</code></span><dd>
+キーボード対話的認証を許可するかどうかを指定します。この項目に対する値は"yes"または"no"です。デフォルトでは<span class="config"><code>ChallengeResponseAuthentication</code></span>と同じ値に従います(これはデフォルトで"yes"です)。<p><dt>
+<span class="config"><code>KerberosAuthentication (Kerberos 認証)</code></span><dd>
+ユーザが<span class="config"><code>PasswordAuthentication</code></span>で入力したパスワードを Kerberos KDC 経由で批准するかどうか指定します。このオプションを使うためには、サーバに KDC のアイデンティティを批准するための Kerberos servtab が必要です。デフォルトでは"no"になっています。<p><dt>
+<span class="config"><code>KerberosGetAFSToken (Kerberos AFS トークンを取得する)</code></span><dd>
+AFS が有効でユーザが Kerberos 5 TGT をもっている場合、そのユーザのホームディレクトリにアクセスする前に AFS トークンを取得しようとこころみます。デフォルトでは"no"になっています。<p><dt>
+<span class="config"><code>KerberosOrLocalPasswd (Kerberosあるいはローカルパスワード)</code></span><dd>
+Kerberos 経由のパスワード認証が失敗すると、そのパスワードは<span class="file"><code>/etc/passwd</code></span>などの別のローカルな機構によって確認されます。デフォルトは"yes"です。<p><dt>
+<span class="config"><code>KerberosTicketCleanup (Kerberos チケット自動除去)</code></span><dd>
+ユーザのチケット用キャッシュをログアウト時に自動的に消去するかどうか指定します。デフォルトは"yes"です。<p><dt>
+<span class="config"><code>KexAlgorithms (鍵交換アルゴリズム)</code></span><dd>
+利用可能な KEX (Key Exchange、鍵交換) アルゴリズムを指定します。複数のアルゴリズムはカンマで区切ってください。サポートされているアルゴリズムは:
+<p>
+<blockquote>
+<p><dt>
+<dd>
+curve25519-sha256@libssh.org<p><dt>
+<dd>
+diffie-hellman-group1-sha1<p><dt>
+<dd>
+diffie-hellman-group14-sha1<p><dt>
+<dd>
+diffie-hellman-group-exchange-sha1<p><dt>
+<dd>
+diffie-hellman-group-exchange-sha256<p><dt>
+<dd>
+ecdh-sha2-nistp256<p><dt>
+<dd>
+ecdh-sha2-nistp384<p><dt>
+<dd>
+ecdh-sha2-nistp521</blockquote>
+
+<p>
+デフォルトは:<blockquote><pre>curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1</pre></blockquote>
+です。<p><dt>
+<span class="config"><code>KeyRegenerationInterval (鍵の再生成間隔)</code></span><dd>
+プロトコル バージョン 1 では、サーバ鍵は (一度でも使われると) ここで指定された間隔ごとに自動的に再生成されます。このように鍵を再生成する目的は、あとでそのマシンに侵入して盗聴したセッションを解読されたり、鍵を盗まれたりするのを防ぐためです。この鍵はどこにも格納されません。値としてゼロを指定すると、鍵はまったく再生成されなくなります。デフォルトでは 3600 (秒) になっています。<p><dt>
+<span class="config"><code>ListenAddress (接続受付アドレス)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が接続を受けつける (listen する) ローカルアドレスを指定します。ここでは以下の形式が使えます:
+<p>
+<blockquote>
+<p><dt>
+<dd>
+<span class="config"><code>ListenAddress</code></span><span class="arg">host</span> |<span class="arg">IPv4_addr</span> |<span class="arg">IPv6_addr</span> <p><dt>
+<dd>
+<span class="config"><code>ListenAddress</code></span><span class="arg">host</span> |<span class="arg">IPv4_addr</span> :<span class="arg">port</span> <p><dt>
+<dd>
+<span class="config"><code>ListenAddress</code></span> [<span class="arg">host</span> |<span class="arg">IPv6_addr</span> ] :<span class="arg">port</span> </blockquote>
+
+<p>
+<span class="arg">port</span> が指定されていないときはsshd はそのアドレスで、それまでの<span class="config"><code>Port</code></span>設定項目で指定されたすべてのポートで接続を受けつけます。デフォルトではすべてのローカルアドレスに対して接続を受けつけるようになっています。<span class="config"><code>ListenAddress</code></span>項目は複数指定してもかまいません。また<span class="config"><code>Port</code></span>設定項目は、ポートつきでないアドレス指定に対してはこの設定項目よりも前に指定しておく必要があります。<p><dt>
+<span class="config"><code>LoginGraceTime (ログイン猶予時間)</code></span><dd>
+ユーザがここで指定された時間内にログインできないと、サーバは接続を切ります。この値をゼロにすると、時間制限はなくなります。デフォルトの値は 120 (秒) です。<p><dt>
+<span class="config"><code>LogLevel (ログレベル)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が出力するログメッセージの冗長性レベルを指定します。とりうる値は次のとおりです: QUIET, FATAL, ERROR, INFO, VERBOSE, DEBUG,DEBUG1, DEBUG2 および DEBUG3。デフォルトでは INFO です。DEBUG と DEBUG1 は等価です。DEBUG2、DEBUG3 はそれぞれさらに冗長なログになります。DEBUG レベル以上のログはユーザのプライバシーを侵害するので、勧められるものではありません。<p><dt>
+<span class="config"><code>MACs (メッセージ認証コード)</code></span><dd>
+使用する MAC (メッセージ認証コード) 方式の優先順位を指定します。MAC 方式はプロトコル バージョン 2 で使われる、データの改ざんを防ぐ機構 (data integrity protection) です。複数の方式をカンマで区切って指定します。名前に"-etm"を含む方式では、MAC 値を暗号化のあとに計算します (encrypt-then-mac)。こちらのほうが安全であると考えられており、推奨されています。サポートされている MACは:
+<p>
+<blockquote>
+<p><dt>
+<dd>
+hmac-md5<p><dt>
+<dd>
+hmac-md5-96<p><dt>
+<dd>
+hmac-ripemd160<p><dt>
+<dd>
+hmac-sha1<p><dt>
+<dd>
+hmac-sha1-96<p><dt>
+<dd>
+hmac-sha2-256<p><dt>
+<dd>
+hmac-sha2-512<p><dt>
+<dd>
+umac-64@openssh.com<p><dt>
+<dd>
+umac-128@openssh.com<p><dt>
+<dd>
+hmac-md5-etm@openssh.com<p><dt>
+<dd>
+hmac-md5-96-etm@openssh.com<p><dt>
+<dd>
+hmac-ripemd160-etm@openssh.com<p><dt>
+<dd>
+hmac-sha1-etm@openssh.com<p><dt>
+<dd>
+hmac-sha1-96-etm@openssh.com<p><dt>
+<dd>
+hmac-sha2-256-etm@openssh.com<p><dt>
+<dd>
+hmac-sha2-512-etm@openssh.com<p><dt>
+<dd>
+umac-64-etm@openssh.com<p><dt>
+<dd>
+umac-128-etm@openssh.com</blockquote>
+
+<p>
+デフォルトは<blockquote><pre>umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512</pre></blockquote>
+の順になっています。<p><dt>
+<span class="config"><code>Match (条件分岐)</code></span><dd>
+この項目によって、条件的な設定を指定できます。<span class="config"><code>Match</code></span>行にあるすべての条件が満たされた場合、これ以降の設定項目は次の<span class="config"><code>Match</code></span>指令が現れるまでグローバルな設定よりも優先されます。もしキーワードが複数の該当する<span class="config"><code>Match</code></span>ブロックで指定されていた場合、最初のキーワードだけが適用されます。
+<p>
+<span class="config"><code>Match</code></span>指令の引数は、ひとつ以上の「種類  パターン」の組か、あるいはすべてにマッチする単一の引数<span class="config"><code>All</code></span>によって与えられます。使用可能な種類は<span class="config"><code>User</code></span>(ユーザ名)、<span class="config"><code>Group</code></span>(グループ名)、<span class="config"><code>Host</code></span>(ホスト名)、<span class="config"><code>LocalAddress</code></span>(ローカルアドレス)、<span class="config"><code>LocalPort</code></span>(ローカルポート) および<span class="config"><code>Address</code></span>(アドレス) です。一致するパターンとしては単一のエントリか、あるいはカンマで区切られた複数のエントリのリストを使うことができ、<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の「パターン」セクションで説明されているワイルドカードや否定のための表記が使用できます。
+<p>
+また、<span class="config"><code>Address</code></span>指定で使うパターンには CIDR 表記 (アドレス/マスク長 の形式) を含めることもできます。"192.0.2.0/24"や"3ffe:ffff::/32"などです。ここで指定するマスク長はアドレスと一致させるようにしてください。アドレスに対して長すぎるマスク長や、適切なビットが 0 になっていないアドレスを指定するとエラーになります。たとえば、"192.0.2.0/33"や"192.0.2.0/8"は間違いです。
+<p>
+すべての設定項目に<span class="config"><code>Match</code></span>指令が適用されるわけではありません。使用できる項目は、<span class="config"><code>AcceptEnv ,</code></span><span class="config"><code>AllowAgentForwarding ,</code></span><span class="config"><code>AllowGroups ,</code></span><span class="config"><code>AllowTcpForwarding ,</code></span><span class="config"><code>AllowUsers ,</code></span><span class="config"><code>AuthenticationMethods ,</code></span><span class="config"><code>AuthorizedKeysCommand ,</code></span><span class="config"><code>AuthorizedKeysCommandUser ,</code></span><span class="config"><code>AuthorizedKeysFile ,</code></span><span class="config"><code>AuthorizedPrincipalsFile ,</code></span><span class="config"><code>Banner ,</code></span><span class="config"><code>ChrootDirectory ,</code></span><span class="config"><code>DenyGroups ,</code></span><span class="config"><code>DenyUsers ,</code></span><span class="config"><code>ForceCommand ,</code></span><span class="config"><code>GatewayPorts ,</code></span><span class="config"><code>GSSAPIAuthentication ,</code></span><span class="config"><code>HostbasedAuthentication ,</code></span><span class="config"><code>HostbasedUsesNameFromPacketOnly ,</code></span><span class="config"><code>KbdInteractiveAuthentication ,</code></span><span class="config"><code>KerberosAuthentication ,</code></span><span class="config"><code>MaxAuthTries ,</code></span><span class="config"><code>MaxSessions ,</code></span><span class="config"><code>PasswordAuthentication ,</code></span><span class="config"><code>PermitEmptyPasswords ,</code></span><span class="config"><code>PermitOpen ,</code></span><span class="config"><code>PermitRootLogin ,</code></span><span class="config"><code>PermitTTY ,</code></span><span class="config"><code>PermitTunnel ,</code></span><span class="config"><code>PermitUserRC ,</code></span><span class="config"><code>PubkeyAuthentication ,</code></span><span class="config"><code>RekeyLimit ,</code></span><span class="config"><code>RhostsRSAAuthentication ,</code></span><span class="config"><code>RSAAuthentication ,</code></span><span class="config"><code>X11DisplayOffset ,</code></span><span class="config"><code>X11Forwarding</code></span>および<span class="config"><code>X11UseLocalHost</code></span>です。<p><dt>
+<span class="config"><code>MaxAuthTries (最大認証試行回数)</code></span><dd>
+ネットワーク接続 1つあたりの認証を最大で何回まで試みることができるかを指定します。ここで指定された半数以上の認証が失敗すると、それ以降の失敗はログに記録されます。デフォルトの値は 6 です。<p><dt>
+<span class="config"><code>MaxSessions (最大セッション数)</code></span><dd>
+ネットワーク接続 1つあたりに許される最大のセッション数を指定します。デフォルトは 10 です。<p><dt>
+<span class="config"><code>MaxStartups (最大起動数)</code></span><dd>
+認証されていない段階の接続をSSH デーモンが最大でどれだけ受けつけるかを指定します。この値を超えた (認証されていない段階の) 接続は捨てられます。この状態は (すでに接続したクライアントの) 認証が成功するか、その<span class="config"><code>LoginGraceTime</code></span>(ログイン猶予時間) が切れるまで続きます。デフォルトではこの数は 10:30:100 です。
+<p>
+もうひとつの方法は、早いうちからランダムに接続を拒否するよう指定することです。これはこの設定項目にコロンで区切った 3 つの値を与えることによりおこないます。この値は"start:rate:full"(``開始時:確率:最大数'') の形をとります (例: "10:30:60" など)。<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+は認証されていない段階の接続が"start"(この例では 10) 個を超えると、これ以後の接続要求を"rate/100"(この例では 30%) の確率で拒否し始めます。この確率は"full"(この例では 60) 個の接続が来るまで線形に増えつづけ、最大数に達した時点でそれ以降すべての接続を拒否するようになります。<p><dt>
+<span class="config"><code>PasswordAuthentication (パスワード認証)</code></span><dd>
+パスワード認証を許可するかどうか指定します。デフォルトでは"yes"になっています。<p><dt>
+<span class="config"><code>PermitEmptyPasswords (空のパスワードを許可)</code></span><dd>
+パスワード認証が許可されているとき、パスワード文字列が空のアカウントに対してサーバがログインを許可するかどうか指定します。デフォルトは"no"です。<p><dt>
+<span class="config"><code>PermitOpen (許可するポート転送)</code></span><dd>
+許可する TCP ポート転送を指定します。ポート転送の指定は、以下のうちどれかの形式である必要があります:
+<p>
+<blockquote>
+<p><dt>
+<dd>
+<span class="config"><code>PermitOpen</code></span><span class="arg">ホスト名</span> :ポート<p><dt>
+<dd>
+<span class="config"><code>PermitOpen</code></span><span class="arg">IPv4アドレス</span> :ポート<p><dt>
+<dd>
+<span class="config"><code>PermitOpen</code></span><span class="arg">[</span> IPv6アドレス]:ポート</blockquote>
+
+<p>
+複数のポート転送は空白で区切って指定できます。引数として"any"を使うと、一切の制限なくすべてのポート転送要求を許可するようになります。引数として"none"を使うと、すべてのポート転送要求を禁止します。デフォルトでは、すべてのポート転送が許可されています。<p><dt>
+<span class="config"><code>PermitRootLogin (root ログイン許可)</code></span><dd>
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+を使って、root がログインできるかどうか指定します。この引数の値は"yes"、"without-password"(パスワード認証なし)、"forced-commands-only"(強制コマンドのみ)、あるいは"no"のいずれかになります。デフォルトは"yes"です。この設定項目を"without-password"にすると、root はパスワード認証ではログインできなくなります。
+<p>
+この設定項目を"forced-commands-only"にすると、root は公開鍵認証を使ってログインできますが、その鍵に<span class="arg">command</span> が指定されている場合にかぎります(これは通常の root ログインを許可していなくても、リモートバックアップをとりたいときなどに有用です)。root に対してはこれ以外の認証方法はすべて禁止になります。
+<p>
+この設定項目を"no"にすると、root のログインは許可されません。<p><dt>
+<span class="config"><code>PermitTunnel (トンネリングを許可する)</code></span><dd>
+<span class="xr">tun (4)</span>
+デバイスの転送を許可するかどうかを指定します。とりうる引数の値は"yes ,""point-to-point"(layer 3),"ethernet"(layer 2) あるいは"no"です。"yes"を指定すると、"point-to-point"および"ethernet"の両方を許可したことになります。デフォルトは"no"になっています。
+<p>
+この項目とは別に、選択された<span class="xr">tun (4)</span>
+デバイスのパーミッションは、このユーザのアクセスを許可するようになっている必要があります。<p><dt>
+<span class="config"><code>PermitTTY (TTYを許可する)</code></span><dd>
+<span class="xr">pty (4)</span>
+割り当てを許可するかどうかを指定します。デフォルトは"yes"です。<p><dt>
+<span class="config"><code>PermitUserEnvironment (ユーザの環境変数変更を許可する)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が<span class="file"><code>~/.ssh/environment</code></span>ファイルおよび<span class="file"><code>~/.ssh/authorized_keys</code></span>における<span class="config"><code>environment=</code></span>オプションを処理すべきかどうかを指定します。デフォルトでは"no"です。環境変数の変更は、ユーザに<span class="env">LD_PRELOAD</span> などの設定を使ったある種のアクセス制限を回避させてしまう可能性があります。<p><dt>
+<span class="config"><code>PermitUserRC (ユーザのrcを許可する)</code></span><dd>
+各ユーザの<span class="file"><code>~/.ssh/rc</code></span>ファイルを実行するか否かを指定します。デフォルトでは"yes"になっています。<p><dt>
+<span class="config"><code>PidFile (pid ファイル)</code></span><dd>
+SSH デーモンのプロセス ID を格納するファイルを指定します。デフォルトでは<span class="file"><code>/var/run/sshd.pid</code></span>になっています。<p><dt>
+<span class="config"><code>Port (ポート番号)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が接続を受けつける (listen する) ポート番号を指定します。デフォルトは 22 です。複数指定することも可能です。<span class="config"><code>ListenAddress</code></span>の項も参照してください。<p><dt>
+<span class="config"><code>PrintLastLog (LastLog の表示)</code></span><dd>
+ユーザが対話的にログインしたとき、そのユーザが前回ログインした日付と時刻を表示するかどうか指定します。デフォルトでは"yes"になっています。<p><dt>
+<span class="config"><code>PrintMotd (motd の表示)</code></span><dd>
+ユーザが対話的にログインしたとき、<span class="file"><code>/etc/motd</code></span>(今日のお知らせ) ファイルの内容を表示するかどうか指定します。(システムによっては、これはシェルや<span class="file"><code>/etc/profile</code></span>に相当するものが表示します)。デフォルトは"yes"です。<p><dt>
+<span class="config"><code>Protocol (プロトコル)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+がサポートするプロトコルのバージョンを指定します。とりうる値は `<kbd>1</kbd>' と `<kbd>2</kbd>' です。複数のバージョンをカンマで区切って指定することもできます。デフォルトは"2"です。ここでのプロトコルの順番は、優先度を指定するものではないことに注意してください。なぜなら複数のプロトコルがサーバで使用可能な場合、選択するのはクライアント側だからです。よって"2,1"という指定は、"1,2"と同じです。<p><dt>
+<span class="config"><code>PubkeyAuthentication (公開鍵認証)</code></span><dd>
+公開鍵認証を許可するかどうか指定します。デフォルトは"yes"です。この設定項目は プロトコル バージョン 2 にのみ適用されることに注意してください。<p><dt>
+<span class="config"><code>RekeyLimit (rekey の制限)</code></span><dd>
+セッション鍵が再生成される (rekey) までに許される最大のデータ量を指定します。また、鍵が再生成されるまでの最大の時間も指定できます。第1引数の値はバイト数で指定し、サフィックスとして `<kbd>K</kbd>' 、 `<kbd>M</kbd>' 、あるいは `<kbd>G</kbd>' を使うことができます。それぞれ、キロバイト(K)、メガバイト(M)、ギガバイト(G) を表します。デフォルトは暗号方式によりますが `<kbd>1G</kbd>' から `<kbd>4G</kbd>' までの間です。第2引数はオプションで、ここには再生成までの時間を<a href="#時間の表現">時間の表現</a>セクションにある形式で指定できます。<span class="config"><code>RekeyLimit</code></span>のデフォルト値は"default none"で、これは鍵の再生成がその暗号アルゴリズムのデフォルト値で許されるデータ量だけ送信または受信したときにおこなわれることを示し、時間による再生成はおこなわないことを意味します。この設定項目はプロトコル バージョン 2 にのみ適用されます。<p><dt>
+<span class="config"><code>RevokedKeys (廃止された鍵)</code></span><dd>
+廃止された公開鍵を指定します。このファイルに含まれている鍵では、公開鍵認証が拒否されます。注意: このファイルが読み込み可能になっていない場合、すべてのユーザの公開鍵認証が拒否されます。鍵は1行にひとつずつの公開鍵が書かれたテキストファイルか、あるいは<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+で生成される OpenSSH 鍵失効リスト (Key Revocation List, KRL)によって指定できます。KRL に関するより詳しい情報は、<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+の中の「鍵失効リスト」セクションを参照してください。<p><dt>
+<span class="config"><code>RhostsRSAAuthentication (rhosts-RSA 認証)</code></span><dd>
+RSA ホスト間認証が成功しているとき、rhosts や /etc/hosts.equivを使った認証をおこなってよいかどうか指定します。デフォルトは"no"です。この設定項目はプロトコル バージョン 1 にのみ適用されることに注意してください。<p><dt>
+<span class="config"><code>RSAAuthentication (RSA 認証)</code></span><dd>
+純粋な RSA 認証を許可するかどうかを指定します。デフォルトは"yes"になっています。この設定項目はプロトコル バージョン 1 にのみ適用されることに注意してください。<p><dt>
+<span class="config"><code>ServerKeyBits (サーバ鍵のビット数)</code></span><dd>
+プロトコル バージョン 1 で短期的に使われるサーバ鍵のビット数を指定します。最小値は 512 で、デフォルトは 1024 です。<p><dt>
+<span class="config"><code>StreamLocalBindMask (Unixドメインソケット作成時のマスク)</code></span><dd>
+ローカルまたはリモートのポート転送のさいに、Unixドメインソケットファイルを作成する時の<div>
+umask</div>
+値を指定します。この設定項目は Unixドメインソケットファイルに対してポート転送をおこなう時にのみ有効です。
+<p>
+デフォルトの値は 0177 であり、これは作成された Unixドメインソケットが所有者にのみ読み書き可能であることを示しています。注意: すべてのオペレーティングシステムが Unixドメインソケットのファイルモードに従うわけではありません。<p><dt>
+<span class="config"><code>StreamLocalBindUnlink (Unixドメインソケットを削除する)</code></span><dd>
+ローカルまたはリモートのポート転送で、新しい Unixドメインソケットファイルを作成するさいに既存のソケットファイルを削除するかどうかを指定します。もしソケットファイルがすでに存在し、<span class="config"><code>StreamLocalBindUnlink</code></span>が有効となっていない場合、<code><span class="nm">sshd</span></code>
+はその Unixドメインソケットに対してポート転送をおこなうことができません。この設定項目は Unixドメインソケットファイルに対してポート転送をおこなう時にのみ有効です。
+<p>
+とりうる引数は"yes"または"no"で、デフォルトは"no"になっています。<p><dt>
+<span class="config"><code>StrictModes (厳格なモード)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+がログインを許可する前に、ユーザのファイルおよびホームディレクトリの所有権とパーミッションをチェックすべきかどうかを指定します。これはふつう初心者が、しばしば自分のディレクトリを誰でも書き込めるようにしてしまう事故を防ぐために有効です。デフォルトでは"yes"になっています。注意: この項目は<span class="config"><code>ChrootDirectory</code></span>には適応されません。ChrootDirectory では、所有権とパーミッションはつねにチェックされます。<p><dt>
+<span class="config"><code>Subsystem (サブシステム)</code></span><dd>
+外部サブシステム (ファイル転送デーモンなど) を設定します。この設定項目への引数にはサブシステム名と、そのサブシステムに要求があったとき実行されるコマンド (および、必要な場合はその引数) を与えます。
+<p>
+<a href="sftp-server.html"><span class="xr">sftp-server (8)</span></a>
+はファイル転送サブシステム"sftp"を実装したものです。
+<p>
+この他に、"internal-sftp"という名前を指定することにより、内蔵の"sftp"サーバを使用できます。これは<span class="config"><code>ChrootDirectory</code></span>を使って、クライアントに対してファイルシステム上のルートディレクトリを変更させる状況での設定を簡単にします。
+<p>
+デフォルトではサブシステムは何も定義されていません。この設定項目はプロトコル バージョン 2 にのみ適用されることに注意してください。<p><dt>
+<span class="config"><code>SyslogFacility (syslog 分類コード)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が出力するログメッセージで使われるログの分類コード(facility) を指定します。とりうる値は次のとおりです: DAEMON, USER,AUTH, LOCAL0, LOCAL1, LOCAL2, LOCAL3, LOCAL4, LOCAL5, LOCAL6,LOCAL7。デフォルトは AUTH です。<p><dt>
+<span class="config"><code>TCPKeepAlive (TCP接続を生かしておく)</code></span><dd>
+システムが相手のマシンに TCP keepalive メッセージを送るかどうか指定します。これが送られると、接続の異常終了や相手マシンのクラッシュが正しく通知されるようになります。しかしこれを使うと、たとえ経路が一時的にダウンしていても接続が死んでいるということになってしまい、これが邪魔になる場合もあります。その一方で、もし TCP keepalive が送られないとすると、セッションはサーバ上で永久に残ってしまことがあり、"幽霊"ユーザを居座らせてサーバ資源を消費することがあります。
+<p>
+デフォルトは"yes"(TCP keepalive メッセージを送る) です。そのためクライアントはネットワークがダウンするか、リモートホストがクラッシュすると通知してきます。これは永久に残るセッションを防ぎます。
+<p>
+TCP Keepalive を禁止するには、この値を"no"にする必要があります。<p><dt>
+<span class="config"><code>TrustedUserCAKeys (信頼されるユーザCAの鍵)</code></span><dd>
+認証用のユーザ証明書に署名するときに信頼した認証局(CA)の、公開鍵を格納したファイルを指定します。鍵は1行につきひとつずつ指定します。空行や <kbd>#</kbd> で始まるコメント行を含むこともできます。認証時に証明書が提示されており、そこに署名しているCAの鍵がこのファイルに含まれている場合、この証明書の principal リストに含まれているどのユーザもこれを使うことができます。注意: principal のリストがない証明書は、<span class="config"><code>TrustedUserCAKeys</code></span>を使った認証に使うことはできません。証明書に関する詳細は、<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+の「証明書」のセクションをごらんください。<p><dt>
+<span class="config"><code>UseDNS (リモートホスト名の確認)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が IP アドレスからリモートホスト名を逆引き検索して得た名前を正引きして、同じ IP アドレスになるかどうか確認します。デフォルトでは"yes"になっています。<p><dt>
+<span class="config"><code>UseLogin (login の使用)</code></span><dd>
+対話的ログインセッションの際、<span class="xr">login (1)</span>
+プログラムを使うかどうかを指定します。デフォルトでは"no"になっています。対話的でないリモートコマンド実行のときに<span class="xr">login (1)</span>
+が使われることは決してありません。また、これが許可されていると<span class="config"><code>X11Forwarding (X11 転送)</code></span>は許可されなくなるということに注意してください。なぜなら、<span class="xr">login (1)</span>
+は<span class="xr">xauth (1)</span>
+クッキーの扱いを知らないからです。<span class="config"><code>UsePrivilegeSeparation</code></span>が指定されている場合は、認証のあとで禁止されます。<p><dt>
+<span class="config"><code>UsePAM (PAM の使用)</code></span><dd>
+Pluggable Authentication Module (PAM) インターフェイスによる認証を許可します。これが"yes"に設定されている場合、すべての認証形式に対して<span class="config"><code>ChallengeResponseAuthentication</code></span>を使用した PAM 認証と、PAM アカウントおよびセッションモジュールの処理が許可されます。
+<p>
+ふつう PAM のチャレンジ・レスポンス認証はパスワード認証と等価な役割を提供しているので、<span class="config"><code>PasswordAuthentication</code></span>あるいは<span class="config"><code>ChallengeResponseAuthentication.</code></span>のどちらかを許可する必要があります。
+<p>
+<span class="config"><code>UsePAM</code></span>を許可した場合、sshd を root 以外の一般ユーザで走らせることはできません。デフォルトは"no"です。<p><dt>
+<span class="config"><code>UsePrivilegeSeparation (root権限を分離)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が、受けつけるネットワークトラフィックを処理するためにroot 権限を分離するかどうかを指定します。これは root 権限をもたない子プロセスをつくることによっておこなわれます。認証が成功すると、そのユーザの権限をもつ別のプロセスが新たに作られます。これの目的は、まずそうな部分をroot 権限をもたないプロセスのみに限定することによって、root 権限による被害の拡大を防ぐためです。デフォルトでは"yes (root権限を分離する)"になっています。<span class="config"><code>UsePrivilegeSeparation</code></span>が"sandbox"に指定されている場合、認証前の特権をもたないプロセスはさらなる制限の対象となります。<p><dt>
+<span class="config"><code>VersionAddendum (バージョン番号追加文字列)</code></span><dd>
+接続時にサーバから送られてきた SSH プロトコルバナーに追加する文字列を指定します。デフォルトでは"none"になっています。<p><dt>
+<span class="config"><code>X11DisplayOffset (X11 ディスプレイ番号のオフセット値)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が X11 転送をするときに最初に使われるディスプレイ番号を指定します。これは sshd が X11 転送で使うディスプレイ番号が、本物の X サーバのディスプレイ番号と衝突してしまうのを防ぐためです。デフォルトの値は 10 です。<p><dt>
+<span class="config"><code>X11Forwarding (X11 転送)</code></span><dd>
+X11 転送を許可するかどうかを指定します。この引数の値は"yes"あるいは"no"で、デフォルトは"no"です。
+<p>
+X11 転送が許可されており、転送された<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+のディスプレイが任意のアドレス (下の<span class="config"><code>X11UseLocalhost</code></span>参照) からの接続を受けつけるように設定されていると、サーバやクライアントのディスプレイは余計な危険にさらされることになります。しかし、デフォルトではそうなっていません。また、認証におけるなりすまし、認証データの確認や差し替えなどがクライアント側で起こります。X11 転送を使うセキュリティ上のリスクは、SSH クライアントが転送を要求したときに、クライアント上の X11 サーバが攻撃にさらされるかもしれないということです (<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>ForwardX11</code></span>注意書きを参照)。システム管理者はクライアントがうっかり X11 を転送して、余計な危険性を増すことのないように、これをかならず"no"に設定させるような立場をとることもできます。
+<p>
+注意: X11 転送機能を禁止しても、ユーザが X11 の通信を転送できなくなるというわけではありません。なぜならユーザはいつでも自前の転送プログラムをインストールして使うことができるからです。<span class="config"><code>UseLogin</code></span>が許可されていると、X11 転送は自動的に禁止されます。<p><dt>
+<span class="config"><code>X11UseLocalhost (X11 で localhost のみを許可)</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+が転送された X11 サーバをループバックアドレス (localhost) にbind するかどうかを指定します。デフォルトでは、sshd は転送された X11 をループバックアドレスに bind し、環境変数<span class="env">DISPLAY</span> のホスト名の部分を"localhost"に設定します。こうすると、(訳注: SSHサーバ以外の) リモートホストから転送された Xサーバに接続することはできなくなります。しかし、ふるい X11 クライアントだと、この設定では動作しないことがあります。そのようなときは<span class="config"><code>X11UseLocalhost</code></span>を"no"に設定して、転送された X サーバがワイルドカードアドレスにbind されるようにできます。この設定項目の引数は"yes"あるいは"no"です。デフォルトでは、これは"yes (localhost にしか bind しない)"になっています。<p><dt>
+<span class="config"><code>XAuthLocation (xauth の位置)</code></span><dd>
+<span class="xr">xauth (1)</span>
+プログラムのフルパス名を指定します。デフォルトでは<span class="file"><code>/usr/X11R6/bin/xauth</code></span>になっています。</dl>
+<hr>
+<h2><a href="#時間の表現" name="時間の表現">時間の表現</a></h2>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+のコマンドライン引数や設定ファイル項目で時間を指定する場合、次の構文を並べた書式を使うことができます:<span class="arg">time</span>  [<span class="arg">qualifier</span> ]
+
+<p>
+ここで<span class="arg">time</span> は正の整数であり、<span class="arg">qualifier</span> は次のうちのどれかです:
+<p>
+<blockquote>
+<p><dt>
+&lt;Cm なし&gt;<dd>
+seconds (秒)<p><dt>
+<span class="config"><code>s | Cm S</code></span><dd>
+seconds (秒)<p><dt>
+<span class="config"><code>m | Cm M</code></span><dd>
+minutes (分)<p><dt>
+<span class="config"><code>h | Cm H</code></span><dd>
+hours (時間)<p><dt>
+<span class="config"><code>d | Cm D</code></span><dd>
+days (日)<p><dt>
+<span class="config"><code>w | Cm W</code></span><dd>
+weeks (週)</blockquote>
+
+<p>
+これらの形式を組み合わせることもでき、その場合は各形式の時間が合計されます。
+<p>
+時間表現の例:
+<p>
+<blockquote>
+<p><dt>
+600<dd>
+600 秒 (10 分)<p><dt>
+10m<dd>
+10 分<p><dt>
+1h30m<dd>
+1 時間 30 分 (90 分)</blockquote>
+<hr>
+<h2><a href="#関連ファイル" name="関連ファイル">関連ファイル</a></h2>
+<dl>
+<p><dt>
+<span class="file"><code>/etc/ssh/sshd_config</code></span><dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+の設定ファイルです。このファイルに書き込めるのはroot だけでなくてはいけませんが、読むのは誰でもできるようにしておいたほうがよいでしょう (必須ではありませんが)。</dl>
+<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+OpenSSH は Tatu Ylonen による、フリーなオリジナル版 ssh 1.2.12 リリースから派生したものです。Aaron Campbell、 Bob Beck、 Markus Friedl、 Niels Provos、Theo de Raadt および Dug Song が多くのバグを取り除き、新しい機能をふたたび追加して OpenSSH をつくりました。SSH プロトコル バージョン 1.5 および 2.0 のサポートはMarkus Friedl の貢献によるものです。Niels Provos および Markus Friedl が root特権分離のサポートに貢献しました。
+</body>
+</html>

@@ -1,0 +1,456 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SFTP (1)</title>
+</head><body>
+<h1>SFTP (1)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">sftp</div>
+<blockquote>安全なファイル転送プログラム</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">sftp</span></code>
+ [<code><span class="flag">-1246aCfpqrv</span></code> ]
+ [<code><span class="flag">-B</span></code> <span class="arg">バッファサイズ</span> ]
+ [<code><span class="flag">-b</span></code> <span class="arg">バッチファイル</span> ]
+ [<code><span class="flag">-c</span></code> <span class="arg">暗号</span> ]
+ [<code><span class="flag">-D</span></code> <span class="arg">sftpサーバパス</span> ]
+ [<code><span class="flag">-F</span></code> <span class="arg">ssh設定ファイル</span> ]
+ [<code><span class="flag">-i</span></code> <span class="arg">identityファイル</span> ]
+ [<code><span class="flag">-l</span></code> <span class="arg">制限</span> ]
+ [<code><span class="flag">-o</span></code> <span class="arg">ssh設定項目</span> ]
+ [<code><span class="flag">-P</span></code> <span class="arg">ポート</span> ]
+ [<code><span class="flag">-R</span></code> <span class="arg">同時リクエスト数</span> ]
+ [<code><span class="flag">-S</span></code> <span class="arg">プログラム</span> ]
+ [<code><span class="flag">-s</span></code> <span class="arg">サブシステム</span> |sftpサーバ]
+ [<span class="arg">ホスト</span> ]
+
+<p>
+<code><span class="nm">sftp</span></code>
+ [<span class="arg">ユーザ</span> @] <span class="arg">ホスト</span>  [:<span class="arg">file</span> ]
+
+<p>
+<code><span class="nm">sftp</span></code>
+ [<span class="arg">ユーザ</span> @] <span class="arg">ホスト</span>  [:<span class="arg">ディレクトリ</span>  [<span class="arg">/</span> ]
+] 
+<p>
+<code><span class="nm">sftp</span></code>
+<code><span class="flag">-b</span></code> <span class="arg">batchfile</span>  [<span class="arg">ユーザ</span> @] <span class="arg">ホスト</span> <hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">sftp</span></code>
+は<span class="xr">ftp (1)</span>
+に似た対話的なファイル転送プログラムです。すべての操作は<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+によって暗号化された通信路を経由しておこなわれます。<code><span class="nm">sftp</span></code>
+では公開鍵認証や圧縮機能など、ssh の機能の多くを利用できます。<code><span class="nm">sftp</span></code>
+は指定された<span class="arg">ホスト</span> に接続してログインしたあと、対話的なコマンドモードに入ります。
+<p>
+2 番目の書式では、対話的でない (訳注: ユーザがパスフレーズ等を入力する必要のない) 認証が使われている場合に自動的にファイルを取得します。そうでない場合は対話的な認証ののちにファイルを取得します。
+<p>
+3 番目の書式は、指定されたリモートディレクトリから<code><span class="nm">sftp</span></code>
+を開始します。
+<p>
+4 番目の書式は、<code><span class="flag">-b</span></code> オプションを使って自動化されたセッションを可能にします。この場合、接続時にパスワードを入力しなくてもいいように、対話的でない認証方式を使うように設定しておく必要があります (詳しくは<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+および<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+を参照してください)。
+<p>
+書式によっては、ホスト名とパス名の区切りにコロン (:) を使うことがあるため、IPv6 アドレスを使用する場合は曖昧さを避けるためにブラケット ([]) で囲む必要があります。
+<p>
+オプションは以下のとおりです:<dl>
+<p><dt>
+<code><span class="flag">-1</span></code> <dd>
+プロトコル バージョン 1 を使用します。<p><dt>
+<code><span class="flag">-2</span></code> <dd>
+プロトコル バージョン 2 を使用します。<p><dt>
+<code><span class="flag">-4</span></code> <dd>
+<code><span class="nm">sftp</span></code>
+が IPv4 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-6</span></code> <dd>
+<code><span class="nm">sftp</span></code>
+が IPv6 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-a</span></code> <dd>
+すでに存在する部分的あるいは完全なファイルのコピーを上書きせず、中断した転送の再開を試みます。リモートファイルの中身が転送中の部分的なコピーと異なっている場合、結果として生じるファイルは正しくない可能性があります。<p><dt>
+<code><span class="flag">-B</span></code> <span class="arg">バッファサイズ</span> <dd>
+<code><span class="nm">sftp</span></code>
+がファイル転送をおこなう際のバッファサイズを指定します。バッファを大きくすると、往復 (round trip) が少なくなりますが、そのぶんメモリは余計に消費します。デフォルトの値は 32768 バイトです。<p><dt>
+<code><span class="flag">-b</span></code> <span class="arg">バッチファイル</span> <dd>
+バッチモードに入り、<strong>標準入力</strong>のかわりに指定された<span class="arg">バッチファイル</span> からコマンド列を読み込みます。これにはユーザが介入する余地がないので、このモードは対話的でない (訳注: ユーザがパスフレーズ等を入力する必要のない) 認証と組み合わせて使うべきでしょう。<span class="arg">バッチファイル</span> を `<kbd>-</kbd>' とすると、標準入力から読み込みます。<code><span class="nm">sftp</span></code>
+は以下のどれかのコマンドが失敗すると中断します:<div class="cmdline"><kbd>get ,put,reget,reput,rename,ln,</kbd></div>
+<div class="cmdline"><kbd>rm ,mkdir,chdir,ls,</kbd></div>
+<div class="cmdline"><kbd>lchdir ,chmod,chown,</kbd></div>
+<div class="cmdline"><kbd>chgrp ,lpwd,df,symlink,</kbd></div>
+および<div class="cmdline"><kbd>lmkdir </kbd></div>
+コマンド名の前にプレフィックス `<kbd>-</kbd>' をつけることで、エラー時の強制終了を禁止することができます(例:<div class="cmdline"><kbd>-rm /tmp/blah*</kbd></div>
+)。<p><dt>
+<code><span class="flag">-C</span></code> <dd>
+圧縮機能を使用可能にします (ssh の<code><span class="flag">-C</span></code> フラグを利用します)。<p><dt>
+<code><span class="flag">-c</span></code> <span class="arg">暗号</span> <dd>
+Selects the cipher to use for encrypting the data transfers.This option is directly passed to<a href="ssh.html"><span class="xr">ssh (1)</span></a>.
+<p><dt>
+<code><span class="flag">-D</span></code> <span class="arg">sftpサーバパス</span> <dd>
+(<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+を使わず)直接ローカルな sftp サーバに接続します。このオプションはクライアントとサーバのデバッグ用です。<p><dt>
+<code><span class="flag">-F</span></code> <span class="arg">ssh設定ファイル</span> <dd>
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に別のユーザ設定ファイルを指定します。このオプションは<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に直接渡されます。<p><dt>
+<code><span class="flag">-f</span></code> <dd>
+ファイル転送が完了した後に、そのファイルを即座にディスクに書き込む(flushする)よう要求します。ファイルをアップロードする際には、注意: この機能は、サーバ側が"fsync@openssh.com" 機能拡張を実装しているときのみ有効です。<p><dt>
+<code><span class="flag">-i</span></code> <span class="arg">identityファイル</span> <dd>
+公開鍵認証のさいに identity (秘密鍵) を読むファイルを指定します。このオプションは<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に直接渡されます。<p><dt>
+<code><span class="flag">-l</span></code> <span class="arg">制限</span> <dd>
+帯域を制限します。Kbit/s で指定します。<p><dt>
+<code><span class="flag">-o</span></code> <span class="arg">ssh設定項目</span> <dd>
+設定ファイル<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+で使われている形式のオプションを指定します。これは<code><span class="nm">sftp</span></code>
+が独立したコマンドラインオプションを持っていないような項目を設定するのに便利です。たとえば、別のポートを使用するには<div class="cmdline"><kbd>sftp -oPort=24</kbd></div>
+のようにします。以下のオプションの詳細と、これらがとりうる値については<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+を参照してください。
+<p>
+<blockquote>
+<p><dt>
+AddressFamily<dd>
+<p><dt>
+BatchMode<dd>
+<p><dt>
+BindAddress<dd>
+<p><dt>
+CanonicalDomains<dd>
+<p><dt>
+CanonicalizeFallbackLocal<dd>
+<p><dt>
+CanonicalizeHostname<dd>
+<p><dt>
+CanonicalizeMaxDots<dd>
+<p><dt>
+CanonicalizePermittedCNAMEs<dd>
+<p><dt>
+ChallengeResponseAuthentication<dd>
+<p><dt>
+CheckHostIP<dd>
+<p><dt>
+Cipher<dd>
+<p><dt>
+Ciphers<dd>
+<p><dt>
+Compression<dd>
+<p><dt>
+CompressionLevel<dd>
+<p><dt>
+ConnectionAttempts<dd>
+<p><dt>
+ConnectTimeout<dd>
+<p><dt>
+ControlMaster<dd>
+<p><dt>
+ControlPath<dd>
+<p><dt>
+ControlPersist<dd>
+<p><dt>
+GlobalKnownHostsFile<dd>
+<p><dt>
+GSSAPIAuthentication<dd>
+<p><dt>
+GSSAPIDelegateCredentials<dd>
+<p><dt>
+HashKnownHosts<dd>
+<p><dt>
+Host<dd>
+<p><dt>
+HostbasedAuthentication<dd>
+<p><dt>
+HostKeyAlgorithms<dd>
+<p><dt>
+HostKeyAlias<dd>
+<p><dt>
+HostName<dd>
+<p><dt>
+IdentityFile<dd>
+<p><dt>
+IdentitiesOnly<dd>
+<p><dt>
+IPQoS<dd>
+<p><dt>
+KbdInteractiveAuthentication<dd>
+<p><dt>
+KbdInteractiveDevices<dd>
+<p><dt>
+KexAlgorithms<dd>
+<p><dt>
+LogLevel<dd>
+<p><dt>
+MACs<dd>
+<p><dt>
+NoHostAuthenticationForLocalhost<dd>
+<p><dt>
+NumberOfPasswordPrompts<dd>
+<p><dt>
+PasswordAuthentication<dd>
+<p><dt>
+PKCS11Provider<dd>
+<p><dt>
+Port<dd>
+<p><dt>
+PreferredAuthentications<dd>
+<p><dt>
+Protocol<dd>
+<p><dt>
+ProxyCommand<dd>
+<p><dt>
+PubkeyAuthentication<dd>
+<p><dt>
+RekeyLimit<dd>
+<p><dt>
+RhostsRSAAuthentication<dd>
+<p><dt>
+RSAAuthentication<dd>
+<p><dt>
+SendEnv<dd>
+<p><dt>
+ServerAliveInterval<dd>
+<p><dt>
+ServerAliveCountMax<dd>
+<p><dt>
+StrictHostKeyChecking<dd>
+<p><dt>
+TCPKeepAlive<dd>
+<p><dt>
+UsePrivilegedPort<dd>
+<p><dt>
+User<dd>
+<p><dt>
+UserKnownHostsFile<dd>
+<p><dt>
+VerifyHostKeyDNS<dd>
+</blockquote>
+<p><dt>
+<code><span class="flag">-P</span></code> <span class="arg">ポート</span> <dd>
+リモートホストに接続するポートを指定します。<p><dt>
+<code><span class="flag">-p</span></code> <dd>
+ファイル転送時に、もとのファイルの最終修正時刻、最終アクセス時刻およびパーミッションもコピーします。<p><dt>
+<code><span class="flag">-q</span></code> <dd>
+静かなモード:進行状況バーを非表示にします。また<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+が表示する警告あるいは診断用メッセージも非表示にします。<p><dt>
+<code><span class="flag">-R</span></code> <span class="arg">同時リクエスト数</span> <dd>
+未完了のリクエストを同時に最大どれくらいまでおこなうかを指定します。この値を増やすとファイル転送速度が多少上がりますが、メモリを消費します。デフォルトでは 64 の未完了リクエストをおこないます。<p><dt>
+<code><span class="flag">-r</span></code> <dd>
+アップロードあるいはダウンロード時に、ディレクトリをまるごと再帰的に転送します。注意:<code><span class="nm">sftp</span></code>
+はツリー内に現れたシンボリック・リンクは追いません。<p><dt>
+<code><span class="flag">-S</span></code> <span class="arg">プログラム</span> <dd>
+暗号化された接続を使うための<span class="arg">プログラム</span> を指定します。ここで使うプログラムは、<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+のオプションを受けつける必要があります。<p><dt>
+<code><span class="flag">-s</span></code> <span class="arg">サブシステム</span> |sftpサーバ<dd>
+SSH2 のサブシステム、またはリモートホスト上にある sftp サーバへのパスを指定します。パス指定は プロトコル バージョン 1 で<code><span class="nm">sftp</span></code>
+を使用するときや、リモートの<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+に sftp サブシステムが設定されていないときなどに便利です。<p><dt>
+<code><span class="flag">-v</span></code> <dd>
+ログに残すレベルを変更します。このオプションは ssh にも渡されます。</dl>
+<hr>
+<h2><a href="#対話的コマンド" name="対話的コマンド">対話的コマンド</a></h2>
+<code><span class="nm">sftp</span></code>
+の対話的コマンドモードでは、<span class="xr">ftp (1)</span>
+に似たコマンドが使えます。これらのコマンドの大文字・小文字は区別されません。空白を含むパス名は引用符で囲む必要があります。パス名のなかに<span class="xr">glob (3)</span>
+によって認識される特殊文字が含まれているときは、それらをバックスラッシュ<div>
+ `<kbd>\</kbd>' </div>
+でエスケープする必要があります。<dl>
+<p><dt>
+<div class="cmdline"><kbd>bye </kbd></div>
+<dd>
+<code><span class="nm">sftp</span></code>
+を終了します。<p><dt>
+<div class="cmdline"><kbd>cd <span class="arg">パス名</span> </kbd></div>
+<dd>
+リモート側のカレントディレクトリを<span class="arg">パス名</span> に変更します。<p><dt>
+<div class="cmdline"><kbd>chgrp <span class="arg">グループID</span> <span class="arg">パス名</span> </kbd></div>
+<dd>
+<span class="arg">パス名</span> で指定されたファイルのグループを<span class="arg">グループID</span> に変更します。<span class="arg">パス名</span> が<span class="xr">glob (3)</span>
+の特殊文字を含む場合は、複数のファイルを指定することができます。<span class="arg">グループID</span> は数値表現である必要があります。<p><dt>
+<div class="cmdline"><kbd>chmod <span class="arg">モード</span> <span class="arg">パス名</span> </kbd></div>
+<dd>
+<span class="arg">パス名</span> で指定されたファイルのパーミッションを<span class="arg">モード</span> に変更します。<span class="arg">パス名</span> が<span class="xr">glob (3)</span>
+の特殊文字を含む場合は、複数のファイルを指定することができます。<p><dt>
+<div class="cmdline"><kbd>chown <span class="arg">ユーザID</span> <span class="arg">パス名</span> </kbd></div>
+<dd>
+<span class="arg">パス名</span> で指定されたファイルの所有者を<span class="arg">ユーザID</span> に変更します。<span class="arg">パス名</span> が<span class="xr">glob (3)</span>
+の特殊文字を含む場合は、複数のファイルを指定することができます。<span class="arg">ユーザID</span> は数値表現である必要があります。<p><dt>
+<div class="cmdline"><kbd>df </kbd></div>
+<dd>
+ [<code><span class="flag">-hi</span></code> ]
+ [<span class="arg">パス名</span> ]
+カレントディレクトリ (あるいは<span class="arg">パス名</span> で指定されたディレクトリ) のあるファイルシステムの使用状況を表示します。<code><span class="flag">-h</span></code> フラグが指定されると、表示される情報は「可読な」サフィックスがついた形式になります。<code><span class="flag">-i</span></code> フラグが指定されると、使用量の情報に加えて iノードに関する情報も表示します。このコマンドは、"statvfs@openssh.com"拡張をサポートしているサーバでのみ使用可能になります。<p><dt>
+<div class="cmdline"><kbd>exit </kbd></div>
+<dd>
+<code><span class="nm">sftp</span></code>
+を終了します。<p><dt>
+<div class="cmdline"><kbd>get </kbd></div>
+<dd>
+ [<code><span class="flag">-afPpr</span></code> ]
+<span class="arg">リモートパス名</span>  [<span class="arg">ローカルパス名</span> ]
+<span class="arg">リモートパス名</span> のファイルを取得し、ローカルマシン上に置きます。(訳注: ディレクトリを再帰的にまるごと get することはできません。)ローカルパス名が指定されていない場合、これはリモートマシン上でのファイル名と同じになります。<span class="arg">リモートパス名</span> が<span class="xr">glob (3)</span>
+の特殊文字を含む場合は、複数のファイルを指定することができます。その場合、<span class="arg">ローカルパス名</span> を指定しているときは、それがディレクトリ名である必要があります。
+<p>
+<code><span class="flag">-a</span></code> フラグが指定された場合、すでに部分的に転送されているファイルを再開しようとします。注意: 転送の再開をする場合は、すでに存在するローカルなファイルの内容とリモートの内容が一致する必要があります。これらの内容が異なる場合、結果として生じるファイルは正しくないことがあります。
+<p>
+<code><span class="flag">-f</span></code> フラグが指定された場合、ファイル転送が完了した後に、ファイル内容をディスクに flush するため<span class="xr">fsync (2)</span>
+が呼ばれます。
+<p>
+<code><span class="flag">-P</span></code> または<code><span class="flag">-p</span></code> フラグが指定された場合、そのファイルのパーミッションおよびアクセス時間までもすべてコピーされます。
+<p>
+<code><span class="flag">-r</span></code> フラグが指定された場合、ディレクトリは再帰的にコピーされます。注意:<code><span class="nm">sftp</span></code>
+は再帰的な転送時にもシンボリック・リンクを追跡することはありません。<p><dt>
+<div class="cmdline"><kbd>help </kbd></div>
+<dd>
+ヘルプを表示します。<p><dt>
+<div class="cmdline"><kbd>lcd <span class="arg">パス名</span> </kbd></div>
+<dd>
+ローカル側のカレントディレクトリを<span class="arg">パス名</span> に変更します。<p><dt>
+<div class="cmdline"><kbd>lls  [<span class="arg">lsオプション</span>  [<span class="arg">パス名</span> ]
+]
+</kbd></div>
+<dd>
+ローカルマシン上の<span class="arg">パス名</span> のディレクトリ一覧を表示します。<span class="arg">パス名</span> の指定がなければ、カレントディレクトリの一覧を表示します。<span class="arg">lsオプション</span> ではローカルシステムの<span class="xr">ls (1)</span>
+コマンドでサポートされているフラグがすべて使えます。<span class="arg">パス名</span> が<span class="xr">glob (3)</span>
+の特殊文字を含む場合は、複数のファイルを指定することができます。<p><dt>
+<div class="cmdline"><kbd>lmkdir <span class="arg">パス名</span> </kbd></div>
+<dd>
+ローカルマシン上に<span class="arg">パス名</span> で指定されたディレクトリを作成します。<p><dt>
+<div class="cmdline"><kbd>ln </kbd></div>
+<dd>
+ [<code><span class="flag">-s</span></code> ]
+<span class="arg">古いパス名</span> <span class="arg">新しいパス名</span> <span class="arg">古いパス名</span> から<span class="arg">新しいパス名</span> へのシンボリックリンクを作成します。<code><span class="flag">-s</span></code> フラグが指定されている場合、そのリンクはシンボリックリンクになります。そうでない場合はハードリンクが作成されます。<p><dt>
+<div class="cmdline"><kbd>lpwd </kbd></div>
+<dd>
+ローカルマシン上のカレントディレクトリ(ワーキングディレクトリ)を表示します。<p><dt>
+<div class="cmdline"><kbd>ls </kbd></div>
+<dd>
+ [<code><span class="flag">-1afhlnrSt</span></code> ]
+ [<span class="arg">パス名</span> ]
+リモートマシン上の<span class="arg">パス名</span> のディレクトリ一覧を表示します。<span class="arg">パス名</span> の指定がなければ、カレントディレクトリの一覧を表示します。<span class="arg">パス名</span> が<span class="xr">glob (3)</span>
+の特殊文字を含む場合は、複数のファイルを指定することができます。
+<p>
+以下のフラグを指定することで、<div class="cmdline"><kbd>ls </kbd></div>
+のふるまいを変えることができます:<dl>
+<p><dt>
+<code><span class="flag">-1</span></code> <dd>
+出力を 1 カラムのみにします。<p><dt>
+<code><span class="flag">-a</span></code> <dd>
+ドット<div>
+ `<kbd>.</kbd>' </div>
+で始まるファイルも表示します。<p><dt>
+<code><span class="flag">-f</span></code> <dd>
+ソートを禁止します。デフォルトでは、辞書順にソートされます。<p><dt>
+<code><span class="flag">-h</span></code> <dd>
+詳細表示でファイルサイズの桁数が 4桁よりも多い場合、つぎの単位を使用します: Byte, Kilobyte,Megabyte, Gigabyte, Terabyte, Petabyte および Exabyte。これらの単位は 2のべき乗を使っています (K=1024, M=1048576 など)。<p><dt>
+<code><span class="flag">-l</span></code> <dd>
+所有者やパーミッションなど、詳細な情報も表示します。<p><dt>
+<code><span class="flag">-n</span></code> <dd>
+ユーザ ID およびグループ ID を数値で表示します。<p><dt>
+<code><span class="flag">-r</span></code> <dd>
+ソートの順序を逆にします。<p><dt>
+<code><span class="flag">-S</span></code> <dd>
+ファイルサイズでソートします。<p><dt>
+<code><span class="flag">-t</span></code> <dd>
+最終更新時刻でソートします。</dl>
+<p><dt>
+<div class="cmdline"><kbd>lumask <span class="arg">umask</span> </kbd></div>
+<dd>
+ローカルマシン上の umask を<span class="arg">umask</span> に設定します。<p><dt>
+<div class="cmdline"><kbd>mkdir <span class="arg">パス名</span> </kbd></div>
+<dd>
+リモートマシン上に<span class="arg">パス名</span> で指定されたディレクトリを作成します。<p><dt>
+<div class="cmdline"><kbd>progress </kbd></div>
+<dd>
+プログレスバーの表示/非表示を切り換えます。<p><dt>
+<div class="cmdline"><kbd>put </kbd></div>
+<dd>
+ [<code><span class="flag">-afPpr</span></code> ]
+<span class="arg">ローカルパス名</span>  [<span class="arg">リモートパス名</span> ]
+<span class="arg">ローカルパス名</span> のファイルをリモートマシン上にアップロードします。(訳注: ディレクトリを再帰的にまるごと get することはできません。)リモートパス名が指定されていない場合、これはローカルマシン上でのファイル名と同じになります。<span class="arg">ローカルパス名</span> が<span class="xr">glob (3)</span>
+の特殊文字を含む場合は、複数のファイルを指定することができます。その場合、<span class="arg">リモートパス名</span> を指定しているときは、それがディレクトリ名である必要があります。
+<p>
+<code><span class="flag">-a</span></code> が指定された場合、すでに存在する部分的あるいは完全なファイルのコピーを上書きせず、中断した転送の再開を試みます。注意: リモートファイルの中身が転送中の部分的なコピーと異なっている場合、結果として生じるファイルは正しくない可能性があります。
+<p>
+<code><span class="flag">-f</span></code> フラグが指定された場合、ファイル転送が完了した後に、サーバに対して<span class="xr">fsync (2)</span>
+を呼ぶよう要求が送られます。注意: この機能は、サーバ側が"fsync@openssh.com" 機能拡張を実装しているときのみ有効です。
+<p>
+<code><span class="flag">-P</span></code> または<code><span class="flag">-p</span></code> フラグが指定された場合、そのファイルの全パーミッションおよびアクセス時間もコピーされます。
+<p>
+<code><span class="flag">-r</span></code> フラグが指定された場合、ディレクトリは再帰的にコピーされます。注意:<code><span class="nm">sftp</span></code>
+は再帰的な転送時にもシンボリック・リンクを追跡することはありません。<p><dt>
+<div class="cmdline"><kbd>pwd </kbd></div>
+<dd>
+リモートマシン上のカレントディレクトリ(ワーキングディレクトリ)を表示します。<p><dt>
+<div class="cmdline"><kbd>quit </kbd></div>
+<dd>
+<code><span class="nm">sftp</span></code>
+を終了します。<p><dt>
+<div class="cmdline"><kbd>reget </kbd></div>
+<dd>
+ [<code><span class="flag">-Ppr</span></code> ]
+<span class="arg">リモートパス名</span>  [<span class="arg">ローカルパス名</span> ]
+<span class="arg">リモートパス名</span> にあるファイルのダウンロードを再開します。<div class="cmdline"><kbd>get </kbd></div>
+コマンドに<code><span class="flag">-a</span></code> フラグを指定したのと同じです。<p><dt>
+<div class="cmdline"><kbd>reput </kbd></div>
+<dd>
+ [<code><span class="flag">-Ppr</span></code> ]
+ [<span class="arg">ローカルパス名</span> ]
+<span class="arg">リモートパス名</span>  [<span class="arg">ローカルパス名</span> ]
+にあるファイルのアップロードを再開します。<div class="cmdline"><kbd>put </kbd></div>
+コマンドに<code><span class="flag">-a</span></code> フラグを指定したのと同じです。<p><dt>
+<div class="cmdline"><kbd>rename <span class="arg">古いパス名</span> <span class="arg">新しいパス名</span> </kbd></div>
+<dd>
+リモートマシン上の<span class="arg">古いパス名</span> で表されたファイルを<span class="arg">新しいパス名</span> に変更します。(訳注: ファイルやディレクトリを移動させることはできません。)<p><dt>
+<div class="cmdline"><kbd>rm <span class="arg">パス名</span> </kbd></div>
+<dd>
+リモートマシン上の<span class="arg">パス名</span> で指定されるファイルを削除します。<p><dt>
+<div class="cmdline"><kbd>rmdir <span class="arg">パス名</span> </kbd></div>
+<dd>
+リモートマシン上の<span class="arg">パス名</span> で指定されるディレクトリを削除します。(訳注: ファイルが含まれているディレクトリを削除することはできません。)<p><dt>
+<div class="cmdline"><kbd>symlink <span class="arg">古いパス名</span> <span class="arg">新しいパス名</span> </kbd></div>
+<dd>
+<span class="arg">新しいパス名</span> から<span class="arg">古いパス名</span> へのシンボリックリンクを作成します。<p><dt>
+<div class="cmdline"><kbd>! <span class="arg">コマンド</span> </kbd></div>
+<dd>
+ローカルマシン上のシェルで、<span class="arg">コマンド</span> を実行します。<p><dt>
+<div class="cmdline"><kbd>version </kbd></div>
+<dd>
+<code><span class="nm">sftp</span></code>
+のプロトコルバージョン番号を表示します。<p><dt>
+<div class="cmdline"><kbd>! </kbd></div>
+<dd>
+ローカルマシン上のシェルに入ります。<p><dt>
+<div class="cmdline"><kbd>? </kbd></div>
+<dd>
+help と同じです。</dl>
+<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<span class="xr">ftp (1)</span>,
+<span class="xr">ls (1)</span>,
+<a href="scp.html"><span class="xr">scp (1)</span></a>,
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<span class="xr">glob (3)</span>,
+<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>,
+<a href="sftp-server.html"><span class="xr">sftp-server (8)</span></a>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<ul><li>
+T. Ylonen S. Lehtinen  <span class="cite">"SSH File Transfer Protocol"</span> draft-ietf-secsh-filexfer-00.txt January 2001 work in progress material </ul>
+
+</body>
+</html>

@@ -1,0 +1,751 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSH (1)</title>
+</head><body>
+<h1>SSH (1)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">ssh</div>
+<blockquote>OpenSSH SSH クライアント (リモート ログイン プログラム)</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">ssh</span></code>
+ [<code><span class="flag">-1246AaCfGgKkMNnqsTtVvXxYy</span></code> ]
+ [<code><span class="flag">-b</span></code> <span class="arg">bindするアドレス</span> ]
+ [<code><span class="flag">-c</span></code> <span class="arg">暗号方式</span> ]
+ [<code><span class="flag">-D</span></code>  [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> ]
+ [<code><span class="flag">-E</span></code> <span class="arg">ログファイル</span> ]
+ [<code><span class="flag">-e</span></code> <span class="arg">エスケープ文字</span> ]
+ [<code><span class="flag">-F</span></code> <span class="arg">設定ファイル</span> ]
+ [<code><span class="flag">-I</span></code> <span class="arg">pkcs11</span> ]
+ [<code><span class="flag">-i</span></code> <span class="arg">identityファイル</span> ]
+ [<code><span class="flag">-L</span></code>  [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> :<span class="arg">ホスト</span> :<span class="arg">ホスト側ポート</span> ]
+ [<code><span class="flag">-l</span></code> <span class="arg">ログイン名</span> ]
+ [<code><span class="flag">-m</span></code> <span class="arg">MAC指定</span> ]
+ [<code><span class="flag">-O</span></code> <span class="arg">制御コマンド</span> ]
+ [<code><span class="flag">-o</span></code> <span class="arg">オプション</span> ]
+ [<code><span class="flag">-p</span></code> <span class="arg">ポート</span> ]
+ [<code><span class="flag">-Q</span></code> <span class="config"><code>cipher | cipher-auth | mac | kex | key</code></span>]
+ [<code><span class="flag">-R</span></code>  [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> :<span class="arg">ホスト</span> :<span class="arg">ホスト側ポート</span> ]
+ [<code><span class="flag">-S</span></code> <span class="arg">制御用パス名</span> ]
+ [<code><span class="flag">-W</span></code> <span class="arg">ホスト</span> :<span class="arg">ポート</span> ]
+ [<code><span class="flag">-w</span></code> <span class="arg">ローカルtun</span>  [:<span class="arg">リモートtun</span> ]
+]
+ [<span class="arg">ユーザ</span> @] <span class="arg">ホスト名</span>  [<span class="arg">コマンド</span> ]
+<hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">ssh</span></code>
+(SSH クライアント) はリモートマシンにログインしたり、リモートマシン上でコマンドを実行するためのプログラムです。これは rlogin と rsh を置き換えるためのもので、安全でないネットワーク上にある2 つの信頼されていないホスト間で、暗号化された安全な通信を提供します。X11 接続や任意の TCP ポートおよびUnixソケットなども安全な通信路を通して転送できます。
+<p>
+<code><span class="nm">ssh</span></code>
+は指定された<span class="arg">ホスト名</span> に接続し、(オプションが指定された場合はその<span class="arg">ユーザ</span> で)ログインします。ユーザはリモートマシンに対して、本人であることを証明する必要があります。プロトコルのバージョンに応じて、これにはいくつかある方法からひとつを使います (下記参照) :
+<p>
+<span class="arg">コマンド</span> が指定された場合、リモートホスト上ではログインシェルのかわりにそのコマンドが実行されます。
+<p>
+オプションは次のとおりです:<dl>
+<p><dt>
+<code><span class="flag">-1</span></code> <dd>
+<code><span class="nm">ssh</span></code>
+がプロトコル バージョン 1 のみを使うよう強制します。<p><dt>
+<code><span class="flag">-2</span></code> <dd>
+<code><span class="nm">ssh</span></code>
+がプロトコル バージョン 2 のみを使うよう強制します。<p><dt>
+<code><span class="flag">-4</span></code> <dd>
+<code><span class="nm">ssh</span></code>
+が IPv4 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-6</span></code> <dd>
+<code><span class="nm">ssh</span></code>
+が IPv6 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-A</span></code> <dd>
+認証エージェントの転送を許可します。これは設定ファイルによってホストごとに指定することも可能です。
+<p>
+認証エージェントの転送には注意が必要です。リモートホスト上で (エージェントの UNIX ドメインソケットに対する)ファイルアクセス権限を無視できてしまうユーザがいる場合は、転送された接続を介してローカル側の認証エージェントにアクセスできてしまうことになります。攻撃側は認証エージェントから鍵そのものを盗むことはできませんが、認証エージェントがもっている鍵に認証をおこなわせることはできます。<p><dt>
+<code><span class="flag">-a</span></code> <dd>
+認証エージェントの転送を禁止します。<p><dt>
+<code><span class="flag">-b</span></code> <span class="arg">bindするアドレス</span> <dd>
+接続のソース側のインターフェイスとして、<span class="arg">bindするアドレス</span> を使います。これが有用なのは、複数の IP アドレスをもつマシン上のみです。<p><dt>
+<code><span class="flag">-C</span></code> <dd>
+すべてのデータを圧縮するよう指示します (標準入力、標準出力、標準エラー出力、転送された X11 や TCP 接続およびUnix接続を含む)。圧縮に使われるアルゴリズムは<span class="xr">gzip (1)</span>
+と同じもので、プロトコル バージョン 1 の場合"レベル"が<span class="config"><code>CompressionLevel</code></span>設定項目によって変更できます。圧縮は、モデムその他の遅い接続においては必要ですが、高速なネットワークでは速度が低下するだけです。このデフォルト値はホスト間ごとに設定ファイルに書くことができます。<span class="config"><code>Compression</code></span>設定項目を参照してください。<p><dt>
+<code><span class="flag">-c</span></code> <span class="arg">暗号方式</span> <dd>
+このセッションで使われる暗号の方式を指定します。
+<p>
+プロトコル バージョン 1 の場合、指定できる方式はひとつで"3des 、""blowfish"および"des"がサポートされています。
+<p>
+プロトコル バージョン 2 では、<span class="arg">cipher_spec</span> はカンマで区切られたリストになっており、暗号方式の優先順位を指定できます。より詳しい情報については、<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>Ciphers</code></span>キーワードの項を参照してください。<p><dt>
+<code><span class="flag">-D</span></code> <dd>
+ [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> ローカルホスト側における、アプリケーションレベルの"動的な"ポート転送を指定します。これは次のように実現しています。まずローカル側で<span class="arg">ポート</span> を listen するソケットを割り当てます。<span class="arg">bindするアドレス</span> が与えられた場合はそのアドレスで listen します。このポートに向けて接続が張られると、その接続はつねに安全な通信路に転送されるようになります。そして、ここでアプリケーションプロトコルが使われ、そのリモートマシンからどこに接続するかを決めることができます。今のところ SOCKS4 および SOCKS5 プロトコルが使われており、<code><span class="nm">ssh</span></code>
+は SOCKS サーバのようにふるまいます。特権ポートを転送できるのはスーパーユーザだけです。動的ポート転送は設定ファイルでも指定できます。
+<p>
+IPv6 アドレスはブラケット [ ] で囲むことで指定できます。特権ポートを転送できるのはスーパーユーザだけです。デフォルトでは、ローカル側のポートは<span class="config"><code>GatewayPorts</code></span>の設定に従って bind されますが、<span class="arg">bindするアドレス</span> を明示的に使うことで特定のアドレスに接続を bind することもできます。<span class="arg">bindするアドレス</span> が"localhost"になっている場合、そのポートはローカルホストのみが使用可能であることを示します。いっぽう、空のアドレスや `<kbd>*</kbd>' を指定すると、そのポートはすべてのインターフェイスに対して使用可能になります。<p><dt>
+<code><span class="flag">-E</span></code> <span class="arg">ログファイル</span> <dd>
+デバッグ用ログを標準エラー出力ではなく、<span class="arg">ログファイル</span> に追加します。<p><dt>
+<code><span class="flag">-e</span></code> <span class="arg">エスケープ文字</span> <dd>
+仮想端末を使うセッションにおけるエスケープ文字を指定します(デフォルトは <kbd>~</kbd> )。エスケープ文字は行頭に来たときのみ認識されます。エスケープ文字のあとにドット <kbd>.</kbd> がきた場合その接続は閉じられ、control-Z がきた場合にはその接続はサスペンドされます。このエスケープ文字自身が続いたときには、この文字が 1 回だけ送られます。エスケープ文字を"none"に指定するとあらゆるエスケープ機能が禁止され、セッションは完全に透過になります。<p><dt>
+<code><span class="flag">-F</span></code> <span class="arg">設定ファイル</span> <dd>
+ユーザ毎の設定ファイルに別のファイルを指定します。設定ファイルがコマンドラインから与えられた場合、システム全体の設定ファイル<div>
+<span class="file"><code>/etc/ssh/ssh_config</code></span></div>
+は無視されます。デフォルトでは、ユーザ毎の設定ファイルは<span class="file"><code>~/.ssh/config</code></span>になっています。<p><dt>
+<code><span class="flag">-f</span></code> <dd>
+<code><span class="nm">ssh</span></code>
+がコマンドを実行する直前に、バックグラウンドに移行するよう指示します。これは<code><span class="nm">ssh</span></code>
+にパスワードあるいはパスフレーズを入力する必要はあるものの、そのコマンド自体はバックグラウンドで実行させたいときに便利です。これは<code><span class="flag">-n</span></code> オプションも含んでいます。リモートサイトで X11 プログラムを起動させる場合には、<div class="cmdline"><kbd>ssh -fhostxterm</kbd></div>
+などとやるのがおすすめです。
+<p>
+もし<span class="config"><code>ExitOnForwardFailure</code></span>設定項目が"yes"になっている場合、<code><span class="flag">-f</span></code> で開始されたクライアントはすべてのポート転送の確立が成功するまで待ってから、バックグラウンドに移行します。<p><dt>
+<code><span class="flag">-G</span></code> <dd>
+<code><span class="nm">ssh</span></code>
+は、設定ファイル中の<span class="config"><code>Host</code></span>および<span class="config"><code>Match</code></span>ブロックを評価して表示し、すぐに終了します。<p><dt>
+<code><span class="flag">-g</span></code> <dd>
+リモートホストが転送されたローカルなポートに接続することを許可します。このオプションを分岐した接続に使用する場合は、マスター接続のプロセスに対して指定してください。<p><dt>
+<code><span class="flag">-I</span></code> <span class="arg">pkcs11</span> <dd>
+<code><span class="nm">ssh</span></code>
+がユーザの RSA 秘密鍵を提供する PKCS#11 トークンと通信するときに使う、PKCS#11 共有ライブラリを指定します。<p><dt>
+<code><span class="flag">-i</span></code> <span class="arg">identityファイル</span> <dd>
+公開鍵認証の際にidentity (秘密鍵) を読むファイルを指定します。デフォルトは、プロトコル バージョン 1 の場合ユーザのホームディレクトリにある<span class="file"><code>~/.ssh/identity</code></span>、プロトコル バージョン 2 の場合は<span class="file"><code>~/.ssh/id_dsa ,</code></span><span class="file"><code>~/.ssh/id_ecdsa ,</code></span><span class="file"><code>~/.ssh/id_ed25519</code></span>および<span class="file"><code>~/.ssh/id_rsa</code></span>になっています。identity ファイルは設定ファイルによって、ホストごとに指定することもできます。複数の<code><span class="flag">-i</span></code> オプションを指定することも可能です。(設定ファイルで複数の鍵を指定することもできます。)また、<code><span class="nm">ssh</span></code>
+は末尾に<span class="file"><code>-cert.pub</code></span>のついたファイル名から証明書を読み込もうとします。<p><dt>
+<code><span class="flag">-K</span></code> <dd>
+GSSAPI ベース認証および、GSSAPI 証明書 (credential) のサーバへの転送 (委譲、delegation) を許可します。<p><dt>
+<code><span class="flag">-k</span></code> <dd>
+GSSAPI 証明書 (credential) をサーバに転送 (委譲、delegation) することを禁止します。<p><dt>
+<code><span class="flag">-L</span></code> <dd>
+ [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> :ホスト:ホスト側ポート与えられたローカル (クライアント) ホスト上のポートが、与えられたリモートホスト上のポートに転送されるよう指定します(ローカル→リモートのポート転送)。これはローカル側で<span class="arg">ポート</span> に listen (接続受け付け) 用のソケットを割り当てることによりおこなわれます。さらに<span class="arg">bindするアドレス</span> が与えられている場合は、ソケットはこのアドレスに bind されます。このポートに向けておこなわれた接続はつねに安全な通信路を経由してリモートマシン上に到達し、そこから<span class="arg">ホスト</span> のポート<span class="arg">ホスト側ポート</span> に接続されるようになります。ポート転送は設定ファイルによっても指定できます。IPv6 アドレスはブラケット [ ] で囲むことで指定できます。特権ポートを転送できるのはスーパーユーザだけです。デフォルトでは、ローカル側のポートは<span class="config"><code>GatewayPorts</code></span>の設定に従って bind されますが、<span class="arg">bindするアドレス</span> を明示的に指定することで、特定のアドレスに接続をふり向けることができます。<span class="arg">bindするアドレス</span> として"localhost"を指定すると、ポートを listen するのはローカルな使用のみに限ることになります。いっぽう、空のアドレスまたは `<kbd>*</kbd>' を指定すると、そのポートはすべてのインターフェイスに対して使用可能になります。<p><dt>
+<code><span class="flag">-l</span></code> <span class="arg">ログイン名</span> <dd>
+リモートマシン上でログインするユーザ名を指定します。これは設定ファイルによって、ホストごとに指定することもできます。<p><dt>
+<code><span class="flag">-M</span></code> <dd>
+<code><span class="nm">ssh</span></code>
+を、接続を共有するための"master"モードにします。<code><span class="flag">-M</span></code> オプションを複数個つけると<code><span class="nm">ssh</span></code>
+は"master"モードになり、slave 接続を受けつける前に確認を求めます。詳細については<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>ControlMaster</code></span>の項を参照してください。<p><dt>
+<code><span class="flag">-m</span></code> <span class="arg">MAC指定</span> <dd>
+プロトコル バージョン 2 では、カンマで区切ったリストにより、使用する MAC (message authentication code、メッセージ認証コード) を優先順位をつけて指定することができます。MAC についての詳しい情報は<span class="config"><code>MACs</code></span>の項をご覧ください。<p><dt>
+<code><span class="flag">-N</span></code> <dd>
+リモートコマンドを実行しません。これはポート転送のみをおこないたい場合に便利です (プロトコル バージョン 2 のみ)。<p><dt>
+<code><span class="flag">-n</span></code> <dd>
+標準入力を<span class="file"><code>/dev/null</code></span>からリダイレクトするように(つまり標準入力からの読み込みを禁止した状態に) します。<code><span class="nm">ssh</span></code>
+をバックグラウンドで走らせるときには、このオプションが不可欠です。よくある手としては、リモートマシン上で X11 のプログラムを走らせるときにこれを使うことです。たとえば、<div class="cmdline"><kbd>ssh -nshadows.cs.hut.fiemacs&</kbd></div>
+で emacs を立ち上げると、X11 接続は暗号化された経路を介して自動的に転送されます。<code><span class="nm">ssh</span></code>
+プログラムはこの後バックグラウンドに移行するでしょう。(これは<code><span class="nm">ssh</span></code>
+がパスワードあるいはパスフレーズを訊いてくるときには使えません。<code><span class="flag">-f</span></code> オプションを参照してください。)<p><dt>
+<code><span class="flag">-O</span></code> <span class="arg">制御コマンド</span> <dd>
+マスタープロセスから分岐した現在使用中の接続を制御します。<code><span class="flag">-O</span></code> オプションが指定されている場合、<span class="arg">制御コマンド</span> の指令はマスタープロセスに渡されます。使用可能なコマンドは以下のとおりです:"check"(マスタープロセスが走っているかどうかチェックする)"forward"(コマンドを実行せずにポート転送を要求する)"cancel"(ポート転送をキャンセルする)"exit"(マスタープロセスを終了するよう指示する)および"stop"(マスタープロセスにこれ以上の分岐を止めるよう要求する)<p><dt>
+<code><span class="flag">-o</span></code> <span class="arg">オプション</span> <dd>
+設定ファイルと同じ形式でオプションを与えたいときに使用します。これはコマンドラインオプションでは指定できないオプションを指定したいときに便利です。以下のオプションの詳細と、これらがとりうる値については<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+を参照してください。
+<p>
+<blockquote>
+<p><dt>
+AddressFamily<dd>
+<p><dt>
+BatchMode<dd>
+<p><dt>
+BindAddress<dd>
+<p><dt>
+CanonicalDomains<dd>
+<p><dt>
+CanonicalizeFallbackLocal<dd>
+<p><dt>
+CanonicalizeHostname<dd>
+<p><dt>
+CanonicalizeMaxDots<dd>
+<p><dt>
+CanonicalizePermittedCNAMEs<dd>
+<p><dt>
+ChallengeResponseAuthentication<dd>
+<p><dt>
+CheckHostIP<dd>
+<p><dt>
+Cipher<dd>
+<p><dt>
+Ciphers<dd>
+<p><dt>
+ClearAllForwardings<dd>
+<p><dt>
+Compression<dd>
+<p><dt>
+CompressionLevel<dd>
+<p><dt>
+ConnectionAttempts<dd>
+<p><dt>
+ConnectTimeout<dd>
+<p><dt>
+ControlMaster<dd>
+<p><dt>
+ControlPath<dd>
+<p><dt>
+ControlPersist<dd>
+<p><dt>
+DynamicForward<dd>
+<p><dt>
+EscapeChar<dd>
+<p><dt>
+ExitOnForwardFailure<dd>
+<p><dt>
+ForwardAgent<dd>
+<p><dt>
+ForwardX11<dd>
+<p><dt>
+ForwardX11Timeout<dd>
+<p><dt>
+ForwardX11Trusted<dd>
+<p><dt>
+GatewayPorts<dd>
+<p><dt>
+GlobalKnownHostsFile<dd>
+<p><dt>
+GSSAPIAuthentication<dd>
+<p><dt>
+GSSAPIDelegateCredentials<dd>
+<p><dt>
+HashKnownHosts<dd>
+<p><dt>
+Host<dd>
+<p><dt>
+HostbasedAuthentication<dd>
+<p><dt>
+HostKeyAlgorithms<dd>
+<p><dt>
+HostKeyAlias<dd>
+<p><dt>
+HostName<dd>
+<p><dt>
+IdentityFile<dd>
+<p><dt>
+IdentitiesOnly<dd>
+<p><dt>
+IPQoS<dd>
+<p><dt>
+KbdInteractiveAuthentication<dd>
+<p><dt>
+KbdInteractiveDevices<dd>
+<p><dt>
+KexAlgorithms<dd>
+<p><dt>
+LocalCommand<dd>
+<p><dt>
+LocalForward<dd>
+<p><dt>
+LogLevel<dd>
+<p><dt>
+MACs<dd>
+<p><dt>
+Match<dd>
+<p><dt>
+NoHostAuthenticationForLocalhost<dd>
+<p><dt>
+NumberOfPasswordPrompts<dd>
+<p><dt>
+PasswordAuthentication<dd>
+<p><dt>
+PermitLocalCommand<dd>
+<p><dt>
+PKCS11Provider<dd>
+<p><dt>
+Port<dd>
+<p><dt>
+PreferredAuthentications<dd>
+<p><dt>
+Protocol<dd>
+<p><dt>
+ProxyCommand<dd>
+<p><dt>
+ProxyUseFdpass<dd>
+<p><dt>
+PubkeyAuthentication<dd>
+<p><dt>
+RekeyLimit<dd>
+<p><dt>
+RemoteForward<dd>
+<p><dt>
+RequestTTY<dd>
+<p><dt>
+RhostsRSAAuthentication<dd>
+<p><dt>
+RSAAuthentication<dd>
+<p><dt>
+SendEnv<dd>
+<p><dt>
+ServerAliveInterval<dd>
+<p><dt>
+ServerAliveCountMax<dd>
+<p><dt>
+StreamLocalBindMask<dd>
+<p><dt>
+StreamLocalBindUnlink<dd>
+<p><dt>
+StrictHostKeyChecking<dd>
+<p><dt>
+TCPKeepAlive<dd>
+<p><dt>
+Tunnel<dd>
+<p><dt>
+TunnelDevice<dd>
+<p><dt>
+UsePrivilegedPort<dd>
+<p><dt>
+User<dd>
+<p><dt>
+UserKnownHostsFile<dd>
+<p><dt>
+VerifyHostKeyDNS<dd>
+<p><dt>
+VisualHostKey<dd>
+<p><dt>
+XAuthLocation<dd>
+</blockquote>
+<p><dt>
+<code><span class="flag">-p</span></code> <span class="arg">ポート</span> <dd>
+リモートホストに接続するポートを指定します。これは設定ファイルによって、ホストごとに指定することもできます。<p><dt>
+<code><span class="flag">-Q</span></code> <span class="config"><code>cipher | cipher-auth | mac | kex | key</code></span><dd>
+<code><span class="nm">ssh</span></code>
+がプロトコル バージョン 2 の特定の機能をサポートするかどうか問い合わせます。問い合わせ可能な機能は、<span class="arg">cipher</span> (サポートされている対称暗号の種類)、<span class="arg">cipher-auth</span> (認証つき暗号化をサポートする対称暗号)、<span class="arg">mac</span> (サポートされているメッセージ認証コードの種類)、<span class="arg">kex</span> (鍵交換アルゴリズム)、<span class="arg">key</span> (鍵の形式)です。<p><dt>
+<code><span class="flag">-q</span></code> <dd>
+静かなモード。ほとんどの警告メッセージや診断メッセージは抑制されます。<p><dt>
+<code><span class="flag">-R</span></code> <dd>
+ [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> :ホスト:ホスト側ポート与えられたリモート (サーバ) ホスト上のポートが、与えられたローカルホスト上のポートに転送されるよう指定します(リモート→ローカルのポート転送)。これはリモート側で<span class="arg">ポート</span> に listen (接続受け付け) 用のソケットを割り当てることによりおこなわれます。このポートに向けておこなわれた接続はつねに安全な通信路を経由してローカルマシン上に到達し、ここから<span class="arg">ホスト</span> のポート<span class="arg">ホスト側ポート</span> に接続されるようになります。
+<p>
+ポート転送は設定ファイルによっても指定できます。特権ポートを転送できるのは、リモートマシン上に root としてログインしているときだけです。IPv6 アドレスはブラケット [ ] で囲むことで指定できます。
+<p>
+デフォルトでは、サーバ側で listen するソケットはループバックインターフェイスのみに bind されます。これは<span class="arg">bindするアドレス</span> を指定することによって上書きすることができます。空の<span class="arg">bindするアドレス</span> または <kbd>*</kbd> をアドレスとして指定すると、サーバ側のソケットはすべてのインターフェイスに対して listen するようになります。<span class="arg">bindするアドレス</span> にループバック以外の値が指定できるのは、<span class="config"><code>GatewayPorts</code></span>オプションが許可されているときのみです (<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+を参照してください)。
+<p>
+<span class="arg">ポート</span> 引数に <kbd>0</kbd> を指定した場合、listen するポートはサーバ側で動的に割り当てられ、実行時にクライアント側にその値が報告されます。<div class="cmdline"><kbd>-O forward</kbd></div>
+オプションと一緒に使用すると、割り当てられたポートが標準出力に表示されます。<p><dt>
+<code><span class="flag">-S</span></code> <span class="arg">制御用パス名</span> <dd>
+接続を共有する際の制御用ソケットの位置を指定します。ここで"none"を指定すると、接続共有は禁止されます。詳細については<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>ControlMaster</code></span>および<span class="config"><code>ControlPath</code></span>の項を参照してください。<p><dt>
+<code><span class="flag">-s</span></code> <dd>
+リモート側でサブシステムの実行を要求するときに使われます。サブシステムは SSH2 プロトコルで実現された機能であり、これを使うと SSH を他のアプリケーション (<a href="sftp.html"><span class="xr">sftp (1)</span></a>
+など) への安全な通信路として利用することができます。この場合、サブシステム名はリモートコマンドとして指定します。<p><dt>
+<code><span class="flag">-T</span></code> <dd>
+仮想端末の割り当てを禁止します。<p><dt>
+<code><span class="flag">-t</span></code> <dd>
+強制的に仮想端末を割り当てます。これはリモートマシン上で任意の画面ベースのプログラムを実行するとき(たとえば、メニューサービスを実装するときなど)に非常に便利です。複数の<code><span class="flag">-t</span></code> をつけると、たとえ<code><span class="nm">ssh</span></code>
+がローカル側での端末を持っていない場合でも強制的に仮想端末を割り当てます。<p><dt>
+<code><span class="flag">-V</span></code> <dd>
+バージョン番号を表示して終了します。<p><dt>
+<code><span class="flag">-v</span></code> <dd>
+冗長表示モード。<code><span class="nm">ssh</span></code>
+が進行中のデバッグメッセージを表示するようにします。これは接続や認証、設定の問題をデバッグするときに助けとなります。複数の<code><span class="flag">-v</span></code> オプションをつけると出力が増えます。最大は 3 個です。<p><dt>
+<code><span class="flag">-W</span></code> <span class="arg">ホスト</span> :<span class="arg">ポート</span> <dd>
+クライアントの標準入力と標準出力を、安全な通信路を通して<span class="arg">ホスト</span> の<span class="arg">ポート</span> 上に接続します。このオプションは、<code><span class="flag">-N</span></code> ,<code><span class="flag">-T</span></code> ,<span class="config"><code>ExitOnForwardFailure</code></span>および<span class="config"><code>ClearAllForwardings</code></span>を暗黙のうちに含んでいます。プロトコル バージョン 2 でのみ使用できます。<p><dt>
+<code><span class="flag">-w</span></code> <dd>
+<span class="arg">ローカルtun</span>  [:<span class="arg">リモートtun</span> ]
+クライアント側の<span class="arg">ローカルtun</span> と、サーバ側の<span class="arg">リモートtun</span> の<span class="xr">tun (4)</span>
+デバイスを使ったトンネリングを要求します。これらのデバイスは数値か、あるいはキーワード"any"によって指定します。このキーワードを指定すると、現在の次に使用可能なトンネルデバイスが使われます。If<span class="arg">リモートtun</span> が指定されない場合は、デフォルトで"any"になります。<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>TunnelDevice</code></span>項目も参照してください。<span class="config"><code>Tunnel</code></span>項目が指定されていない場合、トンネルモードはデフォルトの"point-to-point"になります。<p><dt>
+<code><span class="flag">-X</span></code> <dd>
+X11 の転送を許可します。これは設定ファイルによって、ホストごとに指定することもできます。
+<p>
+X11 の転送には注意が必要です。リモートホスト上で (そのユーザの X 認証のための) ファイルアクセス権限を無視できてしまうユーザがいる場合は、転送された接続を介してローカル側のX11 ディスプレイにアクセスできてしまうことになります。すると攻撃側はキーストロークを盗み見るなどの行為が可能になってしまうかもしれません。
+<p>
+このため、デフォルトでは X11 転送は X11 SECURITY 拡張機能の制約をうけるようになっています。詳しくは、<code><span class="nm">ssh</span></code>
+の<code><span class="flag">-Y</span></code> オプション、および<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>ForwardX11Trusted</code></span>項目を参照してください。<p><dt>
+<code><span class="flag">-x</span></code> <dd>
+X11 の転送を禁止します。<p><dt>
+<code><span class="flag">-Y</span></code> <dd>
+信頼された X11 転送を許可します。信頼された X11 転送は、X11 SECURITY 拡張機能の制約をうけることはありません。<p><dt>
+<code><span class="flag">-y</span></code> <dd>
+<span class="xr">syslog (3)</span>
+システムモジュールを使用してログ情報を送ります。デフォルトでは、この情報は標準エラー出力に送られます。</dl>
+
+<p>
+さらに<code><span class="nm">ssh</span></code>
+は、設定情報をユーザごとの設定ファイルおよび、システム全体にわたる設定ファイルから取得します。このファイルの形式と設定項目は<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+で説明されています。<hr>
+<h2><a href="#認証" name="認証">認証</a></h2>
+OpenSSH SSH クライアントは SSH プロトコル バージョン 1 とプロトコル バージョン 2 をサポートしています。デフォルトでは、プロトコル バージョン 2 のみを使います。これは<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>Protocol</code></span>設定項目で変更するか、あるいは<code><span class="flag">-1</span></code> または<code><span class="flag">-2</span></code> オプション (上記参照) によって指定できます。どちらのプロトコルも類似の認証機構をサポートしていますが、プロトコル バージョン 2 はより強力な秘匿性(通信は AES、 3DES、 Blowfish、 CAST128 または Arcfour で暗号化されます) および正真性(hmac-md5, hmac-sha1,hmac-sha2-256, hmac-sha2-512,umac-64, umac-128, hmac-ripemd160)を提供しているため、こちらがデフォルトになっています。プロトコル バージョン 1 は接続の正真性を保証する(訳注: 内容の改ざんを防ぐ) 強力な機構が用意されていません。
+<p>
+認証方式として使用可能なのは、GSSAPIベースの認証 (GSSAPI-based authentication)、ホストベースド認証 (host-based authentication)、公開鍵認証 (public key authentication)、チャレンジ・レスポンス認証 (challenge-response authentication)およびパスワード認証 (password authentication) です。認証方式はここに示した順序で使用されます。ただしプロトコル バージョン 2 では<span class="config"><code>PreferredAuthentications</code></span>設定項目によりこのデフォルトの順序を変更することもできます。
+<p>
+ホストベースド認証 (hostbased authentication) は以下のように動作します:ユーザが<code><span class="nm">ssh</span></code>
+を実行するマシンが、リモートマシン側の<span class="file"><code>/etc/hosts.equiv</code></span>あるいは<span class="file"><code>/etc/shosts.equiv</code></span>に記載されており、さらにそのユーザ名が双方で同じか、あるいはリモートマシン上のそのユーザのホームディレクトリに<span class="file"><code>~/.rhosts</code></span>あるいは<span class="file"><code>~/.shosts</code></span>が存在して、クライアントマシンの名前とそのマシン上でのそのユーザ名が記載されている場合、そのユーザのログインが考慮されます。サーバはさらに、このクライアントのホスト鍵(以下の<span class="file"><code>/etc/ssh/ssh_known_hosts</code></span>と<span class="file"><code>~/.ssh/known_hosts</code></span>を参照)が<strong>必ず</strong>正しいことを要求します。これが正しければログインが許可されます。この認証方式により IP 詐称、DNS 詐称やルーティング詐称などの攻撃が迂回できます。[管理者のかたに注意: 一般的にいって、<span class="file"><code>/etc/hosts.equiv 、</code></span><span class="file"><code>~/.rhosts および</code></span>rlogin/rsh プロトコルは本質的に危険であり、セキュリティを考慮するのであれば禁止すべきです。]
+<p>
+公開鍵認証 (public key authentication) は以下のようにして動作します:このやりかたは公開鍵暗号技術に基づいており、暗号化と復号をそれぞれ別の鍵を使っておこなうことができ、さらに復号用の鍵から暗号化用の鍵を推測することは現実的にできないような暗号方式を使っています。このアイデアは、まず各ユーザが認証のための「秘密鍵」と「公開鍵」とよばれる鍵の対をつくります。サーバは公開鍵を知っていますが、秘密鍵のほうはユーザだけが知っているものとします。<code><span class="nm">ssh</span></code>
+は公開鍵認証を実装しており、DSA, ECDSA, Ed25519 あるいは RSA 方式を使用しています。プロトコル バージョン 1 が使えるのはRSA 方式だけですが、プロトコル バージョン 2 ではいずれの方式も使うことができます。<span class="xr">ssl (8)</span>
+の「歴史」セクションでは、DSA および RSA アルゴリズムについて簡単に説明しています。
+<p>
+<span class="file"><code>~/.ssh/authorized_keys</code></span>ファイルには、ログインが許可されている公開鍵の一覧が書かれています。ユーザがログインする際、<code><span class="nm">ssh</span></code>
+プログラムは、そのユーザがどの鍵の対を使って認証しようとしているかをサーバに伝えます。クライアントは自分が秘密鍵にアクセスできることをサーバに対して証明し、サーバはそれに対応する公開鍵がそのアカウントを受け入れる権限をもっているかどうかを調べます。
+<p>
+ユーザは<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+を使って自分の鍵の対をつくります。このプログラムは、秘密鍵をユーザのホームディレクトリ内の<span class="file"><code>~/.ssh/identity</code></span>(プロトコル バージョン 1)、<span class="file"><code>~/.ssh/id_dsa</code></span>(プロトコル バージョン 2、DSA 方式)、<span class="file"><code>~/.ssh/id_ecdsa</code></span>(プロトコル バージョン 2、ECDSA 方式)、<span class="file"><code>~/.ssh/id_ed25519</code></span>(プロトコル バージョン 2、Ed25519 方式)、あるいは<span class="file"><code>~/.ssh/id_rsa</code></span>(プロトコル バージョン 2、RSA 方式) に格納し、公開鍵を<span class="file"><code>~/.ssh/identity.pub</code></span>(プロトコル バージョン 1)、<span class="file"><code>~/.ssh/id_dsa.pub</code></span>(プロトコル バージョン 2、DSA 方式) 、<span class="file"><code>~/.ssh/id_ecdsa.pub</code></span>(プロトコル バージョン 2、ECDSA 方式)<span class="file"><code>~/.ssh/id_ed25519.pub</code></span>(プロトコル バージョン 2、Ed25519 方式)あるいは<span class="file"><code>~/.ssh/id_rsa.pub</code></span>(プロトコル バージョン 2、RSA 方式) に格納します。ユーザはこの公開鍵をリモートマシン上の自分のホームディレクトリにある<span class="file"><code>~/.ssh/authorized_keys</code></span>ファイルにコピーする必要があります。<span class="file"><code>authorized_keys</code></span>ファイルは従来の<span class="file"><code>~/.rhosts</code></span>ファイルに相当し、1 行ごとにひとつの鍵を格納します。各行はかなり長くなることもあります)。この後、ユーザはパスワードなしでログインすることができます。
+<p>
+公開鍵認証の変形として、証明書 (certificate) を使った認証が使用できます。これは、公開鍵・秘密鍵の対を使うかわりに、署名された証明書を用います。この方法の利点は、多くの公開鍵・秘密鍵ペアのかわりに、単一の信頼された認証局 (CA) を使えることです。より詳しい情報については<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+の「証明書」セクションを参照してください。
+<p>
+公開鍵認証や証明書を使う際に、いちばん便利なのは「認証エージェント」と呼ばれるものを使うことでしょう。詳しくは<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>
+のマニュアルページをごらんください。
+<p>
+チャレンジ・レスポンス認証は以下のようにして動作します:サーバは任意の"チャレンジ"文字列を送り、応答 (レスポンス) を求めます。プロトコル バージョン 2 では複数のチャレンジとレスポンスを許可しています。プロトコル バージョン 1 で使えるチャレンジとレスポンスは1 つだけです。チャレンジ・レスポンス認証の例としては、BSD認証 (<span class="xr">login.conf (5)</span>
+を参照) や PAM (以外のいくつかのシステム)などがあります。
+<p>
+もし他の認証方法が失敗した場合、<code><span class="nm">ssh</span></code>
+はユーザにパスワードを要求します。このパスワードは検査のためリモートホストに送られますが、すべての通信は暗号化されているため、ネットワークを盗聴している何者かによってパスワードが見られてしまうようなことはありません。
+<p>
+<code><span class="nm">ssh</span></code>
+はこれまでに使った鍵すべてが入っているデータベースを自動的に保持し、検査します。これらのうち、ホスト鍵はユーザのホームディレクトリにある<span class="file"><code>~/.ssh/known_hosts</code></span>に格納されます。これらに加え、<span class="file"><code>/etc/ssh/ssh_known_hosts</code></span>も既知のホストとして自動的に検査されます。新しいホストは、ユーザ側のファイルに自動的に追加されていきます。もしあるホストの鍵がこれまでと変わっていた場合、<code><span class="nm">ssh</span></code>
+は警告を発してパスワード認証を禁止します。これはサーバの詐称やなりすまし攻撃を防ぐためです。<span class="config"><code>StrictHostKeyChecking</code></span>設定項目はホスト鍵が知られていなかったり、それが変更されていた場合のログインを防ぐために使われます。
+<p>
+そのユーザが本人であることが確認できると、サーバは与えられたコマンドを実行するか、あるいはユーザをそのマシンにログインさせてリモートマシンでの標準的なシェルを与えます。リモートのシェルやコマンドにおけるすべての通信は自動的に暗号化されます。
+<p>
+仮想端末が割り当てられている場合(通常のログインセッション時)、ユーザは以下のエスケープ文字を使うことができます。
+<p>
+仮想端末が割り当てられていない場合、そのセッションは透過になります。そのため、バイナリデータでも確実に転送できます。ほとんどのシステムでは、たとえ仮想端末が割り当てられている場合でもエスケープ文字に"none"を設定することによって、そのセッションを透過にすることができます。
+<p>
+セッションは、リモートマシン上のコマンドやシェルが完了し、すべての X11 や TCP 接続が閉じられると終了します。<hr>
+<h2><a href="#エスケープ文字" name="エスケープ文字">エスケープ文字</a></h2>
+仮想端末が割り当てられている場合、<code><span class="nm">ssh</span></code>
+ではエスケープ文字を使った機能がいくつかサポートされています。
+<p>
+チルダ記号そのものを 1 回入力するには<div class="cmdline"><kbd>~~ </kbd></div>
+を押すか、上で述べられている以外の文字をチルダに続けます。エスケープ文字は、つねに改行の直後に来なければ特別な文字とは見なされません。エスケープ文字は、設定ファイルの<span class="config"><code>EscapeChar</code></span>設定項目あるいはコマンドラインの<code><span class="flag">-e</span></code> オプションで変更できます。
+<p>
+現在サポートされているエスケープ機能(エスケープ文字はデフォルトの <kbd>~</kbd> と仮定します) :<dl>
+<p><dt>
+<span class="config"><code>~.</code></span><dd>
+接続を切断します。<p><dt>
+<span class="config"><code>~^Z</code></span><dd>
+sshをバックグラウンドに移行させます。<p><dt>
+<span class="config"><code>~#</code></span><dd>
+いま転送されている接続の一覧を表示します。<p><dt>
+<span class="config"><code>~&</code></span><dd>
+<code><span class="nm">ssh</span></code>
+をバックグラウンドに移行させ、転送された接続あるいは X11 のセッションが終了するのを待ってログアウトします。<p><dt>
+<span class="config"><code>~?</code></span><dd>
+エスケープ文字の一覧を表示します。<p><dt>
+<span class="config"><code>~B</code></span><dd>
+リモートホストに BREAK 信号を送信します(SSH プロトコル バージョン 2 で相手もそれをサポートしている場合にのみ有効)。<p><dt>
+<span class="config"><code>~C</code></span><dd>
+コマンドラインをオープンします。現在これは<code><span class="flag">-L</span></code> 、<code><span class="flag">-R</span></code> および<code><span class="flag">-D</span></code> オプション (上記参照) を使っていて、ポート転送を追加したい場合に有効です。また、これはローカルポートの場合、<code><span class="flag">-KL</span></code>  [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> リモートの場合、<code><span class="flag">-KR</span></code>  [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> 動的ポート転送の場合、<code><span class="flag">-KD</span></code>  [<span class="arg">bindするアドレス</span> :] <span class="arg">ポート</span> を使うことによって、すでに有効になっているポート転送を中止することも可能です。<div class="cmdline"><kbd>! <span class="arg">command</span> </kbd></div>
+を使うと、<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<div class="cmdline"><kbd>PermitLocalCommand </kbd></div>
+設定項目が許可されている場合、ユーザはローカルなコマンドを実行することができます。基本的なヘルプは<code><span class="flag">-h</span></code> オプションを使ってください。<p><dt>
+<span class="config"><code>~R</code></span><dd>
+その接続の rekeying を要求します(SSH プロトコル バージョン 2 で、なおかつ相手がこれをサポートしているときのみ有効)。<p><dt>
+<span class="config"><code>~V</code></span><dd>
+標準エラー出力に表示されるログの<div>
+<div class="cmdline"><kbd>LogLevel </kbd></div>
+</div>
+を下げます。<p><dt>
+<span class="config"><code>~v</code></span><dd>
+標準エラー出力に表示されるログの<div>
+<div class="cmdline"><kbd>LogLevel </kbd></div>
+</div>
+を上げます。</dl>
+<hr>
+<h2><a href="#TCP 転送" name="TCP 転送">TCP 転送</a></h2>
+安全な通信路を使った任意の TCP/IP 接続への転送は、コマンドラインあるいは設定ファイルで指定します。TCP 転送の応用として、メールサーバへの安全な接続が考えられます。ほかにもファイヤーウォールをまたいで通信するなどの使いみちがあるでしょう。
+<p>
+以下の例では、IRC クライアントとサーバの通信を暗号化する方法を紹介します。たとえ IRC サーバが暗号化を直接サポートしていなくても、通信を暗号化することができます。これは以下のようにして動作します:まず、ユーザがリモートホストに<code><span class="nm">ssh</span></code>
+で接続し、リモートのサーバに接続を転送するために使うポート番号を指定します。このあと、クライアントマシン上で暗号化のサービスを開始し、ローカルな同じポートに接続すると、<code><span class="nm">ssh</span></code>
+はその接続を暗号化して転送します。
+<p>
+以下の例では IRC のセッションをクライアントマシン"127.0.0.1"(localhost)からリモートのサーバ"server.example.com"へとトンネリングします:<blockquote><pre>$ ssh -f -L 1234:localhost:6667 server.example.com sleep 10$ irc -c '#users' -p 1234 pinky 127.0.0.1</pre></blockquote>
+
+<p>
+これはポート 1234 を使って IRC サーバ"server.example.com"への接続をトンネリングし、ニックネーム"pinky"で"#users"チャンネルに join します。ポート番号は、1024 以上であり(特権ポートを使用できるのは root だけです)、他のポートとかち合わなければどこでもかまいません。この接続はリモートサーバ上のポート 6667 に転送されます。これが IRC サービスの標準的なポート番号だからです。
+<p>
+<code><span class="flag">-f</span></code> オプションは<code><span class="nm">ssh</span></code>
+をバックグラウンド化させるために利用し、リモートコマンド"sleep 10"はトンネリングするサービスが開始されるまでに一定の時間 (この例では 10 秒) を与えています。もしここで指定された時間内に接続が行われない場合、<code><span class="nm">ssh</span></code>
+は終了するでしょう。<hr>
+<h2><a href="#X11 転送" name="X11 転送">X11 転送</a></h2>
+<span class="config"><code>ForwardX11</code></span>項目が"yes"に設定されており (または上記の<code><span class="flag">-X</span></code> および<code><span class="flag">-x</span></code> オプションを参照してください)、ユーザが X11 を使っている (環境変数<span class="env">DISPLAY</span> が設定されている) 場合、X11 ディスプレイへの接続は自動的にリモート側に転送されます。つまり、シェル (あるいはコマンド) から起動された X11 プログラムはみな暗号化された通信路を通り、本来の X サーバへの接続はローカルマシン上からなされるようになります。ユーザは<span class="env">DISPLAY</span> を手動で設定すべきではありません。X11 接続の転送はコマンドラインあるいは設定ファイルによって設定できます。
+<p>
+<code><span class="nm">ssh</span></code>
+によって設定された<span class="env">DISPLAY</span> の値はサーバマシン上を指すようになっていますが、ディスプレイ番号は 0 より大きい値になっているでしょう。これは正常な状態です。<code><span class="nm">ssh</span></code>
+は暗号化された通信路を介して接続を転送します。そのため、サーバマシン上に X サーバの"プロキシ"をつくるのでこうなるのです。
+<p>
+また、<code><span class="nm">ssh</span></code>
+はサーバマシン上で Xauthority 情報を自動的に用意します。<code><span class="nm">ssh</span></code>
+はこのためにランダムな認証クッキーを生成し、サーバ側のXauthority に格納し、接続が転送されるときはすべてこのクッキーを持たせるようにします。そして接続が開かれるときに、これが本物のクッキーと置き換わるようにするのです。本物の認証クッキーがサーバ側に送られることは決してありません(し、暗号化されないままでクッキーが送られることもありません)。
+<p>
+<span class="config"><code>ForwardAgent</code></span>設定項目が"yes"になっていて、ユーザが認証エージェントを使っている場合、認証エージェントに対する接続は自動的にリモート側に転送されます。(以下で説明する<code><span class="flag">-A</span></code> and<code><span class="flag">-a</span></code> オプションも参照のこと)。<hr>
+<h2><a href="#ホスト鍵の検証" name="ホスト鍵の検証">ホスト鍵の検証</a></h2>
+あるサーバに最初に接続したとき、(<span class="config"><code>StrictHostKeyChecking</code></span>設定項目で禁止されていない限り)ユーザにはそのサーバの公開鍵の指紋 (fingerprint) が提示されます。指紋は<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+コマンドによって得ることができます:
+<p>
+<div class="cmdline"><kbd>$ ssh-keygen-l-f/etc/ssh/ssh_host_rsa_key</kbd></div>
+
+<p>
+もしこの指紋がすでにわかっている場合、これが一致するかどうかを見て、その鍵を受け入れるか拒否するかを決めることができます。しかし2つのホスト鍵が一致しているかどうかを、16進文字列を見比べて判断することは難しいため、<strong>random art</strong>技術を使って、これらのホスト鍵を視覚的に比較することができます。<span class="config"><code>VisualHostKey</code></span>設定項目を"yes"にすると、サーバにログインするたびに (そのセッションが対話的であるかないかに関わらず)小さなアスキーアートが表示されます。あらかじめ、既知のサーバが返すパターンを見ておくことにより、ユーザはそのホスト鍵が完全に違うパターンになっているかどうかを容易に判定することができます。これらのパターンに曖昧性がないわけではありません。あるパターンが以前のものに似ている場合、それは高い確率でホスト鍵が同じであるとはいえますが、それが完全に保証されているわけではありません。
+<p>
+既知のすべてのホスト鍵に対して、それらの指紋の random art パターンを表示したい場合は、以下のコマンドを使ってください:
+<p>
+<div class="cmdline"><kbd>$ ssh-keygen-lv-f~/.ssh/known_hosts</kbd></div>
+
+<p>
+指紋がまだわかっていない場合、別の方法として、SSH の指紋を DNS によって検証することができます。追加の資源レコード (RR) である SSHFP を zone ファイルに追加し、接続するクライアントが提示された公開鍵とその指紋を照合することができます。
+<p>
+以下の例では、あるクライアントがサーバ"host.example.com"に接続するものとします。まずSSHFP 資源レコードを host.example.com の zone ファイルに追加する必要があります:<blockquote><pre>$ ssh-keygen -r host.example.com.</pre></blockquote>
+
+<p>
+ここで出力された行を zone ファイルに追加します。このゾーンが指紋の問い合わせに応答するかどうかは、以下のようにしてチェックできます。
+<p>
+<div class="cmdline"><kbd>$ dig-tSSHFPhost.example.com</kbd></div>
+
+<p>
+最後に、クライアントが以下のようにして接続します:<blockquote><pre>$ ssh -o "VerifyHostKeyDNS ask" host.example.com[...]Matching host key fingerprint found in DNS.Are you sure you want to continue connecting (yes/no)?</pre></blockquote>
+
+<p>
+詳しくは<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の<span class="config"><code>VerifyHostKeyDNS</code></span>設定項目を参照してください。<hr>
+<h2><a href="#SSHを使った仮想プライベートネットワーク (VPN)" name="SSHを使った仮想プライベートネットワーク (VPN)">SSHを使った仮想プライベートネットワーク (VPN)</a></h2>
+<code><span class="nm">ssh</span></code>
+は、仮想ネットワークデバイスである<span class="xr">tun (4)</span>
+を使った、仮想プライベートネットワーク (VPN) のトンネリングをサポートしています。これにより、異なる 2 つのネットワークを安全に結合することができます。<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+ファイルにある<span class="config"><code>PermitTunnel</code></span>設定項目は、サーバがこの機能をサポートするかどうか、およびサポートするレベル (レイヤ 2 あるいはレイヤ 3)を指定します。
+<p>
+以下の例では、SSH サーバがリモートのネットワークのゲートウェイとして 192.168.1.15 で動いていると仮定した場合にクライアント側のネットワーク 10.0.50.0/24 と、リモート側のネットワーク 10.0.99.0/24 とを、10.1.1.1 から 10.1.1.2 への point-to-point 接続を使って結合します。このときリモート側ネットワークのゲートウェイでは 192.168.1.15 でSSH サーバが走っており、この接続を許可しているものとします。
+<p>
+クライアント側:<blockquote><pre># ssh -f -w 0:1 192.168.1.15 true# ifconfig tun0 10.1.1.1 10.1.1.2 netmask 255.255.255.252# route add 10.0.99.0/24 10.1.1.2</pre></blockquote>
+
+<p>
+サーバ側:<blockquote><pre># ifconfig tun1 10.1.1.2 10.1.1.1 netmask 255.255.255.252# route add 10.0.50.0/24 10.1.1.1</pre></blockquote>
+
+<p>
+クライアントのアクセス権限はサーバ側の<span class="file"><code>/root/.ssh/authorized_keys</code></span>ファイル (下記参照)、およびサーバの<span class="config"><code>PermitRootLogin</code></span>設定項目でより細かく制御できます。以下のエントリは、<span class="config"><code>PermitRootLogin</code></span>項目が"forced-commands-only"に設定されている場合のもので、ユーザ jane に対しては<span class="xr">tun (4)</span>
+デバイス 1番 への接続を許可し、ユーザ john に対してはtun デバイス 2 番 への接続を許可します:<blockquote><pre>tunnel="1",command="sh /etc/netstart tun1" ssh-rsa ... janetunnel="2",command="sh /etc/netstart tun2" ssh-rsa ... john</pre></blockquote>
+
+<p>
+SSH 経由の VPN は大きなオーバーヘッドをともなうため、これはワイヤレス VPN などの、一時的な設定にのみ使うのが望ましいでしょう。より長期的な VPN 接続は、<span class="xr">ipsecctl (8)</span>
+や<span class="xr">isakmpd (8)</span>
+といったツールを使うほうが優れています。<hr>
+<h2><a href="#環境変数" name="環境変数">環境変数</a></h2>
+<code><span class="nm">ssh</span></code>
+はふつう以下の環境変数を設定します:<dl>
+<p><dt>
+<span class="env">DISPLAY</span> <dd>
+環境変数<span class="env">DISPLAY</span> は X11 サーバの場所を示しています。これは<code><span class="nm">ssh</span></code>
+によって、"hostname:n"という形の値が自動的に設定されます。ここで"hostname"の部分はシェルが走っているホストを表しており、 `<kbd>n</kbd>' [Ge] 1 の整数です。<code><span class="nm">ssh</span></code>
+は X11 接続を安全な通信路で転送するために、この特別な値を使います。X11 の接続が安全でなくなってしまうため、ユーザは環境変数<span class="env">DISPLAY</span> を自分で設定すべきではありません(また、それをやってしまうとユーザは認証に必要なクッキーを手でコピーしなければならなくなります)。<p><dt>
+<span class="env">HOME</span> <dd>
+ユーザのホームディレクトリのパス名が設定されます。<p><dt>
+<span class="env">LOGNAME</span> <dd>
+環境変数<span class="env">USER</span> と同じです。これは、この変数を使うシステムで互換性を保つために設定されます。<p><dt>
+<span class="env">MAIL</span> <dd>
+ユーザのメールボックスのパス名が設定されます。<p><dt>
+<span class="env">PATH</span> <dd>
+デフォルトの<span class="env">PATH</span> です。これは<code><span class="nm">ssh</span></code>
+のコンパイル時に指定されます。<p><dt>
+<span class="env">SSH_ASKPASS</span> <dd>
+パスフレーズを入力する際、<code><span class="nm">ssh</span></code>
+が端末から起動されていると<code><span class="nm">ssh</span></code>
+はパスフレーズをその端末から要求します。<code><span class="nm">ssh</span></code>
+が制御できる端末を持っておらず、環境変数<span class="env">DISPLAY</span> および<span class="env">SSH_ASKPASS</span> が設定されている場合、<code><span class="nm">ssh</span></code>
+は<span class="env">SSH_ASKPASS</span> によって指定されるプログラムを起動し、X11 ウインドウを使ってパスフレーズを要求します。これは<code><span class="nm">ssh</span></code>
+を<span class="file"><code>.xsession</code></span>やそれに類するスクリプトから呼び出す際にとくに役に立ちます。(マシンによっては、これがうまく動くためには標準入力を<span class="file"><code>/dev/null</code></span>にリダイレクトする必要があるかもしれません)<p><dt>
+<span class="env">SSH_AUTH_SOCK</span> <dd>
+認証エージェントと通信するのに使われるUnixドメインソケットのパスを表しています。<p><dt>
+<span class="env">SSH_CONNECTION</span> <dd>
+接続の両端にあるクライアントとサーバの識別子です。この変数にはスペースで区切られた 4 つの値が入っています:クライアントの IP アドレス、クライアントのポート、サーバの IP アドレス および サーバのポートです。<p><dt>
+<span class="env">SSH_ORIGINAL_COMMAND</span> <dd>
+強制コマンドが実行されると、この変数には、元々指定されていたコマンドラインの値が入ります。ここから本来の引数を取り出すことができます。<p><dt>
+<span class="env">SSH_TTY</span> <dd>
+現在のシェルあるいはコマンドに割り当てられている tty の名前(端末装置へのパス) に設定されます。現在のセッションが端末を持たない場合、この変数は設定されません。<p><dt>
+<span class="env">TZ</span> <dd>
+デーモンが起動したとき、現在の時間帯を表すタイムゾーン変数が設定されていると、それがここに入ります (つまりデーモンはその値を新規の接続に渡します)。<p><dt>
+<span class="env">USER</span> <dd>
+ログインしているユーザ名に設定されます。</dl>
+
+<p>
+これらに加えて、<code><span class="nm">ssh</span></code>
+は<span class="file"><code>~/.ssh/environment</code></span>ファイルが存在してユーザがその変更を許可されていればそれを読み込み、"VARNAME=value"という形式の行を環境変数に追加します。より詳しい情報については、<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+の<span class="config"><code>PermitUserEnvironment</code></span>設定項目を参照してください。<hr>
+<h2><a href="#関連ファイル" name="関連ファイル">関連ファイル</a></h2>
+<dl>
+<p><dt>
+<span class="file"><code>~/.rhosts</code></span><dd>
+このファイルはホストベースド認証(host-based authentication、上記参照) で使われます。ユーザのホームディレクトリが NFS パーティション上にあるようなマシンでは、このファイルは誰にでも読み込み可能でなければなりません。なぜなら<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+はこれを root として読むからです。また、このファイルはそのユーザの所有でなければならず、他の人が書き込み可能であってはいけません。ほとんどのマシンにおける推奨されるパーミッションは、所有者は読み書き可能であるが、他の人はアクセス不可能というものです。
+<p>
+<p><dt>
+<span class="file"><code>~/.shosts</code></span><dd>
+このファイルは<span class="file"><code>.rhosts</code></span>とまったく同じように扱われます。このファイルを使うと、rlogin や rsh ではログインできないようにしつつ、ホストベースド認証を許可することができます。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/</code></span><dd>
+このディレクトリはユーザ用のすべての設定や認証用の情報が入るデフォルトの場所です。一般的に、このディレクトリの内容をまるごと隠しておくという必要があるわけではありませんが、推奨されるパーミッションは、所有者に対しては read/write/execute を許可し、他の人にはアクセスさせないようにしておく、というものです。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/authorized_keys</code></span><dd>
+このユーザのログインに使われる公開鍵 (DSA, ECDSA, Ed25519, RSA) の一覧です。この形式は<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+のマニュアルで説明されています。これは特に見られてまずいというものではないのですが、できれば所有者からは読み/書きが可能で、他人からはアクセス不可能なパーミッションに設定しておくのがよいでしょう。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/config</code></span><dd>
+ユーザごとの個人用設定ファイルです。このファイルの形式と設定項目は<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+で説明されています。このファイルは潜在的に悪用される危険性があるため、パーミッションは厳しくしておくのがいいでしょう。所有者のみが読み書き可能で、他者は書き込みできないようにしておくべきです。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/environment</code></span><dd>
+環境変数の追加定義を格納します。上の<a href="#環境変数">環境変数</a>のセクションを見てください。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/identity</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_dsa</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ecdsa</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ed25519</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_rsa</code></span><dd>
+認証のための秘密鍵が格納されています。これらのファイルには他人に見られてはいけないデータが入っているため、そのユーザには読めても、他人からはアクセスできないようにしてください(読み込み/書き込み/実行属性ともに)。<code><span class="nm">ssh</span></code>
+は、他人にアクセスできるようになっている秘密鍵ファイルは無視するので注意してください。鍵を作成するときにパスフレーズを指定することも可能です。このパスフレーズはファイル中の見られるべきでない部分を、3DES を使って暗号化するのに用いられます。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/identity.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_dsa.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ecdsa.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ed25519.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_rsa.pub</code></span><dd>
+認証のための公開鍵が格納されています。これらのファイルは見られてもよいため、他人が読めるようにしておいてもかまいません (が、別にそうする必要はありません)。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/known_hosts</code></span><dd>
+にはユーザがこれまでにログインしたホスト鍵のうち、システム全体の known_hosts 一覧にないものが格納されます。このファイルの形式に関する詳しい情報は<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+を参照してください。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/rc</code></span><dd>
+このファイルのコマンドは、ユーザがログインしてシェル(あるいはコマンド) が開始する直前に<code><span class="nm">ssh</span></code>
+によって実行されます。より詳しい情報については<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+のマニュアルを見てください。
+<p>
+<p><dt>
+<span class="file"><code>/etc/hosts.equiv</code></span><dd>
+このファイルはホストベースド認証(host-based authentication、上記参照) で使われます。このファイルは root だけが書き込めるようにしておくべきです。
+<p>
+<p><dt>
+<span class="file"><code>/etc/shosts.equiv</code></span><dd>
+このファイルは<span class="file"><code>/etc/hosts.equiv</code></span>とまったく同じように扱われます。このファイルを使うと、rlogin や rsh ではログインできないようにしつつ、ホストベースド認証を許可することができます。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_config</code></span><dd>
+システム全体にわたる設定ファイルです。このファイルの形式と設定項目は<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+で説明されています。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_dsa_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ecdsa_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ed25519_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_rsa_key</code></span><dd>
+これらのファイルにはホスト秘密鍵が格納されています。これらは、ホストベースの認証に使われます。プロトコル バージョン 1 を使う場合、ホスト鍵は root にしか読めないので<code><span class="nm">ssh</span></code>
+を setuid root しておく必要があります。プロトコル バージョン 2 の場合、<code><span class="nm">ssh</span></code>
+はホスト鍵のアクセスに<span class="xr">ssh-keysign (8)</span>
+を使用します。これにより、ホストベースの認証方法を使うときも<code><span class="nm">ssh</span></code>
+を setuid root しておく必要がなくなります。デフォルトでは<code><span class="nm">ssh</span></code>
+は setuid root されていません。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_known_hosts</code></span><dd>
+システム全体の known_hosts ファイルです。このファイルはシステム管理者によって用意され、その組織内で使われるすべてのマシン用の公開ホスト鍵を格納するようになっているべきです。このファイルは誰でも読めるようになっている必要があります。このファイルの詳しい形式は<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+のマニュアルで説明されています。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/sshrc</code></span><dd>
+このファイル中のコマンドは、ユーザがログインしたあと、そのユーザのシェル (あるいはコマンド) が開始する直前に<code><span class="nm">ssh</span></code>
+によって実行されます。より詳しい情報については<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+のマニュアルを見てください。</dl>
+<hr>
+<h2><a href="#終了状態" name="終了状態">終了状態</a></h2>
+<code><span class="nm">ssh</span></code>
+はリモートで実行されたコマンドの終了状態か、もしエラーが発生した場合は 255 を終了状態として返します。<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="scp.html"><span class="xr">scp (1)</span></a>,
+<a href="sftp.html"><span class="xr">sftp (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="ssh-keyscan.html"><span class="xr">ssh-keyscan (1)</span></a>,
+<span class="xr">tun (4)</span>,
+<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>,
+<span class="xr">ssh-keysign (8,)</span>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<hr>
+<h2><a href="#標準" name="標準">標準</a></h2>
+<ul><li>
+S. Lehtinen C. Lonvick January 2006 RFC 4250  <span class="cite">"The Secure Shell (SSH) Protocol Assigned Numbers"</span> </ul>
+
+<p>
+<ul><li>
+T. Ylonen C. Lonvick January 2006 RFC 4251  <span class="cite">"The Secure Shell (SSH) Protocol Architecture"</span> </ul>
+
+<p>
+<ul><li>
+T. Ylonen C. Lonvick January 2006 RFC 4252  <span class="cite">"The Secure Shell (SSH) Authentication Protocol"</span> </ul>
+
+<p>
+<ul><li>
+T. Ylonen C. Lonvick January 2006 RFC 4253  <span class="cite">"The Secure Shell (SSH) Transport Layer Protocol"</span> </ul>
+
+<p>
+<ul><li>
+T. Ylonen C. Lonvick January 2006 RFC 4254  <span class="cite">"The Secure Shell (SSH) Connection Protocol"</span> </ul>
+
+<p>
+<ul><li>
+J. Schlyter W. Griffin January 2006 RFC 4255  <span class="cite">"Using DNS to Securely Publish Secure Shell (SSH) Key Fingerprints"</span> </ul>
+
+<p>
+<ul><li>
+F. Cusack M. Forssen January 2006 RFC 4256  <span class="cite">"Generic Message Exchange Authentication for the Secure Shell Protocol (SSH)"</span> </ul>
+
+<p>
+<ul><li>
+J. Galbraith P. Remaker January 2006 RFC 4335  <span class="cite">"The Secure Shell (SSH) Session Channel Break Extension"</span> </ul>
+
+<p>
+<ul><li>
+M. Bellare T. Kohno C. Namprempre January 2006 RFC 4344  <span class="cite">"The Secure Shell (SSH) Transport Layer Encryption Modes"</span> </ul>
+
+<p>
+<ul><li>
+B. Harris January 2006 RFC 4345  <span class="cite">"Improved Arcfour Modes for the Secure Shell (SSH) Transport Layer Protocol"</span> </ul>
+
+<p>
+<ul><li>
+M. Friedl N. Provos W. Simpson March 2006 RFC 4419  <span class="cite">"Diffie-Hellman Group Exchange for the Secure Shell (SSH) Transport Layer Protocol"</span> </ul>
+
+<p>
+<ul><li>
+J. Galbraith R. Thayer November 2006 RFC 4716  <span class="cite">"The Secure Shell (SSH) Public Key File Format"</span> </ul>
+<ul><li>
+D. Stebila J. Green December 2009 RFC 5656  <span class="cite">"Elliptic Curve Algorithm Integration in the Secure Shell Transport Layer"</span> </ul>
+
+<p>
+<ul><li>
+A. Perrig D. Song 1999 International Workshop on Cryptographic Techniques and E-Commerce (CrypTEC '99)  <span class="cite">"Hash Visualization: a New Technique to improve Real-World Security"</span> </ul>
+<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+OpenSSH は Tatu Ylonen による、フリーなオリジナル版 ssh 1.2.12 リリースから派生したものです。Aaron Campbell、 Bob Beck、 Markus Friedl、 Niels Provos、Theo de Raadt および Dug Song が多くのバグを取り除き、新しい機能をふたたび追加して OpenSSH をつくりました。SSH プロトコル バージョン 1.5 および 2.0 のサポートはMarkus Friedl の貢献によるものです。
+</body>
+</html>

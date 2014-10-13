@@ -1,0 +1,75 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSH-RAND-HELPER (8)</title>
+</head><body>
+<h1>SSH-RAND-HELPER (8)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-5.5p1 日本語マニュアルページ (2010/05/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">ssh-rand-helper</div>
+<blockquote>OpenSSH用 乱数生成器</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">ssh-rand-hlper</span></code>
+ [<code><span class="flag">-vxXh</span></code> ]
+ [<code><span class="flag">-b</span></code> <span class="arg">バイト数</span> ]
+<hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">ssh-rand-helper</span></code>
+は、<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="ssh-keyscan.html"><span class="xr">ssh-keyscan (1)</span></a>
+および<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+によって使われる補助プログラムです。<span class="xr">openssl (4)</span>
+が暗号使用に耐えうる乱数を生成するようにはなっていない場合、自分でそのような乱数源を収集するのに使われます。
+<p>
+ふつう<code><span class="nm">ssh-rand-helper</span></code>
+は強い乱数シード (strong random seed) を生成し、それを呼び出したプログラムに標準出力を介して伝えます。標準出力が tty の場合、特に別の指定がなければ<code><span class="nm">ssh-rand-helper</span></code>
+はかわりに 16進フォーマットでシードを表示します。
+<p>
+デフォルトでは<code><span class="nm">ssh-rand-helper</span></code>
+は<span class="file"><code>/etc/ssh/ssh_prng_cmds</code></span>に記されているシステムコマンドをつかって乱数を収集します。これらのコマンドの出力はハッシュされ、呼び出し元のプログラムの乱数シードを生成するのに使われます。また、<code><span class="nm">ssh-rand-helper</span></code>
+は実行中にシードを<span class="file"><code>~/.ssh/prng_seed</code></span>ファイルに格納します。
+<p>
+あるいは、ビルド時に<code><span class="nm">ssh-rand-helper</span></code>
+が EGD/PRNGd サーバから unix ドメインソケットまたはTCP localhost ソケットを介して乱数を収集するようにconfigure されることもあります。
+<p>
+このプログラムはエンドユーザが実行するようにはできていません。そのためコマンドラインオプションはほとんどデバッグ目的だけのものです。<dl>
+<p><dt>
+<code><span class="flag">-b</span></code> <span class="arg">バイト数</span> <dd>
+出力に含める乱数のバイト数を指定します。<p><dt>
+<code><span class="flag">-x</span></code> <dd>
+バイナリ出力のかわりに 16進で出力します。<p><dt>
+<code><span class="flag">-X</span></code> <dd>
+たとえ標準出力が端末であっても、バイナリ出力を強制します。<p><dt>
+<code><span class="flag">-v</span></code> <dd>
+デバッグメッセージを出力します。複数の<code><span class="flag">-v</span></code> オプションをつけるとデバッグレベルが上がります。<p><dt>
+<code><span class="flag">-h</span></code> <dd>
+オプションの簡単な説明を出力します。</dl>
+<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+Damien Miller <djm@mindrot.org><hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+
+</body>
+</html>

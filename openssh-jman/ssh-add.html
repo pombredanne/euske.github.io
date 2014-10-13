@@ -1,0 +1,120 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSH-ADD (1)</title>
+</head><body>
+<h1>SSH-ADD (1)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">ssh-add</div>
+<blockquote>認証エージェントに秘密鍵を追加する</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">ssh-add</span></code>
+ [<code><span class="flag">-cDdkLlXx</span></code> ]
+ [<code><span class="flag">-t</span></code> <span class="arg">鍵の生存時間</span> ]
+ [<span class="arg">file</span> ]
+
+<p>
+<code><span class="nm">ssh-add</span></code>
+<code><span class="flag">-s</span></code> <span class="arg">pkcs11</span> 
+<p>
+<code><span class="nm">ssh-add</span></code>
+<code><span class="flag">-e</span></code> <span class="arg">pkcs11</span> <hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">ssh-add</span></code>
+は認証エージェントである<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>
+に、秘密鍵を追加します。引数なしで実行された場合、これは<span class="file"><code>~/.ssh/id_rsa ,</code></span><span class="file"><code>~/.ssh/id_dsa ,</code></span><span class="file"><code>~/.ssh/id_ecdsa ,</code></span><span class="file"><code>~/.ssh/id_ed25519</code></span>および<span class="file"><code>~/.ssh/identity</code></span>の各ファイルを追加します。秘密鍵を読み込んだあと、<code><span class="nm">ssh-add</span></code>
+はそれに対応する証明書情報を、秘密鍵のファイル名にサフィックス<span class="file"><code>-cert.pub</code></span>を追加したファイルから読み込もうとします。コマンドラインから別のファイル名を与えることもできます。
+<p>
+パスフレーズが必要な場合、<code><span class="nm">ssh-add</span></code>
+はユーザにそれを尋ねます。このパスフレーズはユーザの端末から読み込まれます。複数の identity ファイルが指定された場合、<code><span class="nm">ssh-add</span></code>
+は最後に入力されたパスフレーズをくり返し使います。
+<p>
+<code><span class="nm">ssh-add</span></code>
+がうまく動くためには、認証エージェントが動いていて、環境変数<span class="env">SSH_AUTH_SOCK</span> が認証エージェント用のソケット名を指していなければなりません。
+<p>
+オプションは以下のとおりです:<dl>
+<p><dt>
+<code><span class="flag">-c</span></code> <dd>
+追加された鍵を、認証に使う前に確認するよう指定します。この確認は、以下で説明する<span class="env">SSH_ASKPASS</span> プログラムによっておこなわれます。確認の成功は、<span class="env">SSH_ASKPASS</span> プログラムに入力された文字列ではなく、これが終了状態として 0 を返したかどうかによって決定されます。<p><dt>
+<code><span class="flag">-D</span></code> <dd>
+エージェントからすべての鍵を取り除きます。<p><dt>
+<code><span class="flag">-d</span></code> <dd>
+鍵を追加するのではなく、エージェントから鍵を取り除きます。<code><span class="nm">ssh-add</span></code>
+が他の引数なしで起動された場合、デフォルトの鍵とそれに対応する証明書が除かれます。引数がある場合、これらの引数のリストは除去する各公開鍵ファイルへのパス名とみなされ、一致する鍵と証明書が除かれます。与えられたパス名に公開鍵ファイルが見つからない場合、<code><span class="nm">ssh-add</span></code>
+は自動的に文字列<span class="file"><code>.pub</code></span>を追加して検索します。<p><dt>
+<code><span class="flag">-e</span></code> <span class="arg">pkcs11</span> <dd>
+PKCS#11共有ライブラリ<span class="arg">pkcs11</span> によって提供される鍵を削除します。<p><dt>
+<code><span class="flag">-k</span></code> <dd>
+エージェントに鍵を追加または削除するとき、普通の秘密鍵のみを処理し、証明書をスキップします。<p><dt>
+<code><span class="flag">-L</span></code> <dd>
+現在、エージェントによって保持されているすべての公開鍵の情報を表示します。<p><dt>
+<code><span class="flag">-l</span></code> <dd>
+現在、エージェントによって保持されているすべての鍵の指紋(fingerprint) を表示します。<p><dt>
+<code><span class="flag">-s</span></code> <span class="arg">pkcs11</span> <dd>
+PKCS#11共有ライブラリ<span class="arg">pkcs11</span> に鍵を追加します。<p><dt>
+<code><span class="flag">-t</span></code> <span class="arg">鍵の生存時間</span> <dd>
+エージェントに鍵を追加する際、その鍵の最大生存時間を指定します。生存時間は秒数、あるいは<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+で使われている形式で指定できます。<p><dt>
+<code><span class="flag">-X</span></code> <dd>
+エージェントのロックをはずします。<p><dt>
+<code><span class="flag">-x</span></code> <dd>
+エージェントをパスワードでロックします。</dl>
+<hr>
+<h2><a href="#環境変数" name="環境変数">環境変数</a></h2>
+<dl>
+<p><dt>
+<span class="env">DISPLAY</span> andSSH_ASKPASS<dd>
+<code><span class="nm">ssh-add</span></code>
+は端末で走っている場合、パスフレーズが必要になるとその端末からパスフレーズを読み込みます。<code><span class="nm">ssh-add</span></code>
+の使える端末がないときでも、環境変数<span class="env">DISPLAY</span> と<span class="env">SSH_ASKPASS</span> が設定されていれば、<code><span class="nm">ssh-add</span></code>
+は<span class="env">SSH_ASKPASS</span> で指定されたプログラムを立ち上げ、パスフレーズを読むためのX11 ウインドウを開きます。これは特に<code><span class="nm">ssh-add</span></code>
+を<span class="file"><code>.xsession</code></span>などのスクリプトから走らせるときに有効です(機種によっては、これがうまく動作するためには入力を<span class="file"><code>/dev/null</code></span>にリダイレクトしておく必要があるかもしれません)。<p><dt>
+<span class="env">SSH_AUTH_SOCK</span> <dd>
+エージェントと通信するためのUnixソケットへのパス名が入っています。</dl>
+<hr>
+<h2><a href="#関連ファイル" name="関連ファイル">関連ファイル</a></h2>
+<dl>
+<p><dt>
+<span class="file"><code>~/.ssh/identity</code></span><dd>
+そのユーザがプロトコル バージョン 1 で使用するRSA 認証用の秘密鍵が入っています。<p><dt>
+<span class="file"><code>~/.ssh/id_dsa</code></span><dd>
+そのユーザがプロトコル バージョン 2 で使用するDSA 認証用の秘密鍵が入っています。<p><dt>
+<span class="file"><code>~/.ssh/id_ecdsa</code></span><dd>
+そのユーザがプロトコル バージョン 2 で使用するECDSA 認証用の秘密鍵が入っています。<p><dt>
+<span class="file"><code>~/.ssh/id_ed25519</code></span><dd>
+そのユーザがプロトコル バージョン 2 で使用するEd25519 認証用の秘密鍵が入っています。<p><dt>
+<span class="file"><code>~/.ssh/id_rsa</code></span><dd>
+そのユーザがプロトコル バージョン 2 で使用するRSA 認証用の秘密鍵が入っています。</dl>
+
+<p>
+秘密鍵の入ったファイルは本人以外の誰にも読まれてはいけません。他人から読めるようになっていると、<code><span class="nm">ssh-add</span></code>
+はこのファイルを無視します。<hr>
+<h2><a href="#終了状態" name="終了状態">終了状態</a></h2>
+<code><span class="nm">ssh-add</span></code>
+は、成功すると終了状態として 0 を、指定されたコマンドが失敗すると 1 を、認証エージェントと通信できない場合は 2 を返します。<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+OpenSSH は Tatu Ylonen による、フリーなオリジナル版 ssh 1.2.12 リリースから派生したものです。Aaron Campbell、 Bob Beck、 Markus Friedl、 Niels Provos、Theo de Raadt および Dug Song が多くのバグを取り除き、新しい機能をふたたび追加して OpenSSH をつくりました。SSH プロトコル バージョン 1.5 および 2.0 のサポートはMarkus Friedl の貢献によるものです。
+</body>
+</html>

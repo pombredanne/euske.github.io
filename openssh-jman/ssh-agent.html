@@ -1,0 +1,107 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSH-AGENT (1)</title>
+</head><body>
+<h1>SSH-AGENT (1)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">ssh-agent</div>
+<blockquote>認証エージェント</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">ssh-agent</span></code>
+ [<code><span class="flag">-c</span></code> |s]
+ [<code><span class="flag">-d</span></code> ]
+ [<code><span class="flag">-a</span></code> <span class="arg">bindするアドレス</span> ]
+ [<code><span class="flag">-t</span></code> <span class="arg">鍵のデフォルト生存時間</span> ]
+ [<span class="arg">コマンド</span>  [<span class="arg">引数</span> ...]
+]
+
+<p>
+<code><span class="nm">ssh-agent</span></code>
+ [<code><span class="flag">-c</span></code> |s]
+<code><span class="flag">-k</span></code> <hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">ssh-agent</span></code>
+は (RSA や DSA、ECDSA、Ed25519 の) 公開鍵認証で使われる認証鍵を保持するプログラムです。基本的には、まず<code><span class="nm">ssh-agent</span></code>
+を通常 X セッションあるいはログインセッションの始めに起動させ、これ以外のすべてのウインドウやプログラムがそのssh-agent プログラムのクライアントとして起動するようにします。エージェントは環境変数を使うことにより、他のマシンに<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+を使ってログインするときに自動的に検出され、認証に利用できます。
+<p>
+認証エージェントには、起動時には何も秘密鍵がありません。鍵を追加するには<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>
+を使います。<code><span class="nm">ssh-agent</span></code>
+内には、複数の秘密鍵を同時に保持することができ、<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+は鍵が存在している場合は自動的に使用します。<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>
+は、鍵を<code><span class="nm">ssh-agent</span></code>
+から除去したり、現在保持されている鍵の一覧を表示したりするのにも使えます。
+<p>
+オプションには次のようなものがあります:<dl>
+<p><dt>
+<code><span class="flag">-a</span></code> <span class="arg">bindするアドレス</span> <dd>
+Unixソケットを<span class="arg">bind_address</span> に bind するようにします。この値は、デフォルトでは<span class="file"><code>$TMPDIR/ssh-XXXXXXXXXX/agent.&lt;ppid&gt; .</code></span>になっています。<p><dt>
+<code><span class="flag">-c</span></code> <dd>
+<kbd>標準出力</kbd>に C シェル用のコマンドを出力します。環境変数<span class="env">SHELL</span> が csh 系のシェルになっているようなら、これがデフォルトになります。<p><dt>
+<code><span class="flag">-d</span></code> <dd>
+デバッグモード。このオプションが指定されていると、<code><span class="nm">ssh-agent</span></code>
+は fork しません。<p><dt>
+<code><span class="flag">-k</span></code> <dd>
+現在動いている認証エージェント (環境変数<span class="env">SSH_AGENT_PID</span> で指定されている) を kill します。<p><dt>
+<code><span class="flag">-s</span></code> <dd>
+<kbd>標準出力</kbd>に Bourne シェル用のコマンドを出力します。環境変数<span class="env">SHELL</span> が csh 系以外のシェルのようなら、これがデフォルトです。<p><dt>
+<code><span class="flag">-t</span></code> <span class="arg">鍵のデフォルト生存時間</span> <dd>
+エージェントに追加された鍵の最大生存時間のデフォルト値を指定します。生存時間は秒数、あるいは<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+で使われている形式で指定できます。ですが、この値よりも<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>
+で値が指定されれば、そちらのほうが優先されます。このオプションが指定されない場合、いちど追加された鍵は永久に存在しつづけます。</dl>
+
+<p>
+コマンドラインが与えられた場合、そのコマンドはこの認証エージェントの子プロセスとして起動されます。与えたコマンドが終了した場合、認証エージェントも終了します。
+<p>
+認証エージェントは、ユーザのローカル PC やノートパソコン、あるいは端末で実行されるものです。認証用のデータを他のマシンに置く必要はなく、認証のためのパスフレーズがネットワーク上を流れることも決してありません。しかし認証エージェントに対する接続は SSH のリモートログインを越えて転送され、ユーザはその認証鍵によって与えられた権限をネットワーク上のどこでも安全に行使できるというわけです。
+<p>
+認証エージェントを使うためには、おもに 2 つの方法があります。ひとつは、認証エージェントがいくつかの環境変数を export した状態で新しい子プロセスを走らせる方法で、たとえば<span class="config"><code>ssh-agent xterm &</code></span>のようなものです。もうひとつは認証エージェントにシェル用のコマンドを出力させ (これは<span class="xr">sh (1)</span>
+あるいは<span class="xr">csh (1)</span>
+どちらかの文法で生成されます)、認証エージェントを呼び出したシェルがそのコマンドを評価 (eval)する方法で、たとえば<span class="xr">sh (1)</span>
+や<span class="xr">ksh (1)</span>
+などの Bourne シェル系列のシェルの場合は<span class="config"><code>eval `ssh-agent -s`</code></span>のようにし、<span class="xr">csh (1)</span>
+系列のシェルの場合は<span class="config"><code>eval `ssh-agent -c`</code></span>のようにします。
+<p>
+これ以後<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+は認証エージェントに接続するためにこれらの変数の内容を使います。
+<p>
+エージェントは要求されたチャンネルを経由して秘密鍵を送るようなことは決してしません。かわりに、秘密鍵が必要な操作はすべてエージェント側でおこない、結果だけが要求した側に返されるようになっています。このためエージェントを使うことによって秘密鍵がクライアントに漏れるようなことはありません。
+<p>
+Unixのソケットが作られ、そのソケットの名前が<span class="env">SSH_AUTH_SOCK</span> 環境変数に入れられます。このソケットはそのユーザのみがアクセス可能ですが、現在のところ root または同一ユーザの別プロセスによって簡単に悪用される危険性があります。
+<p>
+<span class="env">SSH_AGENT_PID</span> 環境変数は認証エージェントの プロセス ID を保持します。
+<p>
+(訳注: 認証エージェントに子プロセスを起動させた場合、)指定したコマンドが終了すると、認証エージェントも自動的に終了します。<hr>
+<h2><a href="#関連ファイル" name="関連ファイル">関連ファイル</a></h2>
+<dl>
+<p><dt>
+<span class="file"><code>$TMPDIR/ssh-XXXXXXXXXX/agent.&lt;ppid&gt;</code></span><dd>
+認証エージェントに対する接続を保持するUnixのソケットです。このソケットは、所有者だけが読めるようになっているはずです。このソケットは認証エージェントが終了するとき自動的に削除されます。</dl>
+<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+OpenSSH は Tatu Ylonen による、フリーなオリジナル版 ssh 1.2.12 リリースから派生したものです。Aaron Campbell、 Bob Beck、 Markus Friedl、 Niels Provos、Theo de Raadt および Dug Song が多くのバグを取り除き、新しい機能をふたたび追加して OpenSSH をつくりました。SSH プロトコル バージョン 1.5 および 2.0 のサポートはMarkus Friedl の貢献によるものです。
+</body>
+</html>

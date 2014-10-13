@@ -1,0 +1,103 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SFTP-SERVER (8)</title>
+</head><body>
+<h1>SFTP-SERVER (8)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">sftp-server</div>
+<blockquote>SFTP サーバ サブシステム</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">sftp-server</span></code>
+ [<code><span class="flag">-ehR</span></code> ]
+ [<code><span class="flag">-d</span></code> <span class="arg">開始ディレクトリ</span> ]
+ [<code><span class="flag">-f</span></code> <span class="arg">ログ出力先</span> ]
+ [<code><span class="flag">-l</span></code> <span class="arg">ログレベル</span> ]
+ [<code><span class="flag">-P</span></code> <span class="arg">ブラックリストする要求</span> ]
+ [<code><span class="flag">-p</span></code> <span class="arg">ホワイトリストする要求</span> ]
+ [<code><span class="flag">-u</span></code> <span class="arg">umask</span> ]
+<code><span class="nm">sftp-server</span></code>
+<code><span class="flag">-Q</span></code> <span class="arg">プロトコル機能</span> <hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">sftp-server</span></code>
+はサーバ側の SFTP プロトコルを標準出力に向かって話し、クライアント側の要求を標準入力から受けつけます。<code><span class="nm">sftp-server</span></code>
+は直接 実行されるためにあるのではなく、<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+の<span class="config"><code>Subsystem</code></span>オプションを使って呼び出します。
+<p>
+<code><span class="nm">sftp-server</span></code>
+へのコマンドラインオプションは<span class="config"><code>Subsystem</code></span>宣言によって指定されます。より詳しい情報については<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+を見てください。
+<p>
+使用できるオプションは以下のとおりです:<dl>
+<p><dt>
+<code><span class="flag">-d</span></code> <span class="arg">開始ディレクトリ</span> <dd>
+ユーザ用の別の開始ディレクトリを指定します。パス名は以下のトークンを含むことができます。これらは、実行時に展開されます。%% はリテラル '%' に、%h は認証されたユーザのホームディレクトリに、また%u はそのユーザのユーザ名に置換されます。デフォルトでは、そのユーザのホームディレクトリを使用します。このオプションは<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+<span class="config"><code>ChrootDirectory</code></span>と組み合わせて使うと有用です。<p><dt>
+<code><span class="flag">-e</span></code> <dd>
+デバッグのために、<code><span class="nm">sftp-server</span></code>
+のログを syslog ではなく標準エラー出力に表示します。<p><dt>
+<code><span class="flag">-f</span></code> <span class="arg">ログ出力先</span> <dd>
+<code><span class="nm">sftp-server</span></code>
+のログメッセージ出力先 (facility) を指定します。指定できる値は: DAEMON, USER, AUTH, LOCAL0, LOCAL1, LOCAL2,LOCAL3, LOCAL4, LOCAL5, LOCAL6, LOCAL7のどれかです。デフォルトは AUTH です。<p><dt>
+<code><span class="flag">-h</span></code> <dd>
+<code><span class="nm">sftp-server</span></code>
+の使用法を表示します。<p><dt>
+<code><span class="flag">-l</span></code> <span class="arg">ログレベル</span> <dd>
+<code><span class="nm">sftp-server</span></code>
+が表示するどのログメッセージを記録するかを指定します。指定できる値は:QUIET, FATAL, ERROR, INFO, VERBOSE, DEBUG, DEBUG1, DEBUG2,および DEBUG3 のどれかです。INFO および VERBOSE は<code><span class="nm">sftp-server</span></code>
+がクライアントのために実行した操作を記録します。DEBUG および DEBUG1 は等価です。DEBUG2 および DEBUG3 はそれぞれさらに高いレベルのデバッグ情報を残します。デフォルトの値は ERROR です。<p><dt>
+<code><span class="flag">-P</span></code> <span class="arg">ブラックリストする要求</span> <dd>
+サーバが禁止するSFTPプロトコル要求の一覧をカンマで区切って指定します。<code><span class="nm">sftp-server</span></code>
+は、ブラックリストした要求に対してすべて失敗を返します。<code><span class="flag">-Q</span></code> フラグはサポートされている要求のタイプを判定するのに使います。ブラックリストおよびホワイトリストの両方が指定された場合、ブラックリストの方がホワイトリストよりも先に適用されます。<p><dt>
+<code><span class="flag">-p</span></code> <span class="arg">ホワイトリストする要求</span> <dd>
+サーバが許可するSFTPプロトコル要求の一覧をカンマで区切って指定します。この一覧にない要求は、すべてログに記録され失敗メッセージが返されます。
+<p>
+この機能を使う場合は、SFTPクライアントが暗黙のうちに送信する要求が正しく許可されるよう注意する必要があります。<p><dt>
+<code><span class="flag">-Q</span></code> <span class="arg">プロトコル機能</span> <dd>
+<code><span class="nm">sftp-server</span></code>
+がサポートするプロトコル機能を問い合わせます。現在のところ、問い合わせ可能な機能は"requests"のみです。これは (<code><span class="flag">-P</span></code> および<code><span class="flag">-p</span></code> の各フラグで) ブラックリストあるいはホワイトリストを指定する際に使用します。<p><dt>
+<code><span class="flag">-R</span></code> <dd>
+この<code><span class="nm">sftp-server</span></code>
+インスタンスを読み込み専用 (read-only) モードにします。ファイルへの書き込みや、その他ファイルシステムの状態を変更する操作はすべて拒否されます。<p><dt>
+<code><span class="flag">-u</span></code> <span class="arg">umask</span> <dd>
+新しく作られるファイルに対して、明示的に<span class="xr">umask (2)</span>
+の値を指定します。これはユーザのデフォルト umask 値のかわりに使われます。</dl>
+
+<p>
+システムによっては、ログをとるためには<code><span class="nm">sftp-server</span></code>
+が<span class="file"><code>/dev/log</code></span>にアクセスできるようになっている必要があります。そのような場合、chroot 環境下で<code><span class="nm">sftp-server</span></code>
+を使うには<span class="xr">syslogd (8)</span>
+が chroot ディレクトリ内にログ用ソケットを用意するよう設定する必要があります。<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="sftp.html"><span class="xr">sftp (1)</span></a>,
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<ul><li>
+T. Ylonen S. Lehtinen  <span class="cite">"SSH File Transfer Protocol"</span> draft-ietf-secsh-filexfer-02.txt October 2001 work in progress material </ul>
+<hr>
+<h2><a href="#歴史" name="歴史">歴史</a></h2>
+<code><span class="nm">sftp-server</span></code>
+はOpenBSD 2.8で最初に登場しました。<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+<address>
+MarkusFriedl&lt;Mt markus@openbsd.org&gt;</address>
+
+</body>
+</html>

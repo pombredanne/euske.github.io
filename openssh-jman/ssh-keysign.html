@@ -1,0 +1,84 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSH-KEYSIGN (8)</title>
+</head><body>
+<h1>SSH-KEYSIGN (8)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">ssh-keysign</div>
+<blockquote>ホストベースド (host-based) 認証における ssh の補助プログラム</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">ssh-keysign</span></code>
+<hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">ssh-keysign</span></code>
+は、<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+がローカルホスト鍵にアクセスし、SSH プロトコル バージョン 2 でホストベースド (host-based) 認証をおこなう際に必要なデジタル署名を生成するのに使われます。
+<p>
+<code><span class="nm">ssh-keysign</span></code>
+はデフォルトでは使用禁止になっており、システム全体にわたるクライアントの設定ファイル<span class="file"><code>/etc/ssh/ssh_config</code></span>で<span class="config"><code>EnableSSHKeysign</code></span>設定項目を"yes"に設定したときだけ使用されます。
+<p>
+<code><span class="nm">ssh-keysign</span></code>
+は<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+によって呼び出されるもので、ユーザが直接実行するものではありません。ホストベースド認証の詳細については<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+および<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+を参照してください。<hr>
+<h2><a href="#関連ファイル" name="関連ファイル">関連ファイル</a></h2>
+<dl>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_config</code></span><dd>
+このファイルにより、<code><span class="nm">ssh-keysign</span></code>
+が使用されるかどうかが決定されます。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_dsa_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ecdsa_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ed25519_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_rsa_key</code></span><dd>
+これらのファイルにはホストの秘密鍵が格納され、デジタル署名を生成するのに使われます。これらのファイルは root が所有し、root だけが読み込み可能にすべきであり、これ以外の誰にも読ませてはいけません。これらは root だけが読み込み可能なため、ホストベースド認証を使うときは、<code><span class="nm">ssh-keysign</span></code>
+を setuid root にしておく必要があります。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_dsa_key-cert.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ecdsa_key-cert.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ed25519_key-cert.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_rsa_key-cert.pub</code></span><dd>
+これらのファイルが存在する場合、ここには秘密鍵に対応する、公開の証明書に関する情報が格納されているとみなされます。</dl>
+<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<hr>
+<h2><a href="#歴史" name="歴史">歴史</a></h2>
+<code><span class="nm">ssh-keysign</span></code>
+は3.2から導入されました。<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+<address>
+MarkusFriedl&lt;Mt markus@openbsd.org&gt;</address>
+
+</body>
+</html>

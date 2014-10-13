@@ -1,0 +1,373 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSHD (8)</title>
+</head><body>
+<h1>SSHD (8)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">sshd</div>
+<blockquote>OpenSSH SSH デーモン</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">sshd</span></code>
+ [<code><span class="flag">-46DdeiqTt</span></code> ]
+ [<code><span class="flag">-b</span></code> <span class="arg">ビット数</span> ]
+ [<code><span class="flag">-C</span></code> <span class="arg">接続指定</span> ]
+ [<code><span class="flag">-c</span></code> <span class="arg">ホスト証明書ファイル</span> ]
+ [<code><span class="flag">-E</span></code> <span class="arg">ログファイル</span> ]
+ [<code><span class="flag">-f</span></code> <span class="arg">設定ファイル</span> ]
+ [<code><span class="flag">-g</span></code> <span class="arg">ログイン制限時間</span> ]
+ [<code><span class="flag">-h</span></code> <span class="arg">ホスト鍵ファイル</span> ]
+ [<code><span class="flag">-k</span></code> <span class="arg">鍵の生成間隔</span> ]
+ [<code><span class="flag">-o</span></code> <span class="arg">オプション</span> ]
+ [<code><span class="flag">-p</span></code> <span class="arg">ポート</span> ]
+ [<code><span class="flag">-u</span></code> <span class="arg">長さ</span> ]
+<hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">sshd</span></code>
+(OpenSSH デーモン) は<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+のためのデーモンプログラムです。これらのプログラムはともに rlogin と rsh を置き換えるもので、安全でないネットワーク上にある、2つの信頼されていないホスト間で、暗号化された安全な通信を提供します。
+<p>
+<code><span class="nm">sshd</span></code>
+はクライアントからの接続を listen します。通常、これはブート時に<span class="file"><code>/etc/rc</code></span>から起動され、接続を受けつけるたびに新しいデーモンが fork します。fork したデーモンは、鍵の交換、暗号化、認証、コマンド実行、そしてデータ交換をおこないます。
+<p>
+<code><span class="nm">sshd</span></code>
+はコマンドライン オプションか、設定ファイル(デフォルトでは<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>)
+によって設定することができます。コマンドラインからのオプションは、設定ファイルで指定されている値よりも優先されます。<code><span class="nm">sshd</span></code>
+はハングアップシグナル<kbd>SIGHUP</kbd>を受け取ると、自分の設定ファイルを読み込みなおします。これは自分自身を開始したときのパス名、たとえば<span class="file"><code>/usr/sbin/sshd</code></span>とオプションを exec することによっておこないます。
+<p>
+コマンドラインオプションには次のようなものがあります:<dl>
+<p><dt>
+<code><span class="flag">-4</span></code> <dd>
+<code><span class="nm">sshd</span></code>
+が IPv4 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-6</span></code> <dd>
+<code><span class="nm">sshd</span></code>
+が IPv6 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-b</span></code> <span class="arg">ビット数</span> <dd>
+プロトコル バージョン 1 で短期的に使われるサーバ鍵のビット数を指定します (デフォルトでは 1024 ビットです)。<p><dt>
+<code><span class="flag">-C</span></code> <span class="arg">接続指定</span> <dd>
+拡張テストモード<code><span class="flag">-T</span></code> で使われる接続時のパラメータを指定します。このオプションが与えられた場合、そこで指定されているユーザ、ホスト名、およびアドレスに一致するような、設定ファイル中の<span class="config"><code>Match</code></span>指定すべてが標準出力に表示されます。接続指定は「キーワード=値」の形式で指定し、使えるキーワードは"user"、"host"、"laddr"、"lport"および"addr"です。これらは順序は関係ありませんが、すべてを指定する必要があります。これらの指定をカンマで区切るか、あるいは複数の<code><span class="flag">-C</span></code> オプションを使ってもかまいません。<p><dt>
+<code><span class="flag">-c</span></code> <span class="arg">ホスト証明書ファイル</span> <dd>
+鍵交換のさい<code><span class="nm">sshd</span></code>
+が自己の証明に使う証明書ファイルのパス名を指定します。証明書は、<code><span class="flag">-h</span></code> オプションまたは<span class="config"><code>HostKey</code></span>設定項目で指定したホスト鍵ファイルに対応するものでなければなりません。<p><dt>
+<code><span class="flag">-D</span></code> <dd>
+このオプションが指定されると<code><span class="nm">sshd</span></code>
+は切り離し (detach) をおこなわず、デーモンにはなりません。これは<code><span class="nm">sshd</span></code>
+の監視を簡単にします。<p><dt>
+<code><span class="flag">-d</span></code> <dd>
+デバッグモードにします。サーバは標準エラー出力に冗長なデバッグ表示を出力するようになり、バックグラウンドには移行しません。またサーバは fork せず、1 回の接続しか受けつけません。このオプションはサーバのデバッグのためだけに用意されています。複数の<code><span class="flag">-d</span></code> オプションをつけるとデバッグレベルが上がります。最高は 3 です。<p><dt>
+<code><span class="flag">-E</span></code> <span class="arg">ログファイル</span> <dd>
+デバッグ用ログを syslog 出力ではなく、<span class="arg">ログファイル</span> に追加します。<p><dt>
+<code><span class="flag">-e</span></code> <dd>
+デバッグ用ログを syslog のかわりに標準エラー出力に送ります。<p><dt>
+<code><span class="flag">-f</span></code> <span class="arg">設定ファイル</span> <dd>
+設定ファイルの名前を指定します。デフォルトは<span class="file"><code>/etc/ssh/sshd_config</code></span>になっています。<code><span class="nm">sshd</span></code>
+は設定ファイルがないと起動しません。<p><dt>
+<code><span class="flag">-g</span></code> <span class="arg">ログイン制限時間</span> <dd>
+クライアントが自分自身を認証するまでの制限時間を指定します(デフォルトは 120 秒)。クライアントがこの時間内にユーザを認証できなかった場合、サーバは接続を切って終了します。ゼロを値として与えると制限はなくなります。<p><dt>
+<code><span class="flag">-h</span></code> <span class="arg">ホスト鍵ファイル</span> <dd>
+ホスト鍵を読むファイルを指定します。このオプションは<code><span class="nm">sshd</span></code>
+を root 以外で起動するときは必ず指定しなければいけません(ホスト鍵のファイルはふつう root からしか読めないようになっているからです)。デフォルトでは、プロトコル バージョン 1 用の鍵が<span class="file"><code>/etc/ssh/ssh_host_key</code></span>であり、プロトコル バージョン 2 用の鍵が<span class="file"><code>/etc/ssh/ssh_host_dsa_key ,</code></span><span class="file"><code>/etc/ssh/ssh_host_ecdsa_key ,</code></span><span class="file"><code>/etc/ssh/ssh_host_ed25519_key</code></span>および<span class="file"><code>/etc/ssh/ssh_host_rsa_key</code></span>です。異なるバージョンのプロトコルやホスト鍵の方式に対し、複数のホスト鍵ファイルを指定することも可能です。<p><dt>
+<code><span class="flag">-i</span></code> <dd>
+<code><span class="nm">sshd</span></code>
+が<span class="xr">inetd (8)</span>
+から起動されることを指定します。ふつう<code><span class="nm">sshd</span></code>
+が inetd から起動されることはありません。なぜなら sshd はクライアントを受けつける前にサーバ鍵を生成しておく必要があり、これには数十秒かかるためです。鍵が毎回生成しなおされると、クライアントは非常に長い間待たされてしまいます。しかし鍵のサイズが小さければ (たとえば 512 ビットぐらい)、inetd から<code><span class="nm">sshd</span></code>
+を使うことも可能でしょう。<p><dt>
+<code><span class="flag">-k</span></code> <span class="arg">鍵の生成間隔</span> <dd>
+サーバ鍵がどれくらいの間隔で再生成されるかを指定します(デフォルトでは 3600 秒、つまり 1 時間ごとになっています)。こんなに頻繁に鍵を再生成するのは以下のような理由によります。この鍵はどこにも格納されません。そのため、このようにしておくとたとえマシンがクラックされたり物理的に乗っ取られたりしても、1 時間後には盗聴した通信を解読して鍵を見つけることは不可能になります。この値としてゼロを指定すると、鍵はまったく再生成されなくなります。<p><dt>
+<code><span class="flag">-o</span></code> <span class="arg">オプション</span> <dd>
+設定ファイルと同じ形式でオプションを与えたいときに使用します。これはコマンドラインオプションでは指定できないオプションを指定したいときに便利です。オプションの詳細と、これらがとりうる値については<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+を参照してください。<p><dt>
+<code><span class="flag">-p</span></code> <span class="arg">ポート</span> <dd>
+サーバが接続を受けつける (listen する) ポートを指定します(デフォルトは 22 です)。複数のポートオプションを指定することも可能です。なお、コマンドラインオプションでポートを指定した場合、<span class="config"><code>Port</code></span>で指定されたポートは無視されます。<span class="config"><code>ListenAddress</code></span>で指定したポートはコマンドラインで指定されたポートよりも優先されます。<p><dt>
+<code><span class="flag">-q</span></code> <dd>
+静かなモード。ふつう、<code><span class="nm">sshd</span></code>
+は接続の開始と認証および終了を syslog に残します。このオプションを指定すると syslog には何も残りません。<p><dt>
+<code><span class="flag">-T</span></code> <dd>
+拡張テストモード。設定ファイルの正当性を検査し、有効な設定項目を標準出力に表示したあと終了します。オプションとして、<code><span class="flag">-C</span></code> を指定すると、そこで指定されているひとつあるいは複数の接続パラメータに<span class="config"><code>Match</code></span>指定が適用されます。<p><dt>
+<code><span class="flag">-t</span></code> <dd>
+テストモード。設定ファイルや鍵の正当性チェックだけをおこないます。これは設定ファイル項目を変更した際に、<code><span class="nm">sshd</span></code>
+を安全に更新するのに便利です。<p><dt>
+<code><span class="flag">-u</span></code> <span class="arg">長さ</span> <dd>
+このオプションはリモートホスト名を保持させる<code>utmp</code>構造体のフィールド長を指定するのに使われます。名前解決されたホストがこの<span class="arg">len</span> よりも長い場合、ドットで区切られた 10 進の数値がかわりに保持されます。これは非常に長いホスト名をもつホストがこのフィールドをあふれさせても、一意に識別できるようにするためです。<code><span class="flag">-u0</span></code> を指定すると<span class="file"><code>utmp</code></span>ファイルにはつねにドットで区切られた 10 進値が使われるようになります。また<code><span class="flag">-u0</span></code> は<code><span class="nm">sshd</span></code>
+が DNS 要求をおこなわないようにするのにも使うことができます。ただし設定ファイルや認証メカニズムでこれが必要とされた場合はこの限りではありません。DNS を要求する可能性のある認証メカニズムは<span class="config"><code>RhostsRSAAuthentication 、</code></span><span class="config"><code>HostbasedAuthentication</code></span>および<span class="config"><code>from=pattern-list</code></span>オプションを使った鍵ファイルです。DNS を必要とする設定オプションには、<span class="config"><code>AllowUsers</code></span>あるいは<span class="config"><code>DenyUsers .</code></span>で使われている「USER@HOST」のパターンも含まれますので注意してください。</dl>
+<hr>
+<h2><a href="#認証" name="認証">認証</a></h2>
+OpenSSH SSH デーモンは、デフォルトではSSH プロトコルバージョン 2 のみをサポートしていますが、サポートするプロトコルは<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+の<span class="config"><code>Protocol</code></span>オプションで変更できます。プロトコルバージョン 2 は DSA, ECDSA, Ed25519 および RSA鍵をサポートしています。プロトコルバージョン 1 がサポートするのは RSA 鍵だけです。どちらのプロトコルでも、各ホストは識別のためのホストごとの鍵を持っており、これは通常 2048ビットからなります。
+<p>
+プロトコルバージョン 1 では、追加のサーバ鍵によってforward security(訳注: 将来、鍵が破られても現在の通信の秘匿性が保たれる特性) を提供しています。サーバ鍵は使われると通常 1 時間おきに再生成され、これは決してディスクに保存されません。クライアントが接続してくると、デーモンはそのホスト公開鍵とサーバ鍵を使って応答します。クライアントはその RSA ホスト鍵を自分のデータベース中にあるものと比較し、それが変更されていないことを確かめます。その後クライアントは 256 ビットの乱数を生成し、ホスト鍵とサーバ鍵を使って暗号化したあと暗号化された数値をサーバに送ります。以降、クライアントとサーバの両者はこの乱数をセッション鍵として使い、通信を暗号化します。これ以降の通信は一般的な Blowfish あるいは 3DES (デフォルト)暗号方式を使って暗号化されます。暗号方式は、クライアントがサーバから提供されたものの中から選択します。
+<p>
+プロトコルバージョン 2 では、forward security はDiffie-Hellman 鍵交換によって提供されます。この鍵交換プロセスにより、サーバとクライアント間で共通のセッション鍵が得られます。これ以降の通信は現在のところ128-bit AES, Blowfish, 3DES, CAST128, Arcfour, 192-bit AESあるいは 256-bit AES などの共通鍵暗号方式によって暗号化されます。暗号方式は、クライアントがサーバから提供されたものの中から選択します。さらに、通信の正真性 (integrity、訳注: 内容が改ざんされていないこと) がメッセージ認証コード (MAC) によって提供されます。これにはhmac-md5, hmac-sha1, umac-64, umac-128, hmac-ripemd160,hmac-sha2-256 あるいは hmac-sha2-512 が使われます。
+<p>
+最後にサーバとクライアントは認証をおこないます。ここではクライアントは自分自身を認証するために、ホストベースド認証 (host-based authentication)、公開鍵認証  (public key authentication)、チャレンジ・レスポンス認証 (challenge-response authentication)、またはパスワード認証 (password authentication) を使用します。
+<p>
+認証の形式に関わらず、アカウントがアクセス可能かどうかをチェックします。アカウントがロックされているか、<span class="config"><code>DenyUsers</code></span>に記載されているか、またはそのグループが<span class="config"><code>DenyGroups</code></span>に記載されている場合、アカウントはアクセスできません。ロックされたアカウントの定義はシステムに依存します。いくつかのプラットフォーム (例えば AIX) では独自のアカウントデータベースを持ち、またいくつかは passwd フィールドを変更します(Solaris および UnixWare では <kbd>*LK* ,</kbd> HP-UX では <kbd>* ,</kbd> Tru64 では <kbd>Nologin</kbd> を含みます。また FreeBSD では <kbd>*LOCKED* ,</kbd> Linux では <kbd>!!</kbd> が先行します)。あるアカウントに公開鍵認証を許可しておきながら、パスワード認証を無効にする必要がある場合、パスワードフィールドはこれら以外の値(例えば <kbd>NP</kbd> または <kbd>*NP* )</kbd> に設定する必要があります。
+<p>
+クライアントが認証に成功すると、セッションを準備するための対話がおこなわれます。この時点で、クライアントは仮想端末の使用を要求したり、X11 接続の転送、TCP 接続の転送、あるいは認証エージェントの転送などを安全な通信路を介して要求することができます。
+<p>
+この後、クライアントはシェルを要求するか、コマンドを実行します。両者はこの後セッションモードに入ります。セッションモードでは、どちらの側もいつでもデータを送ることができ、これらのデータはサーバ側のシェルやコマンドとクライアント側のユーザの端末の間でやりとりされます。
+<p>
+ユーザのプログラムが終了し、すべての転送された X11 接続やその他の接続が閉じられると、サーバはコマンドの終了状態をクライアント側に送り、両者は終了します。<hr>
+<h2><a href="#ログインの過程" name="ログインの過程">ログインの過程</a></h2>
+ユーザがログインに成功すると、<code><span class="nm">sshd</span></code>
+は以下のことをおこないます:<blockquote>
+<p><dt>
+<dd>
+ユーザが端末にログインしており、コマンドがとくに指定されていない場合、(設定ファイルまたは<span class="file"><code>~/.hushlogin</code></span>--<a href="#FILES">FILES</a>の項を参照 -- で禁止されていなければ) 前回のログイン時刻と<span class="file"><code>/etc/motd</code></span>を表示する。<p><dt>
+<dd>
+ユーザが端末にログインしている場合、ログイン時刻を記録する。<p><dt>
+<dd>
+<span class="file"><code>/etc/nologin</code></span>をチェックする。これが存在する場合、 (root でなければ)その内容を表示して終了する。<p><dt>
+<dd>
+そのユーザの通常の権限に移行する。<p><dt>
+<dd>
+基本的な環境変数を設定する。<p><dt>
+<dd>
+<span class="file"><code>~/.ssh/environment</code></span>が存在していて、ユーザの環境変数を変更することが許されていれば、それを読み込む。<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+の<span class="config"><code>PermitUserEnvironment</code></span>設定項目を参照のこと。<p><dt>
+<dd>
+ユーザのホームディレクトリに移動する。<p><dt>
+<dd>
+<span class="file"><code>~/.ssh/rc</code></span>が存在し、なおかつ<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+<span class="config"><code>PermitUserRC</code></span>が許可されている場合、それを実行する。そうでなければ、もし<span class="file"><code>/etc/ssh/sshrc</code></span>が存在しているなら、それを実行する。これ以外の場合は xauth を実行する。この"rc"ファイルには、X11 の認証プロトコルとそのクッキーが標準入力から与えられる。(下記の<a href="#SSHRC">SSHRC</a>を参照してください。)<p><dt>
+<dd>
+ユーザのシェルまたはコマンドを実行する。</blockquote>
+<hr>
+<h2><a href="#SSHRC" name="SSHRC">SSHRC</a></h2>
+<span class="file"><code>~/.ssh/rc</code></span>ファイルが存在する場合は、環境変数ファイルを読み込んだあと、ユーザのシェルやコマンドが開始する前にこのファイルが<span class="xr">sh (1)</span>
+を介して実行されます。このスクリプトは標準出力 (stdout) に何も表示してはいけません。かわりに標準エラー出力 (stderr) を使ってください。X11転送を使っている場合、このスクリプトは標準入力から「仮のクッキー」 (および<span class="env">DISPLAY</span> 環境変数) を受けとることになります。この場合、このスクリプトは<span class="xr">xauth (1)</span>
+を呼び出す必要があります。なぜならこのとき<code><span class="nm">sshd</span></code>
+は X11 クッキーを追加するために xauth を自動では呼ばないからです。
+<p>
+このファイルのおもな目的は、ユーザのホームディレクトリがアクセス可能になる前に必要な初期化作業を実行することです。そういった環境の例としてはAFS があります。
+<p>
+このファイルはおそらく以下のような初期化コードと似たものを含むことになるでしょう:<blockquote><pre>if read proto cookie && [ -n "$DISPLAY" ]; then	if [ `echo $DISPLAY | cut -c1-10` = 'localhost:' ]; then		# X11UseLocalhost=yes		echo add unix:`echo $DISPLAY |		    cut -c11-` $proto $cookie	else		# X11UseLocalhost=no		echo add $DISPLAY $proto $cookie	fi | xauth -q -fi</pre></blockquote>
+
+<p>
+このファイルが存在しない場合、<span class="file"><code>/etc/ssh/sshrc</code></span>が実行されます。このファイルも存在しない場合は、クッキーを追加するために xauth が実行されます。<hr>
+<h2><a href="#AUTHORIZED_KEYS ファイルの形式" name="AUTHORIZED_KEYS ファイルの形式">AUTHORIZED_KEYS ファイルの形式</a></h2>
+<span class="config"><code>AuthorizedKeysFile</code></span>項目は公開鍵認証のための公開鍵を格納するファイルを指定します。指定がない場合、このファイルはデフォルトで<span class="file"><code>~/.ssh/authorized_keys</code></span>および<span class="file"><code>~/.ssh/authorized_keys2</code></span>となります。このファイルには各行にひとつの鍵が格納されています (空行や <kbd>#</kbd> で始まる行はコメントとして無視されます)。プロトコル バージョン 1 の公開鍵では、空白で区切られた以下の項目が格納されています:オプション、ビット数、指数、係数 (modulus)、鍵のコメント。プロトコル バージョン 2 の公開鍵では、以下の項目が格納されています:オプション、鍵の種類、base64 エンコードされた鍵本体、鍵のコメント。オプション項目はなくてもかまいません。オプションが存在するかどうかは、この行が数字で始まるかどうかによって決定されます(オプション項目は決して数字では始まりません)。プロトコル バージョン 1 では、RSA 鍵はビット数、指数および係数 (modulus) によって表されます。コメント欄は利用されません (が、鍵を区別するのに役立ちます)。プロトコル バージョン 2 では、鍵の種類は"ecdsa-sha2-nistp256 ,""ecdsa-sha2-nistp384 ,""ecdsa-sha2-nistp521 ,""ssh-ed25519 ,""ssh-dss"あるいは"ssh-rsa"です。
+<p>
+これらのファイルでは通常、 1 行が何百バイトもの長さになっていることに注意してください(これは公開鍵の係数のサイズが大きいためです)。DSA 鍵の長さの制限は最大 8 キロバイトで、RSA 鍵の最大は 16 キロバイトです。これを手でタイプする気にはならないでしょう。かわりに<span class="file"><code>identity.pub ,</code></span><span class="file"><code>id_dsa.pub ,</code></span><span class="file"><code>id_ecdsa.pub ,</code></span><span class="file"><code>id_ed25519.pub</code></span>あるいは<span class="file"><code>id_rsa.pub</code></span>をコピーして、それを編集してください。
+<p>
+<code><span class="nm">sshd</span></code>
+では、プロトコル 1 とプロトコル 2 の両方で、RSA 鍵の長さが少なくとも 768 ビット以上である必要があります。
+<p>
+オプションは (もしあれば) カンマによって区切ることができます。間にスペースを入れてはいけませんが、ダブルクォートの間にはさめばオッケーです。以下のオプションがサポートされています(これらのキーワードは大文字小文字を区別しません) :<dl>
+<p><dt>
+<span class="config"><code>cert-authority</code></span><dd>
+ここで指定されている鍵が、認証局 (CA) のものであることを指定します。CA はユーザ認証のための署名された証明書を確認するときに使われます。
+<p>
+証明書には、これら鍵のオプションと同様のアクセス制限が指定されていることもあります。証明書と鍵のオプションの両方でアクセス制限が指定されている場合は、これら2つのうち最小の和集合 (原文: the most restrictive union of the two) となるものが適用されます。<p><dt>
+<span class="config"><code>command=command</code></span><dd>
+このオプションを使うと、認証にこの鍵が使われたときは必ずここで指定されたコマンドが実行されるようになります。ユーザが (訳注: クライアント側で) 指定したコマンドは無視されます。クライアント側が仮想端末を要求していれば、ここで指定されたコマンドは仮想端末上で実行されます。そうでなければ端末なしで実行されます。8-bit クリーンな通信が欲しい場合は、仮想端末を要求してはいけません。あるいは<span class="config"><code>no-pty</code></span>オプションを使ってください。コマンド文字列中にダブルクォートを入れたいときは、前にバックスラッシュをつけてください。このオプションは、ある公開鍵には特定の操作だけしかさせないようにするのに有効です。例として、リモートバックアップだけをさせて、それ以外な何もさせないような鍵がつくれます。クライアントの TCP や X11 転送は、明示的に禁止されていない限り可能なので注意してください。クライアントによって元々実行されたコマンドラインは環境変数<span class="env">SSH_ORIGINAL_COMMAND</span> に格納されています。注意: このオプションはシェル、コマンドまたはサブシステムの実行に適用されます。また、このコマンドは<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+<span class="config"><code>ForceCommand</code></span>項目か、あるいは証明書中に指定されているコマンドで上書きされる可能性があることに注意してください。<p><dt>
+<span class="config"><code>environment=NAME=value</code></span><dd>
+認証にこの鍵が使われたとき、環境変数に追加される文字列を指定します。このやりかたで指定した環境変数は、デフォルトの環境変数の値を上書きします。このオプションは複数個指定することも可能です。環境変数の変更はデフォルトでは禁止されており、これを許可するには<span class="config"><code>PermitUserEnvironment</code></span>を設定する必要があります。<span class="config"><code>UseLogin</code></span>を使っているときは、このオプションは自動的に禁止されます。<p><dt>
+<span class="config"><code>from=pattern-list</code></span><dd>
+このオプションをつけると、公開鍵認証に加えて、カンマで区切ったリモートホスト名 (canonical name) または IPアドレスをチェックできるようになります。パターンに関する詳細は、<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+の「パターン」の項を参照してください。
+<p>
+ホスト名やIPアドレスにはワイルドカード指定が使用できますが、<span class="config"><code>from</code></span>節には CIDR表記 (アドレス/マスク長 の形式) で IPアドレス群を指定することもできます。
+<p>
+このオプション目的は、セキュリティのさらなる向上です:公開鍵認証それ自体は、(鍵を除いて) ネットワークやネームサーバ、その他ありとあらゆるものを信用しません。しかし、もし何者かが何らかの方法で鍵を盗むことができれば、その鍵を使って世界のどこからでもログインできてしまうことになります。このオプションは、そのような盗まれた鍵を使うことをより困難にします (もしこれを使おうとするなら、鍵のほかにネームサーバやルータなどにまで侵入しなくてはならないからです)。<p><dt>
+<span class="config"><code>no-agent-forwarding</code></span><dd>
+認証にこの鍵が使われたときは、認証エージェントの転送が禁止されます。<p><dt>
+<span class="config"><code>no-port-forwarding</code></span><dd>
+認証にこの鍵が使われたときは TCP 転送が禁止されます。クライアントがポート転送を要求しても、すべてエラーになります。たとえば、これは<span class="config"><code>command</code></span>オプションの指定されている接続などで使われます。<p><dt>
+<span class="config"><code>no-pty</code></span><dd>
+端末の割り当てを禁止します(仮想端末の割り当てが失敗するようになります)。<p><dt>
+<span class="config"><code>no-user-rc</code></span><dd>
+<span class="file"><code>~/.ssh/rc</code></span>の実行を禁止します。<p><dt>
+<span class="config"><code>no-X11-forwarding</code></span><dd>
+認証にこの鍵が使われたときは X11 転送が禁止されます。クライアントが X11 転送を要求しても、すべてエラーになります。<p><dt>
+<span class="config"><code>permitopen=host:port</code></span><dd>
+ローカルな<code>``ssh -L''</code>のポート転送先を、指定されたホストの指定されたポートのみに限定します。IPv6 アドレスは、ブラケット [ ] で区切って指定できます。<span class="config"><code>permitopen</code></span>オプションはカンマで区切って複数個指定することもできます。パターンマッチングはおこなわれません。ホスト名にはドメイン名かアドレスをそのまま書く必要があります。<span class="config"><code>*</code></span>のようなポート指定は、どのポートにもマッチします。<p><dt>
+<span class="config"><code>principals=principals</code></span><dd>
+<span class="config"><code>cert-authority</code></span>行で、証明書による認証が許可されている principal の一覧をカンマで区切って指定します。その認証が受け入れられるためには、少なくともこれらのうちひとつの名前が、証明書の principal 一覧に記されている必要があります。このオプションは、<span class="config"><code>cert-authority</code></span>で指定される、信頼された証明書の署名者とみなされていない鍵に対しては無視されます。<p><dt>
+<span class="config"><code>tunnel=n</code></span><dd>
+サーバ側の<span class="xr">tun (4)</span>
+デバイスを強制的に指定します。このオプションがない場合、クライアントがトンネリングを要求すると、現在の次に使用可能なデバイスが使われます。</dl>
+
+<p>
+authorized_keys ファイルの例:<blockquote><pre># コメントをつけるときは行頭からssh-rsa AAAAB3Nza...LiPk== user@example.netfrom="*.sales.example.net,!pc.sales.example.net" ssh-rsaAAAAB2...19Q== john@example.netcommand="dump /home",no-pty,no-port-forwarding ssh-dssAAAAC3...51R== example.netpermitopen="192.0.2.1:80",permitopen="192.0.2.2:25" ssh-dssAAAAB5...21S==tunnel="0",command="sh /etc/netstart tun0" ssh-rsa AAAA...==jane@example.net</pre></blockquote>
+<hr>
+<h2><a href="#ssh_known_hosts ファイルの形式" name="ssh_known_hosts ファイルの形式">ssh_known_hosts ファイルの形式</a></h2>
+<span class="file"><code>/etc/ssh/ssh_known_hosts</code></span>および<span class="file"><code>~/.ssh/known_hosts</code></span>の各ファイルは今までに知られているホストの公開鍵をすべて格納しています。システム全体で使われる known_hosts ファイル(大域的 known_hosts ファイル) は管理者によって用意され (必須ではありません)、ユーザ用の known_hosts ファイルは自動的に更新されます。ユーザがまだ知られていないホストに接続すると、そのホスト鍵が自動的にユーザ用 known_hosts ファイルに追加されるようになっています。
+<p>
+これらの known_hosts ファイルの各行は次のような項目からなっています:マーカー (オプション)、ホスト名、ビット数、指数、係数 (modulus)、そしてコメント。各項目はスペースによって区切られています。
+<p>
+マーカーは必須ではありませんが、存在する場合は以下のいずれかになります:"@cert-authority"はこの行が認証局 (CA) の鍵であることを示します。また、"@revoked"は、この行の鍵は廃止されたものであり、以後決して許可されるべきでないことを示しています。ひとつの行に使えるマーカーは 1つだけです。
+<p>
+ホスト名はカンマで区切られたパターン列です( <kbd>*</kbd> および <kbd>?</kbd> はワイルドカードとして使われます)。各パターンは、クライアントを認証している場合は順にそのホストの正式名と比較され、サーバを認証している場合はユーザが与えた名前と比較されます。パターンの先頭に <kbd>!</kbd> をつけると「〜でない」という否定 (negation) の意味になります。否定されたパターンにマッチしたホストは、たとえその行の他のパターンにマッチしても (その行では)受けつけられません。ホスト名またはアドレスには、ブラケット <kbd>[</kbd> および <kbd>]</kbd> で囲んだあと、 <kbd>:</kbd> の後に標準的でないポート番号を加えることもできます。
+<p>
+もうひとつの形式として、各ホスト名はハッシュされた形式で格納されていることもあります。これは、万が一そのファイルが見られた時でも、そのホスト名や IP アドレスが識別できないようにするためです。ハッシュされたホスト名は <kbd>|</kbd> 文字から始まります。各行はハッシュされたホスト名をひとつだけ持ち、これらに上記の否定表現やワイルドカード演算子を適用することはできません。
+<p>
+ビット数、指数および係数は RSA ホスト鍵から直接取り込まれます。たとえばこれらは<span class="file"><code>/etc/ssh/ssh_host_key.pub</code></span>などから取得されます。オプションのコメントは行末まで続き、これは無視されます。
+<p>
+ <kbd>#</kbd> で始まる行および空行はコメントとして無視されます。
+<p>
+ホスト間認証をおこなう際、どれか適切な鍵をもった行がマッチすれば、認証は受け入れられます。この鍵と正確に一致しているか、あるいはサーバが認証用の証明書を提供している場合は、その証明書に署名した認証局 (CA) の鍵と一致している場合です。ある鍵が CA として信用されるためには、上記の"@cert-authority"マーカーを使う必要があります。
+<p>
+known_hosts ファイルはまた、対応する秘密鍵が盗まれたりなどして廃止された鍵を指定するのに使うこともできます。廃止された鍵を指定する場合は"@revoked"マーカーをその鍵の行頭に指定します。この鍵は以後決して認証や認証局の鍵として受け入れられることはなく、かわりにが遭遇した場合には警告が表示されます。
+<p>
+同じ名前が複数の行にあったり、同一ホストに異なるホスト鍵が書いてあったりしても受けつけられます (が、おすすめはしません)。異なったドメインにあるホスト名の短縮形がひとつのファイルにまとめられているときは、これは仕方がないでしょう。また、これらのファイルには互いに矛盾する情報が書かれていることもあり得ます。その場合は、どれかのファイルに正しい情報が書いてあれば認証は受け入れられます。
+<p>
+注意。これらのファイルの各行は、ふつう何百文字もの長さになっています。もちろんこんなホスト鍵を手で入力したくはないでしょう。かわりに<a href="ssh-keyscan.html"><span class="xr">ssh-keyscan (1)</span></a>
+を使ったスクリプトで生成するか、<span class="file"><code>/etc/ssh/ssh_host_key.pub</code></span>をとってきてその先頭にホスト名をつけ加えるかしてください。<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+では、<span class="file"><code>~/.ssh/known_hosts</code></span>を自動的に修正する機能をいくつか提供しています。たとえばあるホスト名の鍵を除去するとか、すべてのホスト名をハッシュ表記に置き換えるといったことです。
+<p>
+ssh_known_hosts の例:<blockquote><pre># コメントをつけるときは行頭からclosenet,...,192.0.2.53 1024 37 159...93 closenet.example.netcvs.example.net,192.0.2.10 ssh-rsa AAAA1234.....=# ハッシュされたホスト名|1|JfKTdBh7rNbXkVAQCRp4OQoPfmI=|USECr3SWf1JUPsms5AqfD5QfxkM= ssh-rsaAAAA1234.....=# 廃止された鍵+@revoked * ssh-rsa AAAAB5W...# CA鍵、 *.mydomain.com または *.mydomain.org のどのホストでも許可される@cert-authority *.mydomain.org,*.mydomain.com ssh-rsa AAAAB5W...</pre></blockquote>
+<hr>
+<h2><a href="#関連ファイル" name="関連ファイル">関連ファイル</a></h2>
+<dl>
+<p><dt>
+<span class="file"><code>~/.hushlogin</code></span><dd>
+このファイルがあると、<span class="config"><code>PrintLastLog</code></span>および<span class="config"><code>PrintMotd</code></span>がそれぞれ許可されている場合でも最終ログイン時刻と<span class="file"><code>/etc/motd</code></span>ファイルの表示はされなくなります。しかし<span class="config"><code>Banner</code></span>によって指定されているバナーはかならず表示します。
+<p>
+<p><dt>
+<span class="file"><code>~/.rhosts</code></span><dd>
+このファイルはホストベースド認証 (host-based authentication-- 詳しくは<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+を参照) で使われます。<code><span class="nm">sshd</span></code>
+はこのファイルを root として読むため、ユーザのホームディレクトリが NFS 上にある場合、マシンによっては、このファイルは誰にでも読めるようにしておく必要があるかもしれません。
+<p>
+<p><dt>
+<span class="file"><code>~/.shosts</code></span><dd>
+このファイルは<span class="file"><code>.rhosts</code></span>とまったく同じように扱われます。しかしこれは rlogin/rsh から使われることなくホストベースド認証を許可することができます。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/</code></span><dd>
+このディレクトリはユーザ用のすべての設定や認証用の情報が入るデフォルトの場所です。一般的に、このディレクトリの内容をまるごと隠しておくという必要があるわけではありませんが、推奨されるパーミッションは、所有者に対しては read/write/execute を許可し、他の人にはアクセスさせないようにしておく、というものです。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/authorized_keys</code></span><dd>
+そのユーザのアカウントでログインするときに使われる公開鍵 (DSA, ECDSA, Ed25519, RSA) の一覧が入っています。このファイルの形式は上で説明されています。このファイルの内容はそれほど秘密にする必要はありませんが、推奨されるパーミッションは、その所有者のみが読み書き可能で、それ以外の人には読めないようにしておくというものです。
+<p>
+このファイル本体、あるいは<span class="file"><code>~/.ssh</code></span>ディレクトリ、あるいはそのユーザのホームディレクトリに対して他のユーザが書き込み可能になっている場合、権限のないユーザでもこのファイルを変更あるいは置き換えることができていまいます。このような場合、<code><span class="nm">sshd</span></code>
+は<span class="config"><code>StrictModes</code></span>が"no"に設定されていない限り、このファイルの内容を使用しません。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/environment</code></span><dd>
+このファイルは (存在している場合)、ログイン時に環境変数に読み込まれます。これが含んでいてよいのは、空行、( <kbd>#</kbd> で始まる) コメント行、および ``変数名=値'' の形式の代入行だけです。このファイルはそのユーザにのみ書き込み可能にしておいてください。他の人が読めるようにしておく必要はありません。環境変数の変更はデフォルトでは禁止されており、これを許可するには<span class="config"><code>PermitUserEnvironment</code></span>項目を設定する必要があります。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/known_hosts</code></span><dd>
+そのユーザがこれまでにログインしたすべてのホストのホスト鍵で、システム全体で使われる /etc/ssh/ssh_known_hosts の一覧に含まれていないものが格納されています。このファイルの形式は上で説明されています。これらのファイルは root や所有者にのみ書き込み可能にしておくべきですが、誰にでも読めるようにしておく必要はありません。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/rc</code></span><dd>
+ユーザのホームディレクトリがアクセス可能になる前に実行すべき初期化作業が格納されています。このファイルの形式は上で説明されています。これらのファイルは所有者にのみ書き込み可能にしておくべきです。誰にでも読めるようにしておく必要はありません。
+<p>
+<p><dt>
+<span class="file"><code>/etc/hosts.equiv</code></span><dd>
+このファイルはホストベースド認証 (host-based authentication-- 詳しくは<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+を参照) で使われます。このファイルは root のみ書き込み可能にしておくべきです。
+<p>
+<p><dt>
+<span class="file"><code>/etc/moduli</code></span><dd>
+Diffie-Hellman 鍵交換 (Diffie-Hellman Group Exchange) で使われる、Diffie-Hellman 群を格納します。このファイルの形式は<span class="xr">moduli (5)</span>
+で説明されています。
+<p>
+<p><dt>
+<span class="file"><code>/etc/motd</code></span><dd>
+<span class="xr">motd (5)</span>
+を参照してください。
+<p>
+<p><dt>
+<span class="file"><code>/etc/nologin</code></span><dd>
+このファイルが存在していると、<code><span class="nm">sshd</span></code>
+は root を除くすべてのユーザのログインを拒否します。このファイルの内容は root 以外でログインしようとして拒否された人に対して表示されます。このファイルは誰にでも読めるようになっている必要があります。
+<p>
+<p><dt>
+<span class="file"><code>/etc/shosts.equiv</code></span><dd>
+これは<span class="file"><code>hosts.equiv</code></span>とまったく同じように扱われます。しかしこれは rlogin/rsh から使われることなくホストベースド認証を許可することができます。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_dsa_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ecdsa_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ed25519_key</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_rsa_key</code></span><dd>
+これらのファイルはホストの秘密鍵を格納します。このファイルは root が所有し、root だけが読み込み可能にすべきであり、これ以外の誰にも読ませてはいけません。<code><span class="nm">sshd</span></code>
+はこのファイルが誰にでも読めるようになっていると起動しないので注意してください。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_key.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_dsa_key.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ecdsa_key.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_host_ed25519_key.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>/ssh/etc/ssh_host_rsa_key.pub</code></span><dd>
+これらのファイルはホスト鍵の公開鍵部分を格納します。このファイルは誰にでも読めるようになっている必要がありますが、書き込めるのは root だけにしてください。この内容は秘密鍵のファイルと対応しています。このファイルが実際に使われることはありません。これは単にユーザの便宜をはかるためだけに存在し、ユーザはこれを known_hosts ファイルにコピーすることができます。これら 2 つのファイル (秘密鍵と公開鍵) は<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>
+を使って生成することができます。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/ssh_known_hosts</code></span><dd>
+システム全体で使われるホスト鍵の一覧です。このファイルはシステム管理者によって用意され、その組織のすべてのマシンのホスト鍵を含んでいるべきです。このファイルの形式は上で説明されています。これらのファイルは root や所有者にのみ書き込み可能にしておくべきであり、誰にでも読めるようになっている必要があります。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/sshd_config</code></span><dd>
+<code><span class="nm">sshd</span></code>
+の設定ファイルです。このファイルの形式と設定項目は<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+で説明されています。
+<p>
+<p><dt>
+<span class="file"><code>/etc/ssh/sshrc</code></span><dd>
+<span class="file"><code>~/.ssh/rc</code></span>に似ています。これはそのマシン全体にわたってログイン時の初期化を指定するのに使われます。これはroot のみ書き込み可能にしておき、誰からも読めるようにしておくべきです。
+<p>
+<p><dt>
+<span class="file"><code>/var/empty</code></span><dd>
+<code><span class="nm">sshd</span></code>
+が特権分離の際に、認証前の段階で使用する<span class="xr">chroot (2)</span>
+用のディレクトリです。このディレクトリはどんなファイルも含んでいてはならず、所有者は root で、他の人あるいはグループが書きこめるようになっていてはいけません。
+<p>
+<p><dt>
+<span class="file"><code>/var/run/sshd.pid</code></span><dd>
+現在、接続を受けつけている<code><span class="nm">sshd</span></code>
+のプロセス ID が入っています (複数の<code><span class="nm">sshd</span></code>
+が異なるポートで走っているときは、最後に開始したプロセスの ID が入ります)。このファイルの内容は機密事項ではなく、誰でも読めるようにしてかまいません。</dl>
+<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="scp.html"><span class="xr">scp (1)</span></a>,
+<a href="sftp.html"><span class="xr">sftp (1)</span></a>,
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="ssh-keyscan.html"><span class="xr">ssh-keyscan (1)</span></a>,
+<span class="xr">chroot (2)</span>,
+<span class="xr">login.conf (5)</span>,
+<span class="xr">moduli (5)</span>,
+<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>,
+<span class="xr">inetd (8)</span>,
+<a href="sftp-server.html"><span class="xr">sftp-server (8)</span></a>
+<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+OpenSSH は Tatu Ylonen による、フリーなオリジナル版 ssh 1.2.12 リリースから派生したものです。Aaron Campbell、 Bob Beck、 Markus Friedl、 Niels Provos、Theo de Raadt および Dug Song が多くのバグを取り除き、新しい機能をふたたび追加して OpenSSH をつくりました。SSH プロトコル バージョン 1.5 および 2.0 のサポートはMarkus Friedl の貢献によるものです。Niels Provos および Markus Friedl が特権分離のサポートに貢献しました。
+</body>
+</html>

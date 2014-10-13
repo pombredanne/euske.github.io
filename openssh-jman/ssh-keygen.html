@@ -1,0 +1,434 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SSH-KEYGEN (1)</title>
+</head><body>
+<h1>SSH-KEYGEN (1)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">ssh-keygen</div>
+<blockquote>認証用の鍵を生成、管理、および変換する</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">ssh-keygen</span></code>
+ [<code><span class="flag">-q</span></code> ]
+ [<code><span class="flag">-b</span></code> <span class="arg">ビット数</span> ]
+ [<code><span class="flag">-t</span></code> <span class="config"><code>dsa | ecdsa | ed25519 | rsa | rsa1</code></span>]
+ [<code><span class="flag">-N</span></code> <span class="arg">新しいパスフレーズ</span> ]
+ [<code><span class="flag">-C</span></code> <span class="arg">コメント</span> (訳注:SSH1のみ)]
+ [<code><span class="flag">-f</span></code> <span class="arg">出力先identityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-p</span></code>  [<code><span class="flag">-P</span></code> <span class="arg">古いパスフレーズ</span> ]
+ [<code><span class="flag">-N</span></code> <span class="arg">新しいパスフレーズ</span> ]
+ [<code><span class="flag">-f</span></code> <span class="arg">パスフレーズを変更するidentityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-i</span></code>  [<code><span class="flag">-m</span></code> <span class="arg">鍵の形式</span> ]
+ [<code><span class="flag">-f</span></code> <span class="arg">変換するidentityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-e</span></code>  [<code><span class="flag">-m</span></code> <span class="arg">鍵の形式</span> ]
+ [<code><span class="flag">-f</span></code> <span class="arg">変換するidentityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-y</span></code>  [<code><span class="flag">-f</span></code> <span class="arg">identityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-c</span></code>  [<code><span class="flag">-P</span></code> <span class="arg">パスフレーズ</span> ]
+ [<code><span class="flag">-C</span></code> <span class="arg">コメント</span> ]
+ [<code><span class="flag">-f</span></code> <span class="arg">コメントを変更するidentityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-l</span></code>  [<code><span class="flag">-f</span></code> <span class="arg">指紋を表示するidentityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-B</span></code>  [<code><span class="flag">-f</span></code> <span class="arg">ダイジェストを表示するidentityファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-D</span></code> <span class="arg">pkcs11</span> 
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-F</span></code> <span class="arg">ホスト名</span>  [<code><span class="flag">-f</span></code> <span class="arg">known_hostsファイル</span> ]
+ [<code><span class="flag">-l</span></code> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-H</span></code>  [<code><span class="flag">-f</span></code> <span class="arg">known_hostsファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-R</span></code> <span class="arg">ホスト名</span>  [<code><span class="flag">-f</span></code> <span class="arg">known_hostsファイル</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-r</span></code> <span class="arg">ホスト名</span>  [<code><span class="flag">-f</span></code> <span class="arg">入力するidentityファイル</span> ]
+ [<code><span class="flag">-g</span></code> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-G</span></code> <span class="arg">出力ファイル</span>  [<code><span class="flag">-v</span></code> ]
+ [<code><span class="flag">-b</span></code> <span class="arg">ビット数</span> ]
+ [<code><span class="flag">-M</span></code> <span class="arg">使用メモリ量</span> ]
+ [<code><span class="flag">-S</span></code> <span class="arg">開始位置</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-T</span></code> <span class="arg">出力ファイル</span> <code><span class="flag">-f</span></code> <span class="arg">入力ファイル</span>  [<code><span class="flag">-v</span></code> ]
+ [<code><span class="flag">-a</span></code> <span class="arg">ラウンド数</span> ]
+ [<code><span class="flag">-J</span></code> <span class="arg">行数</span> ]
+ [<code><span class="flag">-j</span></code> <span class="arg">開始行</span> ]
+ [<code><span class="flag">-K</span></code> <span class="arg">チェックポイント</span> ]
+ [<code><span class="flag">-W</span></code> <span class="arg">ジェネレータ</span> ]
+
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-s</span></code> <span class="arg">CA鍵</span> <code><span class="flag">-I</span></code> <span class="arg">証明書の秘密鍵</span>  [<code><span class="flag">-h</span></code> ]
+ [<code><span class="flag">-n</span></code> <span class="arg">principal</span> ]
+ [<code><span class="flag">-O</span></code> <span class="arg">オプション</span> ]
+ [<code><span class="flag">-V</span></code> <span class="arg">有効期間</span> ]
+ [<code><span class="flag">-z</span></code> <span class="arg">シリアル番号</span> ]
+<span class="arg">file</span> 
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-L</span></code>  [<code><span class="flag">-f</span></code> <span class="arg">入力する鍵ファイル</span> ]
+<code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-A</span></code> <code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-k</span></code> <code><span class="flag">-f</span></code> <span class="arg">KRLファイル</span>  [<code><span class="flag">-u</span></code> ]
+ [<code><span class="flag">-s</span></code> <span class="arg">ca_public</span> ]
+ [<code><span class="flag">-z</span></code> <span class="arg">version_number</span> ]
+<span class="arg">file</span> <code><span class="nm">ssh-keygen</span></code>
+<code><span class="flag">-Q</span></code> <code><span class="flag">-f</span></code> <span class="arg">KRLファイル</span> <span class="arg">file</span> <hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">ssh-keygen</span></code>
+は<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+で認証に使う鍵を生成、管理および変換します。<code><span class="nm">ssh-keygen</span></code>
+は SSH プロトコル バージョン 1 で使われる RSA 鍵と、SSH プロトコル バージョン 2 で使われる DSA 鍵、ECDSA 鍵、Ed25519 鍵および RSA 鍵を生成できます。生成する鍵の種類は<code><span class="flag">-t</span></code> オプションによって指定できます。この指定がない場合、<code><span class="nm">ssh-keygen</span></code>
+は SSH プロトコル バージョン 2 で使われる RSA 鍵を生成します。
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+は Diffie-Hellman 群交換 (DH-GEX) で使われる群を生成するのにも使用します。詳しくは、<a href="#係数 (modulus) の生成">係数 (modulus) の生成</a>の項を参照してください。
+<p>
+最後に、<code><span class="nm">ssh-keygen</span></code>
+は鍵失効リスト (Key Revocation List, KRL) を生成したり、与えられた鍵は revoke されたものかどうかを検査するのに使うことができます。詳しくは、<a href="#鍵失効リスト">鍵失効リスト</a>を参照してください。
+<p>
+ふつう、公開鍵認証で SSH を使いたいユーザは、一度このプログラムを実行すれば<span class="file"><code>~/.ssh/identity ,</code></span><span class="file"><code>~/.ssh/id_dsa ,</code></span><span class="file"><code>~/.ssh/id_ecdsa ,</code></span><span class="file"><code>~/.ssh/id_ed25519</code></span>または<span class="file"><code>~/.ssh/id_rsa</code></span>に鍵 (identity ファイル) を作ることができます。また<span class="file"><code>/etc/rc</code></span>などで見られるように、システム管理者がホスト鍵を生成するためにこのプログラムを使うこともできます。
+<p>
+通常、このプログラムは鍵を生成したあと、その鍵 (identity) をどのファイルに格納すればよいのか尋ねます。公開鍵は、秘密鍵を含む identityファイルの名前に".pub"をつけた名前のファイルとして格納されます。またこのプログラムはパスフレーズも尋ねてきます。任意の長さの文字列をパスフレーズとして使用することができます。パスフレーズをつけないときには、これは空でもかまいません(ホスト鍵のパスフレーズは必ず空でなければいけません)。パスフレーズはパスワードに似ていますが、パスワードとは違って単語の列や句読点、数値、空白など、好きな文字を含めることができます。よいパスフレーズとは、10〜30 文字程度の長さで、簡単な文章や容易に推測できるものではないことです (英語の散文では 1 文字あたりのエントロピーはわずか 1〜2 ビットしかなく、パスフレーズとしては非常に望ましくありません)。また大文字と小文字が混じっているものがよいでしょう。パスフレーズは<code><span class="flag">-p</span></code> オプションによって、後から変更することもできます。
+<p>
+失われてしまったパスフレーズをもとに戻すことはできません。もしパスフレーズを忘れてしまったり、なくしてしまったときには、新しい鍵を生成してその公開鍵を別のマシンにコピーしなくてはならないでしょう。
+<p>
+RSA1 鍵 (訳注: SSH1 で使う鍵) の場合、鍵のファイルにはコメントフィールドがあります。これはユーザが鍵を区別するためだけに便宜的に用意されているものです(訳注: SSH2 の鍵にはコメントはありません)。コメントには鍵の用途やその他有用な情報を書いておくことができます。最初に鍵が作られるとき、コメントは"user@host"の形に初期化されますが、<code><span class="flag">-c</span></code> オプションを使えば変更することができます。
+<p>
+鍵を生成したあと、それを使用可能にするためにどこに置けばよいかは後で説明しています。
+<p>
+オプションには次のようなものがあります:<dl>
+<p><dt>
+<code><span class="flag">-A</span></code> <dd>
+鍵の各種類 (rsa1, rsa, dsa, ecdsa および ed25519) に対して、その種類のホスト鍵が存在しない場合には、空のパスフレーズとデフォルトのビット数、デフォルトのコメントをもつホスト鍵をデフォルトのパス名に生成します。これは<span class="file"><code>/etc/rc</code></span>が新しいホスト鍵を生成するときに使います。<p><dt>
+<code><span class="flag">-a</span></code> <span class="arg">ラウンド数</span> <dd>
+新しい形式の秘密鍵 (Ed25519 鍵や<code><span class="flag">-o</span></code> オプションを使ったときの SSH プロトコル 2 の鍵) を保存する場合、このオプションは KDF (key derivation function) ラウンドの数を指定します。大きな数値にするとパスワード検証にそれだけ時間がかかるようになり、(キーが盗まれたときの) 総当たりのパスワード推測をやりにくくします。
+<p>
+<code><span class="flag">-T</span></code> コマンドを使って DH-GEX 群の候補をスクリーニングする場合は、このオプションは素数判定テストをおこなう回数を指定します。<p><dt>
+<code><span class="flag">-B</span></code> <dd>
+指定された秘密鍵あるいは公開鍵ファイルの bubblebabble ダイジェストを表示します。<p><dt>
+<code><span class="flag">-b</span></code> <span class="arg">ビット数</span> <dd>
+生成する鍵のビット数を指定します。RSA 鍵の場合、最小のサイズは 768 ビットであり、デフォルトは 2048 ビットです。ふつうは 2048 ビットの鍵で充分だと考えられています。DSA 鍵の場合、FIPS 186-2 の規定によりサイズは正確に 1024 ビットでなければなりません。ECDSA 鍵の場合、<code><span class="flag">-b</span></code> オプションは楕円曲線の大きさを次の3種類の中から選ぶことによって鍵の長さを指定します: 256、384 あるいは 521 ビット。これら以外の値を指定しようとした場合は失敗します。Ed25519 鍵は固定長であり、<code><span class="flag">-b</span></code> オプションは無視されます。<p><dt>
+<code><span class="flag">-C</span></code> <span class="arg">コメント</span> <dd>
+新しいコメントを追加します。<p><dt>
+<code><span class="flag">-c</span></code> <dd>
+秘密鍵ファイルおよび公開鍵ファイルのコメントを変更します。このオプションは プロトコル バージョン 1 における RSA 鍵に対してのみ有効です。まず秘密鍵の入っているファイル名を訊かれ、パスフレーズがあればそれを入力したあとに新しいコメントを入力します。<p><dt>
+<code><span class="flag">-D</span></code> <span class="arg">pkcs11</span> <dd>
+ここで指定する PKCS#11 共有ライブラリ<span class="arg">pkcs11</span> に格納されている RSA 公開鍵を読み込みます。<code><span class="flag">-s</span></code> と一緒に使用された場合、このオプションは CA 鍵が PKCS#11 トークン中に格納されていることを指定します。(詳しくは<a href="#証明書">証明書</a>のセクションをごらんください)<p><dt>
+<code><span class="flag">-e</span></code> <dd>
+このオプションは OpenSSH 形式の秘密鍵あるいは公開鍵ファイルを読み、<code><span class="flag">-m</span></code> オプションで指定された形式で標準出力に表示します。デフォルトの形式は"RFC4716"です。このオプションを使うと、OpenSSH の鍵をいくつかの商用 SSH 実装で使われている形式の鍵に変換できます。<p><dt>
+<code><span class="flag">-F</span></code> <span class="arg">ホスト名</span> <dd>
+指定された<span class="arg">ホスト名</span> を<span class="file"><code>known_hosts</code></span>ファイルの中から探し、見つかったものを一覧表示します。このオプションはハッシュされたホスト名あるいは IP アドレスを見つけるのに有用です。また、<code><span class="flag">-H</span></code> オプションと組み合わせてハッシュされた形式の公開鍵を表示するのにも使えます。<p><dt>
+<code><span class="flag">-f</span></code> <span class="arg">ファイル名</span> <dd>
+鍵を格納するファイル名を指定します。<p><dt>
+<code><span class="flag">-G</span></code> <span class="arg">出力ファイル名</span> <dd>
+DH-GEX のための素数候補を生成します。これらの素数は安全性のため (<code><span class="flag">-T</span></code> オプションを使って) 実際の使用前にスクリーニングする必要があります。<p><dt>
+<code><span class="flag">-g</span></code> <dd>
+<code><span class="flag">-r</span></code> コマンドを使って指紋のレコードを表示する際に、Generic DNS 形式を使用します。<p><dt>
+<code><span class="flag">-H</span></code> <dd>
+<span class="file"><code>known_hosts</code></span>ファイルをハッシュし、その結果を標準出力に表示します。これはすべてのホスト名および IP アドレスをハッシュされた表現で置き換え、そのファイルを更新します。古いファイルはサフィックス .old がついた名前で保存されます。<code><span class="nm">ssh</span></code>
+および<code><span class="nm">sshd</span></code>
+は、これらのハッシュ表現を普通に扱うことができますが、これによって、たとえファイルの内容が見えても識別可能な情報が明らかになることはありません。このオプションはすでに存在するハッシュされたホスト名を修正することはしないため、ハッシュされた表現とハッシュされていない表現が混在したファイルに対してこのオプションを適用しても安全です。<p><dt>
+<code><span class="flag">-h</span></code> <dd>
+鍵に署名するさい、ユーザ証明書のかわりにホスト証明書を作成します。詳しくは、<a href="#証明書">証明書</a>のセクションをごらんください。<p><dt>
+<code><span class="flag">-I</span></code> <span class="arg">証明書の秘密鍵</span> <dd>
+公開鍵に署名するさいに使用する鍵を指定します。詳しくは、<a href="#証明書">証明書</a>のセクションをごらんください。<p><dt>
+<code><span class="flag">-i</span></code> <dd>
+このオプションは、暗号化されていない秘密鍵 (あるいは公開鍵) ファイルを読み、それを OpenSSH 互換の秘密鍵 (あるいは公開鍵) に変換して標準出力に表示します。鍵の形式は<code><span class="flag">-m</span></code> オプションによって指定されます。このオプションを使うと、いくつかの商用 SSH 実装をふくむ他のソフトウェアから鍵を取り込むことができます。デフォルトの形式は"RFC4716"です。<p><dt>
+<code><span class="flag">-J</span></code> <span class="arg">行数</span> <dd>
+<code><span class="flag">-T</span></code> オプションを使って DH 群交換のためのスクリーニングをするさい、ここで指定された行数のみを処理します。<p><dt>
+<code><span class="flag">-j</span></code> <span class="arg">開始行</span> <dd>
+<code><span class="flag">-T</span></code> オプションを使って DH 群交換のためのスクリーニングをするさい、指定された行から処理を開始します。<p><dt>
+<code><span class="flag">-K</span></code> <span class="arg">チェックポイント</span> <dd>
+<code><span class="flag">-T</span></code> オプションを使って DH 群交換のためのスクリーニングをするさい、最後の行を<span class="arg">チェックポイント</span> に書き出します。このオプションは、ジョブが再開されたときにすでに処理されている入力ファイルの行をスキップするために使用されます。<p><dt>
+<code><span class="flag">-k</span></code> <dd>
+KRL ファイルを生成します。このモードでは、<code><span class="nm">ssh-keygen</span></code>
+は<code><span class="flag">-f</span></code> オプションで指定された位置に KRL ファイルを生成します。これは、コマンドラインから指定されたすべての鍵または証明証を失効させます。失効させる鍵および証明書は公開鍵ファイルか、あるいは<a href="#鍵失効リスト">鍵失効リスト</a>の項で記述されている形式で指定できます。<p><dt>
+<code><span class="flag">-L</span></code> <dd>
+証明書の内容を表示します。<p><dt>
+<code><span class="flag">-l</span></code> <dd>
+指定された秘密鍵ファイルあるいは公開鍵ファイルの指紋 (fingerprint) を表示します。プロトコル バージョン 1 におけるRSA 鍵 (RSA1) もサポートされています。プロトコル バージョン 2 の RSA および DSA 鍵の場合、<code><span class="nm">ssh-keygen</span></code>
+はそれに該当する公開鍵ファイルを探し出してその指紋を表示します。<code><span class="flag">-v</span></code> オプションがつけられた場合、その鍵の指紋を表現したアスキーアートも表示します。<p><dt>
+<code><span class="flag">-M</span></code> <span class="arg">メモリ</span> <dd>
+DH-GEX のモジュロとなる素数候補を生成する際のメモリ消費量を (メガバイト単位で) 指定します。<p><dt>
+<code><span class="flag">-m</span></code> <span class="arg">鍵の形式</span> <dd>
+鍵を変換する<code><span class="flag">-i</span></code> オプション (import) あるいは<code><span class="flag">-e</span></code> オプション (export) で使われる鍵の形式を指定します。サポートされている形式は:"RFC4716"(RFC 4716/SSH2 の公開鍵あるいは秘密鍵)、"PKCS8"(PEM PKCS8 の公開鍵)あるいは"PEM"(PEM の公開鍵) です。デフォルトの形式は、"RFC4716"になっています。<p><dt>
+<code><span class="flag">-N</span></code> <span class="arg">新しいパスフレーズ</span> <dd>
+新しいパスフレーズを指定します。<p><dt>
+<code><span class="flag">-n</span></code> <span class="arg">principal</span> <dd>
+鍵に署名する際に証明書に含める、ひとつあるいは複数のprincipal (ユーザまたはホスト名) を指定します。複数の principal を指定する場合はカンマで区切ります。詳しくは、<a href="#証明書">証明書</a>のセクションをごらんください。<p><dt>
+<code><span class="flag">-O</span></code> <span class="arg">オプション</span> <dd>
+鍵を署名する際に使う証明書のオプションを指定します。このオプションは複数回、指定することができます。詳しくは、<a href="#証明書">証明書</a>のセクションをごらんください。
+<p>
+ユーザ証明書に対して有効なオプション:<dl>
+<p><dt>
+<div class="cmdline"><kbd>clear </kbd></div>
+<dd>
+すべての許可されたパーミッションを削除します。このオプションは、デフォルトで指定されているパーミッションを解除し、個別に指定するさいに使われます。<p><dt>
+<div class="cmdline"><kbd>force-command =<span class="arg">コマンド</span> </kbd></div>
+<dd>
+この証明書を使って認証した際に、シェルやユーザが指定したコマンドではなく、ここで指定した<span class="arg">コマンド</span> を強制的に実行させます。<p><dt>
+<div class="cmdline"><kbd>no-agent-forwarding </kbd></div>
+<dd>
+認証エージェント<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>
+の転送を禁止します(デフォルトでは許可されています)。<p><dt>
+<div class="cmdline"><kbd>no-port-forwarding </kbd></div>
+<dd>
+ポート転送を禁止します(デフォルトでは許可されています)。<p><dt>
+<div class="cmdline"><kbd>no-pty </kbd></div>
+<dd>
+PTYの割り当てを禁止します(デフォルトでは許可されています)。<p><dt>
+<div class="cmdline"><kbd>no-user-rc </kbd></div>
+<dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+による<span class="file"><code>~/.ssh/rc</code></span>の実行を禁止します。(デフォルトでは許可されています)。<p><dt>
+<div class="cmdline"><kbd>no-x11-forwarding </kbd></div>
+<dd>
+X11転送を禁止します(デフォルトでは許可されています)。<p><dt>
+<div class="cmdline"><kbd>permit-agent-forwarding </kbd></div>
+<dd>
+認証エージェント<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>
+の転送を許可します。<p><dt>
+<div class="cmdline"><kbd>permit-port-forwarding </kbd></div>
+<dd>
+ポート転送を許可します。<p><dt>
+<div class="cmdline"><kbd>permit-pty </kbd></div>
+<dd>
+PTR の割り当てを許可します。<p><dt>
+<div class="cmdline"><kbd>permit-user-rc </kbd></div>
+<dd>
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+による<span class="file"><code>~/.ssh/rc</code></span>の実行を許可します。<p><dt>
+<div class="cmdline"><kbd>permit-x11-forwarding </kbd></div>
+<dd>
+X11転送を許可します。<p><dt>
+<div class="cmdline"><kbd>source-address =<span class="arg">アドレス一覧</span> </kbd></div>
+<dd>
+この証明書が有効であると判断される接続元アドレスを制限します。<span class="arg">アドレス一覧</span> には、カンマで区切られたひとつあるいは複数の address/netmask 対をCIDR形式で記述します。</dl>
+
+<p>
+現在のところ、ホスト鍵に対して有効なオプションはありません。<p><dt>
+<code><span class="flag">-o</span></code> <dd>
+<code><span class="nm">ssh-keygen</span></code>
+が SSH プロトコル バージョン 2 の秘密鍵を保存するさいに、互換性の高い PEM 形式ではなく、OpenSSH 独自の新形式を利用します。この新しい形式は、総当たりによるパスワード推測をやりにくくしますが、バージョン 6.5 以前の OpenSSH ではサポートされていません。Ed25519 鍵はつねにこの新しい形式で保存されます。<p><dt>
+<code><span class="flag">-P</span></code> <span class="arg">パスフレーズ</span> <dd>
+(古い) パスフレーズを指定します。<p><dt>
+<code><span class="flag">-p</span></code> <dd>
+新しく秘密鍵をつくるのではなく、すでにある秘密鍵ファイルのパスフレーズを変更します。まず秘密鍵の入っているファイルを訊かれ、古いパスフレーズを入力したあと、新しいパスワードを 2 回入力します。<p><dt>
+<code><span class="flag">-Q</span></code> <dd>
+鍵が KRL で失効したものとして指定されているかどうかを検査します。<p><dt>
+<code><span class="flag">-q</span></code> <dd>
+静かな<code><span class="nm">ssh-keygen</span></code>
+。<p><dt>
+<code><span class="flag">-R</span></code> <span class="arg">ホスト名</span> <dd>
+<span class="file"><code>known_hosts</code></span>ファイルから、指定された<span class="arg">ホスト名</span> に属する鍵をすべて取り除きます。このオプションはハッシュされたホスト (上記の<code><span class="flag">-H</span></code> オプションを参照) をファイルから取り除くのに有用です。<p><dt>
+<code><span class="flag">-r</span></code> <span class="arg">ホスト名</span> <dd>
+指定された公開鍵に対する<span class="arg">ホスト名</span> の SSHFP fingerprint 資源レコードを表示します。<p><dt>
+<code><span class="flag">-S</span></code> <span class="arg">開始点</span> <dd>
+DH-GEX のモジュロとなる素数候補を生成する際の開始点を (16 進で) 指定します。<p><dt>
+<code><span class="flag">-s</span></code> <span class="arg">CA鍵</span> <dd>
+指定された CAの鍵を用いて公開鍵に署名 (証明) します。詳しくは、<a href="#証明書">証明書</a>のセクションをごらんください。
+<p>
+KRL を生成する場合、失効させる証明書の鍵IDまたはシリアル番号を直接指定する場合は、<code><span class="flag">-s</span></code> で CA の公開鍵へのパス名を指定します。詳しくは、<a href="#鍵失効リスト">鍵失効リスト</a>をご覧ください。<p><dt>
+<code><span class="flag">-T</span></code> <span class="arg">出力ファイル</span> <dd>
+(<code><span class="flag">-G</span></code> オプションで生成された) DH 群交換のための素数候補に対して、安全性の試験をおこないます。<p><dt>
+<code><span class="flag">-t</span></code> <span class="config"><code>dsa | ecdsa | ed25519 | rsa | rsa1</code></span><dd>
+生成する鍵の種類を指定します。とりうる値として、プロトコル バージョン 1 で使う"rsa1"、およびプロトコル バージョン 2 で使う"dsa ,""ecdsa ,""ed25519"または"rsa"があります。<p><dt>
+<code><span class="flag">-u</span></code> <dd>
+KRL を更新します。<code><span class="flag">-k</span></code> オプションと組み合わせて使用すると、新規に KRL を作成するのではなく、コマンドラインで指定された鍵が既存の KRL に追加されます。<p><dt>
+<code><span class="flag">-V</span></code> <span class="arg">有効期間</span> <dd>
+証明書に署名するときの有効期間を指定します。有効期間には単一の日時が指定されていることがあり、この場合、その証明書が現在からある特定の日時まで有効であることを示しています。また、有効期間としてコロンで区切った2つの時刻が指定されている場合、これらは証明書が有効な開始時刻と終了時刻を示しています。開始日時は YYYYMMDD の形式で日付だけを示すか、YYYYMMDDHHMMSS の形式で日付と時刻を示すことができます。あるいは、マイナス記号をつけた (現在からの)相対的な日時を指定することもできます。この場合は<a href="sshd_config.html"><span class="xr">sshd_config (5)</span></a>
+の「時間の表現」で解説されている形式にしたがいます。終了日時は YYYYMMDD の日付、 YYYYMMDDHHMMSS の時刻、あるいはプラス記号をつけた相対日時を指定することができます。
+<p>
+例:"+52w1d"(現在から 52週間と 1日間のあいだ有効)"-4w:+4w"(4週間前から4週間後まで有効)"20100101123000:20110101123000"(2010年1月1日 午後12時30分から、2011年1月1日 午後12時30分まで有効)"-1d:20110101"(昨日から2011年1月1日の午前0時まで有効)<p><dt>
+<code><span class="flag">-v</span></code> <dd>
+冗長表示モード。<code><span class="nm">ssh-keygen</span></code>
+が進行中のデバッグメッセージを表示するようにします。これはモジュロ生成のデバッグ時に役立ちます。複数の<code><span class="flag">-v</span></code> オプションをつけると出力が増えます。最大は 3 個です。<p><dt>
+<code><span class="flag">-W</span></code> <span class="arg">ジェネレータ</span> <dd>
+DH-GEX 用の素数候補を検査するときのジェネレータを指定します。<p><dt>
+<code><span class="flag">-y</span></code> <dd>
+このオプションは OpenSSH 形式の秘密鍵ファイルを読み、OpenSSH 形式の公開鍵を標準出力に表示します。<p><dt>
+<code><span class="flag">-z</span></code> <span class="arg">シリアル番号</span> <dd>
+証明書に埋めこむシリアル番号を指定します。これは、同一の CA から発行された複数の証明書を区別するのに使います。デフォルトでは、シリアル番号はゼロになります。
+<p>
+KRL を生成する場合、<code><span class="flag">-z</span></code> は KRL のバージョン番号を指定するのに使われます。</dl>
+<hr>
+<h2><a href="#係数 (modulus) の生成" name="係数 (modulus) の生成">係数 (modulus) の生成</a></h2>
+<code><span class="nm">ssh-keygen</span></code>
+は、Diffie-Hellman 群交換 (Diffie-Hellman Group Exchange, DH-GEX) のための群を生成するのにも使うことができます。この群を生成するには、2 つの段階をふむ必要があります:まず、素数の候補が生成されます。これは高速ですが、メモリを消費します。つぎにこれらの候補が適切かどうか検査されます (このときは CPU 時間を消費します)。
+<p>
+この素数の生成は<code><span class="flag">-G</span></code> オプションによっておこなえます。必要な素数の長さは、<code><span class="flag">-b</span></code> オプションで指定することができます。たとえば:
+<p>
+<div class="cmdline"><kbd># ssh-keygen-Gmoduli-2048.candidates-b2048</kbd></div>
+
+<p>
+デフォルトでは、素数の探索は指定された長さの区間でランダムに選ばれた位置から開始されます。この開始位置は<code><span class="flag">-S</span></code> オプションによって変更することができます。
+<p>
+候補となる素数の集合が生成されたあとに、そこから適切なものをスクリーニングする必要があります。これは<code><span class="flag">-T</span></code> オプションを使っておこなえます。この場合、<code><span class="nm">ssh-keygen</span></code>
+は標準入力 (あるいは<code><span class="flag">-f</span></code> オプションで指定したファイル) から候補を読み込みます。たとえば:
+<p>
+<div class="cmdline"><kbd># ssh-keygen-Tmoduli-2048-fmoduli-2048.candidates</kbd></div>
+
+<p>
+デフォルトでは、候補となる各素数は 100回の素数判定テストにかけられます。この回数は、<code><span class="flag">-a</span></code> オプションによって変更することができます。DH ジェネレータの値は探索中の素数のために自動的に選ばれます。特定のジェネレータが必要な場合は、<code><span class="flag">-W</span></code> オプションによって指定することができます。許されるジェネレータの値は 2、3 あるいは 5 です。
+<p>
+最終的にスクリーニングされた DH 群は<span class="file"><code>/etc/moduli</code></span>にインストールすることができます。注意: このファイルはある範囲のビット長の係数 (modulus) を格納しており、この数は 2つの通信端点間で同じものである必要があります。<hr>
+<h2><a href="#証明書" name="証明書">証明書</a></h2>
+<code><span class="nm">ssh-keygen</span></code>
+は、鍵に署名する機能をサポートしています。これによって、ユーザあるいはホスト認証時に使うことのできる証明書を生成することができます。証明書は、以下のものからなっています:公開鍵、なんらかの識別情報、0個以上の principal名(ユーザまたはホスト名)、およびオプションの集合が、認証局 (Certification Authority, CA) の鍵によって電子署名されます。このようにすることで、クライアントやサーバは沢山のユーザ鍵やホスト鍵をすべて信頼しなくても、証明書を検証する際の CA 鍵だけを信頼すればよいことになります。注意: OpenSSH の証明書は、<span class="xr">ssl (8)</span>
+で使われている X.509 形式の証明書とはまったく異なる、かなりシンプルな形式になっています。
+<p>
+<code><span class="nm">ssh-keygen</span></code>
+では、2種類の証明書をサポートしています:ユーザ証明書とホスト証明書です。ユーザ証明書は、サーバに対してユーザを認証します。これに対してホスト証明書は、サーバに対してホストを認証します。ユーザ証明書を生成する方法:
+<p>
+<div class="cmdline"><kbd>$ ssh-keygen-s/path/to/ca_key-Ikey_id/path/to/user_key.pub</kbd></div>
+
+<p>
+生成された証明書は、<span class="file"><code>/path/to/user_key-cert.pub</code></span>に置かれます。ホスト証明書を作る際には、<code><span class="flag">-h</span></code> オプションが必要です:
+<p>
+<div class="cmdline"><kbd>$ ssh-keygen-s/path/to/ca_key-Ikey_id-h/path/to/host_key.pub</kbd></div>
+
+<p>
+生成されたホスト証明書は、<span class="file"><code>/path/to/host_key-cert.pub</code></span>に置かれます。
+<p>
+<code><span class="flag">-D</span></code> オプションを使って、トークンのライブラリを指定することでPKCS#11 トークン中に格納された CA鍵に署名することも可能です。このさい、CA鍵の公開部を<code><span class="flag">-s</span></code> 引数で指定します:
+<p>
+<div class="cmdline"><kbd>$ ssh-keygen-sca_key.pub-Dlibpkcs11.so-Ikey_idhost_key.pub</kbd></div>
+
+<p>
+いずれの場合も、<span class="arg">key_id</span> は「鍵識別子」を表しており、これはその証明書が認証に使われた際にはサーバ側にログとして残ります。
+<p>
+証明書は、ある特定の principal (ユーザあるいはホスト) に対してのみ有効なように制限することもできます。デフォルトでは、生成された証明書はすべてのユーザおよびホストに対して有効です。特定の principal のみに有効な証明書を作るには:
+<p>
+<div class="cmdline"><kbd>$ ssh-keygen-sca_key-Ikey_id-nuser1,user2user_key.pub</kbd></div>
+<div class="cmdline"><kbd>$ ssh-keygen -s ca_key -I key_id -h -n host.domain user_key.pub </kbd></div>
+
+<p>
+ユーザ証明書のこれ以外の有効性や使用条件に関する制限は、証明書につけたオプションによって指定できます。証明書のオプションを使うと、SSHセッション時に特定の機能を禁止できたり、特定の接続元から提示したときのみ有効であるように設定できたり、また特定のコマンドのみを実行させたり、といったことができます。有効な証明書オプションについては、<code><span class="flag">-O</span></code> オプションに関する上記の解説を参考にしてください。
+<p>
+最後に、証明書には有効期間を定めることができます。<code><span class="flag">-V</span></code> オプションを使うと、証明書の開始日時と終了日時を指定できます。この範囲を過ぎてから提示された証明書は、無効とみなされます。デフォルトでは、証明書はUnixEpoch から遠い将来まで有効になっています。
+<p>
+ユーザあるいはホスト認証時に使われる鍵と、CA の公開鍵は<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+または<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+によって信頼されている必要があります。詳しくはこれらのコマンドのマニュアルページを参照してください。<hr>
+<h2><a href="#鍵失効リスト" name="鍵失効リスト">鍵失効リスト</a></h2>
+<code><span class="nm">ssh-keygen</span></code>
+には OpenSSH 形式の鍵失効リスト (Key Revocation List, KRL) を管理する機能があります。これらバイナリ形式のファイルは、失効させる (revoke する) 鍵あるいは証明書をコンパクトな形式で指定するもので、シリアル番号によって証明書を失効させる場合、ひとつの証明書につきわずか 1ビットほどしか使用しません。
+<p>
+KRL は<code><span class="flag">-k</span></code> オプションで生成することができます。このオプションはコマンドラインから指定されたひとつ以上のファイルを読み込み、新しい KRL を生成します。このファイルには 1行にひとつずつ KRL 指定 (以下を参照) または公開鍵が格納されています。普通の公開鍵は、そのハッシュ値または中身を KRL 中で指定し、証明書の場合はシリアル番号または (シリアル番号がゼロまたは不明な場合)鍵 ID で指定します。
+<p>
+KRL 指定による鍵の失効では、鍵の失効に使うレコードの種類を明示的に指定でき、もとの完全な証明書がなくても、シリアル番号または鍵 ID によって証明書を直接失効させるのに使うことができます。KRL では、各行ごとに以下の形式のうちいずれかを、それ用の情報とともにコロンで区切って指定します。<dl>
+<p><dt>
+<span class="config"><code>serial : Ar シリアル番号 Ns Op - Ns Ar シリアル番号</code></span><dd>
+指定されたシリアル番号の証明書を失効させます。シリアル番号はゼロ以外の 64ビットの値で、10進、16進または 8進数で指定することができます。2個のシリアル番号がハイフンで区切って指定された場合、それはシリアル番号の範囲を表し、その間の証明書がすべて失効されます。CA の鍵は、<code><span class="nm">ssh-keygen</span></code>
+コマンドラインから<code><span class="flag">-s</span></code> オプションを使って指定する必要があります。<p><dt>
+<span class="config"><code>id : Ar 鍵ID</code></span><dd>
+指定された鍵 ID 文字列をもつ証明書を失効させます。CA の鍵は、<code><span class="nm">ssh-keygen</span></code>
+コマンドラインから<code><span class="flag">-s</span></code> オプションを使って指定する必要があります。<p><dt>
+<span class="config"><code>key : Ar 公開鍵</code></span><dd>
+指定した鍵を失効させます。証明書が指定された場合、これは通常の公開鍵として失効されます。<p><dt>
+<span class="config"><code>sha1 : Ar 公開鍵</code></span><dd>
+SHA1ハッシュで指定した鍵を失効させます。</dl>
+
+<p>
+KRL は<code><span class="flag">-k</span></code> オプションに加えて、<code><span class="flag">-u</span></code> オプションで更新することができます。このオプションが指定された場合、コマンドラインで指定された鍵がKRL にマージされ、すでにある鍵に追加されます。
+<p>
+KRL を指定して、ある鍵が失効されているかどうかを検査することも可能です。<code><span class="flag">-Q</span></code> オプションは、すでに存在する KRL に対して、コマンドラインから指定された各鍵を検査します。もしコマンドライン中のいずれかの鍵が失効している場合 (あるいはエラーの場合)<code><span class="nm">ssh-keygen</span></code>
+はゼロ以外の終了状態を返します。終了状態ゼロは、どの鍵も失効していない場合にのみ返されます。<hr>
+<h2><a href="#関連ファイル" name="関連ファイル">関連ファイル</a></h2>
+<dl>
+<p><dt>
+<span class="file"><code>~/.ssh/identity</code></span><dd>
+そのユーザの、プロトコル バージョン 1 におけるRSA 認証用の秘密鍵を格納します。このファイルはそのユーザ以外の誰にも見せてはいけません。この鍵を生成するときにパスフレーズを指定することもできます。パスフレーズは、3DES を使ってファイル中の秘密鍵の部分を暗号化するのに用いられます。このファイルは<code><span class="nm">ssh-keygen</span></code>
+によって自動的にアクセスされるわけではありませんが、秘密鍵ファイルのデフォルトの名前としてこれが提案されます。<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+はログイン要求があった際にこのファイルを読み込みます。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/identity.pub</code></span><dd>
+プロトコル バージョン 1 における RSA 認証用の公開鍵を格納します。そのユーザが RSA 認証でログインしたいすべてのマシンの<span class="file"><code>~/.ssh/authorized_keys</code></span>にこのファイルの内容を追加しておいてください。このファイルの内容を秘密にしておく必要はありません。<p><dt>
+<span class="file"><code>~/.ssh/id_dsa</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ecdsa</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ed25519</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_rsa</code></span><dd>
+そのユーザの、プロトコル バージョン 2 におけるDSA、ECDSA、Ed25519 あるいは RSA 認証用の秘密鍵を格納します。このファイルはそのユーザ以外の誰にも見せてはいけません。この鍵を生成するときにパスフレーズを指定することもできます。パスフレーズは、128-bit AES を使ってファイル中の秘密鍵の部分を暗号化するのに用いられます。このファイルは<code><span class="nm">ssh-keygen</span></code>
+によって自動的にアクセスされるわけではありませんが、秘密鍵ファイルのデフォルトの名前としてこれが提案されます。<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+はログイン要求があった際にこのファイルを読み込みます。
+<p>
+<p><dt>
+<span class="file"><code>~/.ssh/id_dsa.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ecdsa.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_ed25519.pub</code></span><dd>
+<p><dt>
+<span class="file"><code>~/.ssh/id_rsa.pub</code></span><dd>
+プロトコル バージョン 2 におけるDSA、ECDSA、Ed25519 あるいは RSA 認証用の公開鍵を格納します。そのユーザが RSA 認証でログインしたいすべてのマシンの<span class="file"><code>~/.ssh/authorized_keys</code></span>にこのファイルの内容を追加しておいてください。このファイルの内容を秘密にしておく必要はありません。
+<p>
+<p><dt>
+<span class="file"><code>/etc/moduli</code></span><dd>
+DH-GEX で使われる Diffie-Hellman 群を格納します。このファイル形式については、<span class="xr">moduli (5)</span>
+を参照してください。</dl>
+<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>,
+<span class="xr">moduli (5)</span>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<ul><li>
+RFC 4716  <span class="cite">"The Secure Shell (SSH) Public Key File Format"</span> 2006 </ul>
+<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+OpenSSH は Tatu Ylonen による、フリーなオリジナル版 ssh 1.2.12 リリースから派生したものです。Aaron Campbell、 Bob Beck、 Markus Friedl、 Niels Provos、Theo de Raadt および Dug Song が多くのバグを取り除き、新しい機能をふたたび追加して OpenSSH をつくりました。SSH プロトコル バージョン 1.5 および 2.0 のサポートはMarkus Friedl の貢献によるものです。
+</body>
+</html>

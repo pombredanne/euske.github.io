@@ -1,0 +1,245 @@
+<html>
+<head>
+<style><!--
+.info { font-size: 80%; }
+.op { left-margin: 4em; }
+.name { font-weight: bold; }
+.nm { font-weight: bold; }
+.xr { }
+.cite { font-style: italic; }
+.arg { font-style: italic; text-decoration: underline; }
+.flag { }
+.env { }
+.config { font-weight: bold; }
+.file { font-weight: bold; }
+.cmdline { background: #eee; margin: 0.5em; padding: 0.5em; }
+--></style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>SCP (1)</title>
+</head><body>
+<h1>SCP (1)</h1>
+<p class=info><a href="http://www.openssh.com/ja/">OpenSSH</a>-6.7p1 日本語マニュアルページ (2014/10/12)
+<hr>
+<h2><a href="#名前" name="名前">名前</a></h2>
+<div class="name">scp</div>
+<blockquote>安全なファイルコピー (リモート ファイルコピー プログラム)</blockquote>
+<hr>
+<h2><a href="#書式" name="書式">書式</a></h2>
+<code><span class="nm">scp</span></code>
+ [<code><span class="flag">-12346BCpqrv</span></code> ]
+ [<code><span class="flag">-c</span></code> <span class="arg">暗号方式</span> ]
+ [<code><span class="flag">-F</span></code> <span class="arg">ssh設定ファイル</span> ]
+ [<code><span class="flag">-i</span></code> <span class="arg">identityファイル</span> ]
+ [<code><span class="flag">-l</span></code> <span class="arg">帯域制限</span> ]
+ [<code><span class="flag">-o</span></code> <span class="arg">ssh設定項目</span> ]
+ [<code><span class="flag">-P</span></code> <span class="arg">ポート番号</span> ]
+ [<code><span class="flag">-S</span></code> <span class="arg">プログラム</span> ]
+ [ [<span class="arg">ユーザ</span> @]
+<span class="arg">ホスト1</span> :] <span class="arg">ファイル1</span> <span class="arg">...</span>  [ [<span class="arg">ユーザ</span> @]
+<span class="arg">ホスト2</span> :] <span class="arg">ファイル2</span> <hr>
+<h2><a href="#説明" name="説明">説明</a></h2>
+<code><span class="nm">scp</span></code>
+はネットワーク上のホスト間でファイルをコピーします。これはデータ転送に<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+を使い、これと同様の認証をおこないます。これによって、<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+と同様のセキュリティを提供します。<code><span class="nm">scp</span></code>
+は認証に必要な場合、パスワードまたはパスフレーズを尋ねてきます。
+<p>
+各ファイル名には、ホストおよびユーザの指定を含めることができます。これはそのファイルがどのホストから、あるいはどのホストにコピーされるかを指定するものです。ローカルなファイル名は、 `<kbd>:</kbd>' を含む名前を<code><span class="nm">scp</span></code>
+がホスト指定と混同しないように、絶対パス名または相対パス名を使ってください。2つのリモートホスト間でファイルコピーすることもできます。
+<p>
+オプションは次のとおりです:<dl>
+<p><dt>
+<code><span class="flag">-1</span></code> <dd>
+<code><span class="nm">scp</span></code>
+がプロトコル バージョン 1 を使うよう強制します。<p><dt>
+<code><span class="flag">-2</span></code> <dd>
+<code><span class="nm">scp</span></code>
+がプロトコル バージョン 2 を使うよう強制します。<p><dt>
+<code><span class="flag">-3</span></code> <dd>
+ローカルホストを経由して、2つのリモートホスト間でコピーをおこないます。このオプションが指定されない場合、データは2つのリモートホスト間でじかにコピーされます。注意: このオプションを使うと、進行状況の表示はされません。<p><dt>
+<code><span class="flag">-4</span></code> <dd>
+<code><span class="nm">scp</span></code>
+が IPv4 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-6</span></code> <dd>
+<code><span class="nm">scp</span></code>
+が IPv6 アドレスのみを使うよう強制します。<p><dt>
+<code><span class="flag">-B</span></code> <dd>
+バッチ処理モード (パスワードやパスフレーズを尋ねないようにします)。<p><dt>
+<code><span class="flag">-C</span></code> <dd>
+通信を圧縮します。<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に<code><span class="flag">-C</span></code> フラグを渡して圧縮を許可します。<p><dt>
+<code><span class="flag">-c</span></code> <span class="arg">暗号方式</span> <dd>
+データ転送に使う暗号方式を選択します。このオプションは直接<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に渡されます。<p><dt>
+<code><span class="flag">-F</span></code> <span class="arg">ssh設定ファイル</span> <dd>
+<code><span class="nm">ssh</span></code>
+に対して別のユーザ設定ファイルを指定します。このオプションは直接<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に渡されます。<p><dt>
+<code><span class="flag">-i</span></code> <span class="arg">identityファイル</span> <dd>
+公開鍵認証用の秘密鍵を読むファイルを選択します。このオプションは直接<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+に渡されます。<p><dt>
+<code><span class="flag">-l</span></code> <span class="arg">limit</span> <dd>
+使われるネットワーク帯域を制限します。Kbit/s で指定します。<p><dt>
+<code><span class="flag">-o</span></code> <span class="arg">ssh設定項目</span> <dd>
+設定ファイル<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+で使われている形式のオプションを<code><span class="nm">ssh</span></code>
+に渡すために使います。これは<code><span class="nm">scp</span></code>
+のコマンドラインオプションからは直接指定できない項目を指定するときに便利です。以下のオプションの詳細と、これらがとりうる値については<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>
+を参照してください。
+<p>
+<blockquote>
+<p><dt>
+AddressFamily<dd>
+<p><dt>
+BatchMode<dd>
+<p><dt>
+BindAddress<dd>
+<p><dt>
+CanonicalDomains<dd>
+<p><dt>
+CanonicalizeFallbackLocal<dd>
+<p><dt>
+CanonicalizeHostname<dd>
+<p><dt>
+CanonicalizeMaxDots<dd>
+<p><dt>
+CanonicalizePermittedCNAMEs<dd>
+<p><dt>
+ChallengeResponseAuthentication<dd>
+<p><dt>
+CheckHostIP<dd>
+<p><dt>
+Cipher<dd>
+<p><dt>
+Ciphers<dd>
+<p><dt>
+Compression<dd>
+<p><dt>
+CompressionLevel<dd>
+<p><dt>
+ConnectionAttempts<dd>
+<p><dt>
+ConnectTimeout<dd>
+<p><dt>
+ControlMaster<dd>
+<p><dt>
+ControlPath<dd>
+<p><dt>
+ControlPersist<dd>
+<p><dt>
+GlobalKnownHostsFile<dd>
+<p><dt>
+GSSAPIAuthentication<dd>
+<p><dt>
+GSSAPIDelegateCredentials<dd>
+<p><dt>
+HashKnownHosts<dd>
+<p><dt>
+Host<dd>
+<p><dt>
+HostbasedAuthentication<dd>
+<p><dt>
+HostKeyAlgorithms<dd>
+<p><dt>
+HostKeyAlias<dd>
+<p><dt>
+HostName<dd>
+<p><dt>
+IdentityFile<dd>
+<p><dt>
+IdentitiesOnly<dd>
+<p><dt>
+IPQoS<dd>
+<p><dt>
+KbdInteractiveAuthentication<dd>
+<p><dt>
+KbdInteractiveDevices<dd>
+<p><dt>
+KexAlgorithms<dd>
+<p><dt>
+LogLevel<dd>
+<p><dt>
+MACs<dd>
+<p><dt>
+NoHostAuthenticationForLocalhost<dd>
+<p><dt>
+NumberOfPasswordPrompts<dd>
+<p><dt>
+PasswordAuthentication<dd>
+<p><dt>
+PKCS11Provider<dd>
+<p><dt>
+Port<dd>
+<p><dt>
+PreferredAuthentications<dd>
+<p><dt>
+Protocol<dd>
+<p><dt>
+ProxyCommand<dd>
+<p><dt>
+PubkeyAuthentication<dd>
+<p><dt>
+RekeyLimit<dd>
+<p><dt>
+RhostsRSAAuthentication<dd>
+<p><dt>
+RSAAuthentication<dd>
+<p><dt>
+SendEnv<dd>
+<p><dt>
+ServerAliveInterval<dd>
+<p><dt>
+ServerAliveCountMax<dd>
+<p><dt>
+StrictHostKeyChecking<dd>
+<p><dt>
+TCPKeepAlive<dd>
+<p><dt>
+UsePrivilegedPort<dd>
+<p><dt>
+User<dd>
+<p><dt>
+UserKnownHostsFile<dd>
+<p><dt>
+VerifyHostKeyDNS<dd>
+</blockquote>
+<p><dt>
+<code><span class="flag">-P</span></code> <span class="arg">ポート番号</span> <dd>
+リモートホストに接続するポート番号を指定します。このオプションは大文字の `<kbd>P</kbd>' であることに注意してください。これは小文字の<code><span class="flag">-p</span></code> が、時刻やパーミッションを保つオプションとしてすでに使われているためです。<p><dt>
+<code><span class="flag">-p</span></code> <dd>
+コピー元ファイルの最終修正時刻、最終アクセス時刻、およびパーミッションを保つようにします。<p><dt>
+<code><span class="flag">-q</span></code> <dd>
+沈黙モード。<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+が進行状況を表すメータや警告および診断メッセージを表示しないようにします。<p><dt>
+<code><span class="flag">-r</span></code> <dd>
+ディレクトリ全体を再帰的にコピーします。<code><span class="nm">scp</span></code>
+は遭遇したシンボリック・リンクを追いますので注意してください。<p><dt>
+<code><span class="flag">-S</span></code> <span class="arg">プログラム</span> <dd>
+暗号化された接続のために使う<span class="arg">プログラム</span> の名前を指定します。このプログラムは<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+のオプションが使用できなくてはいけません。<p><dt>
+<code><span class="flag">-v</span></code> <dd>
+冗長表示モード。<code><span class="nm">scp</span></code>
+と<a href="ssh.html"><span class="xr">ssh (1)</span></a>
+が進行中のデバッグメッセージを表示するようにします。これは接続や認証、設定の問題などをデバッグするときに役立ちます。</dl>
+<hr>
+<h2><a href="#終了状態" name="終了状態">終了状態</a></h2>
+<hr>
+<h2><a href="#関連項目" name="関連項目">関連項目</a></h2>
+<a href="sftp.html"><span class="xr">sftp (1)</span></a>,
+<a href="ssh.html"><span class="xr">ssh (1)</span></a>,
+<a href="ssh-add.html"><span class="xr">ssh-add (1)</span></a>,
+<a href="ssh-agent.html"><span class="xr">ssh-agent (1)</span></a>,
+<a href="ssh-keygen.html"><span class="xr">ssh-keygen (1)</span></a>,
+<a href="ssh_config.html"><span class="xr">ssh_config (5)</span></a>,
+<a href="sshd.html"><span class="xr">sshd (8)</span></a>
+<hr>
+<h2><a href="#歴史" name="歴史">歴史</a></h2>
+<code><span class="nm">scp</span></code>
+は、カリフォルニア州立大学評議会 (the Regents of the University ofCalifornia) によるBSDソースコードの rcp を基にしています。<hr>
+<h2><a href="#作者" name="作者">作者</a></h2>
+<address>
+TimoRinne&lt;Mt tri@iki.fi&gt;</address>
+<address>
+TatuYlonen&lt;Mt ylo@cs.hut.fi&gt;</address>
+
+</body>
+</html>
